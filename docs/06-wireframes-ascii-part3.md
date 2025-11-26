@@ -1002,12 +1002,19 @@
 
 ## 문서 종료
 
+### 와이어프레임 시리즈
+- [Part 1](./06-wireframes-ascii.md) - 공통 레이아웃, 인증, 대시보드, 강좌/세션 관리
+- [Part 2](./06-wireframes-ascii-part2.md) - 실시간 세션, 능동적 학습 도구
+- [Part 3](./06-wireframes-ascii-part3.md) - 학습 분석, 반응형 레이아웃, 컴포넌트 (현재 문서)
+- [Part 4](./06-wireframes-ascii-part4.md) - 추가 기능 (2FA, 프로필, 과제, 성적, 평가, 녹화)
+
 ### 관련 문서
 - [01-minerva-forum-overview.md](./01-minerva-forum-overview.md) - 프로젝트 개요
 - [02-technical-architecture.md](./02-technical-architecture.md) - 기술 아키텍처
 - [03-product-requirements.md](./03-product-requirements.md) - 제품 요구사항 명세
 - [04-technical-specification.md](./04-technical-specification.md) - 기술 명세
 - [05-ui-ux-design-guide.md](./05-ui-ux-design-guide.md) - UI/UX 디자인 가이드
+- [07-feature-breakdown.md](./07-feature-breakdown.md) - 기능 세분화 문서
 
 ### 다음 단계
 1. Figma에서 High-Fidelity 디자인 제작
