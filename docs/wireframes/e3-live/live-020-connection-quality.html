@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIVE-020: 연결 품질 표시 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .quality-panel {
+      width: 500px;
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-6);
+      margin: var(--spacing-6) auto;
+    }
+    .quality-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--spacing-4);
+      margin-top: var(--spacing-6);
+    }
+    .quality-item {
+      text-align: center;
+      padding: var(--spacing-4);
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-md);
+    }
+    .signal-bars {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 3px;
+      height: 24px;
+      margin-bottom: var(--spacing-2);
+    }
+    .signal-bar {
+      width: 6px;
+      border-radius: 2px;
+    }
+    .signal-bar.active {
+      background: currentColor;
+    }
+    .signal-bar.inactive {
+      background: hsl(var(--muted));
+    }
+    .quality-excellent .signal-bars { color: hsl(var(--success)); }
+    .quality-good .signal-bars { color: hsl(142 71% 45%); }
+    .quality-fair .signal-bars { color: hsl(var(--warning)); }
+    .quality-poor .signal-bars { color: hsl(var(--destructive)); }
+
+    .quality-label {
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+    }
+    .quality-excellent .quality-label { color: hsl(var(--success)); }
+    .quality-good .quality-label { color: hsl(142 71% 45%); }
+    .quality-fair .quality-label { color: hsl(var(--warning)); }
+    .quality-poor .quality-label { color: hsl(var(--destructive)); }
+
+    .note {
+      margin-top: var(--spacing-6);
+      padding: var(--spacing-3);
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+
+    .video-tile-example {
+      display: flex;
+      gap: var(--spacing-4);
+      margin-top: var(--spacing-6);
+    }
+    .tile-demo {
+      width: 120px;
+      height: 90px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-md);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tile-signal {
+      position: absolute;
+      top: var(--spacing-1);
+      right: var(--spacing-1);
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 16px;
+    }
+    .tile-signal .signal-bar {
+      width: 4px;
+      border-radius: 1px;
+    }
+  </style>
+</head>
+<body style="background: hsl(var(--muted) / 0.3);">
+  <div class="quality-panel">
+    <h2 class="text-lg font-semibold mb-2">연결 상태</h2>
+    <div class="separator"></div>
+
+    <div class="quality-grid">
+      <!-- Excellent -->
+      <div class="quality-item quality-excellent">
+        <div class="signal-bars">
+          <div class="signal-bar active" style="height: 6px;"></div>
+          <div class="signal-bar active" style="height: 12px;"></div>
+          <div class="signal-bar active" style="height: 18px;"></div>
+          <div class="signal-bar active" style="height: 24px;"></div>
+        </div>
+        <div class="quality-label">우수</div>
+      </div>
+
+      <!-- Good -->
+      <div class="quality-item quality-good">
+        <div class="signal-bars">
+          <div class="signal-bar active" style="height: 6px;"></div>
+          <div class="signal-bar active" style="height: 12px;"></div>
+          <div class="signal-bar active" style="height: 18px;"></div>
+          <div class="signal-bar inactive" style="height: 24px;"></div>
+        </div>
+        <div class="quality-label">양호</div>
+      </div>
+
+      <!-- Fair -->
+      <div class="quality-item quality-fair">
+        <div class="signal-bars">
+          <div class="signal-bar active" style="height: 6px;"></div>
+          <div class="signal-bar active" style="height: 12px;"></div>
+          <div class="signal-bar inactive" style="height: 18px;"></div>
+          <div class="signal-bar inactive" style="height: 24px;"></div>
+        </div>
+        <div class="quality-label">보통</div>
+      </div>
+
+      <!-- Poor -->
+      <div class="quality-item quality-poor">
+        <div class="signal-bars">
+          <div class="signal-bar active" style="height: 6px;"></div>
+          <div class="signal-bar inactive" style="height: 12px;"></div>
+          <div class="signal-bar inactive" style="height: 18px;"></div>
+          <div class="signal-bar inactive" style="height: 24px;"></div>
+        </div>
+        <div class="quality-label">불량</div>
+      </div>
+    </div>
+
+    <div class="note">
+      * 비디오 타일 우상단에 아이콘으로 표시
+    </div>
+
+    <h3 class="text-sm font-semibold mt-6 mb-3">비디오 타일 표시 예시</h3>
+    <div class="video-tile-example">
+      <div class="tile-demo">
+        <div class="avatar avatar-sm">
+          <i data-lucide="user" class="icon-sm"></i>
+        </div>
+        <div class="tile-signal" style="color: hsl(var(--success));">
+          <div class="signal-bar active" style="height: 4px;"></div>
+          <div class="signal-bar active" style="height: 8px;"></div>
+          <div class="signal-bar active" style="height: 12px;"></div>
+          <div class="signal-bar active" style="height: 16px;"></div>
+        </div>
+      </div>
+      <div class="tile-demo">
+        <div class="avatar avatar-sm">
+          <i data-lucide="user" class="icon-sm"></i>
+        </div>
+        <div class="tile-signal" style="color: hsl(var(--warning));">
+          <div class="signal-bar active" style="height: 4px;"></div>
+          <div class="signal-bar active" style="height: 8px;"></div>
+          <div class="signal-bar inactive" style="height: 12px;"></div>
+          <div class="signal-bar inactive" style="height: 16px;"></div>
+        </div>
+      </div>
+      <div class="tile-demo">
+        <div class="avatar avatar-sm">
+          <i data-lucide="user" class="icon-sm"></i>
+        </div>
+        <div class="tile-signal" style="color: hsl(var(--destructive));">
+          <div class="signal-bar active" style="height: 4px;"></div>
+          <div class="signal-bar inactive" style="height: 8px;"></div>
+          <div class="signal-bar inactive" style="height: 12px;"></div>
+          <div class="signal-bar inactive" style="height: 16px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POLL-005: 주관식 결과 (워드클라우드) - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal-content {
+      background: hsl(var(--card));
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 520px;
+      overflow: hidden;
+    }
+    .result-header {
+      padding: var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .result-body {
+      padding: var(--spacing-4);
+    }
+    .result-question {
+      font-size: var(--text-lg);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-2);
+    }
+    .response-count {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-4);
+    }
+    .wordcloud-container {
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-6);
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: var(--spacing-3);
+      margin-bottom: var(--spacing-4);
+    }
+    .word {
+      font-weight: var(--font-semibold);
+      color: hsl(var(--brand-primary));
+      transition: transform 0.2s;
+      cursor: default;
+    }
+    .word:hover {
+      transform: scale(1.1);
+    }
+    .word.size-xl {
+      font-size: var(--text-2xl);
+    }
+    .word.size-lg {
+      font-size: var(--text-xl);
+    }
+    .word.size-md {
+      font-size: var(--text-lg);
+    }
+    .word.size-sm {
+      font-size: var(--text-base);
+      color: hsl(var(--brand-primary) / 0.7);
+    }
+    .word.size-xs {
+      font-size: var(--text-sm);
+      color: hsl(var(--brand-primary) / 0.5);
+    }
+    .keywords-section {
+      margin-bottom: var(--spacing-4);
+    }
+    .keywords-title {
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-2);
+    }
+    .keyword-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-2);
+    }
+    .keyword-tag {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      padding: var(--spacing-1) var(--spacing-2);
+      background: hsl(var(--brand-primary) / 0.1);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+    }
+    .keyword-count {
+      font-weight: var(--font-semibold);
+      color: hsl(var(--brand-primary));
+    }
+    .result-footer {
+      padding: var(--spacing-4);
+      border-top: 1px solid hsl(var(--border));
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <!-- Modal Overlay -->
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="result-header">
+        <div class="flex items-center gap-2">
+          <i data-lucide="bar-chart-2" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          <span class="font-semibold">투표 결과</span>
+        </div>
+      </div>
+
+      <div class="result-body">
+        <div class="result-question">
+          오늘 수업에서 가장 기억에 남는 내용은?
+        </div>
+        <div class="response-count">
+          응답: 24/26명 (92%)
+        </div>
+
+        <div class="wordcloud-container">
+          <span class="word size-xl">마케팅</span>
+          <span class="word size-lg">4P</span>
+          <span class="word size-lg">믹스</span>
+          <span class="word size-md">전략</span>
+          <span class="word size-md">Product</span>
+          <span class="word size-md">Price</span>
+          <span class="word size-sm">Promotion</span>
+          <span class="word size-sm">유통</span>
+          <span class="word size-sm">Place</span>
+          <span class="word size-xs">소비자</span>
+          <span class="word size-xs">가격결정</span>
+          <span class="word size-xs">브랜드</span>
+        </div>
+
+        <div class="keywords-section">
+          <div class="keywords-title">주요 키워드</div>
+          <div class="keyword-tags">
+            <span class="keyword-tag">
+              마케팅 <span class="keyword-count">(12)</span>
+            </span>
+            <span class="keyword-tag">
+              4P <span class="keyword-count">(10)</span>
+            </span>
+            <span class="keyword-tag">
+              Product <span class="keyword-count">(8)</span>
+            </span>
+            <span class="keyword-tag">
+              가격 <span class="keyword-count">(6)</span>
+            </span>
+            <span class="keyword-tag">
+              유통 <span class="keyword-count">(5)</span>
+            </span>
+            <span class="keyword-tag">
+              전략 <span class="keyword-count">(4)</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-footer">
+        <button class="btn btn-outline">
+          <i data-lucide="list" class="icon-sm"></i>
+          전체 응답 보기
+        </button>
+        <button class="btn btn-ghost">결과 닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

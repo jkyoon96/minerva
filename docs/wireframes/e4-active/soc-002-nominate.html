@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOC-002: 발언자 지목 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal-content {
+      background: hsl(var(--card));
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 450px;
+      max-height: 80vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .modal-body {
+      padding: var(--spacing-4);
+      overflow-y: auto;
+      flex: 1;
+    }
+    .section-title {
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-2);
+    }
+    .raised-hands-section {
+      margin-bottom: var(--spacing-4);
+    }
+    .student-card {
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+      margin-bottom: var(--spacing-2);
+    }
+    .student-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+      margin-bottom: var(--spacing-2);
+    }
+    .student-avatar {
+      width: 40px;
+      height: 40px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .student-info {
+      flex: 1;
+    }
+    .student-name {
+      font-weight: var(--font-semibold);
+    }
+    .student-wait {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .student-stats {
+      display: flex;
+      gap: var(--spacing-4);
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-2);
+    }
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+    }
+    .nominate-btn {
+      margin-left: auto;
+    }
+    .suggestion-section {
+      margin-top: var(--spacing-4);
+    }
+    .suggestion-card {
+      background: hsl(var(--warning) / 0.1);
+      border: 1px solid hsl(var(--warning) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+    }
+    .suggestion-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-2);
+    }
+    .suggestion-title {
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      color: hsl(var(--warning));
+    }
+    .suggestion-desc {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-3);
+    }
+    .suggestion-students {
+      display: flex;
+      gap: var(--spacing-2);
+      flex-wrap: wrap;
+    }
+    .suggestion-student {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) var(--spacing-3);
+      background: hsl(var(--card));
+      border-radius: var(--radius-md);
+    }
+    .suggestion-student-avatar {
+      width: 28px;
+      height: 28px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .suggestion-student-name {
+      font-size: var(--text-sm);
+    }
+  </style>
+</head>
+<body>
+  <!-- Modal Overlay -->
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="flex items-center gap-2">
+          <i data-lucide="mic" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          <h2 class="font-semibold">발언자 지목</h2>
+        </div>
+        <button class="btn btn-ghost btn-icon btn-sm">
+          <i data-lucide="x" class="icon-sm"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="raised-hands-section">
+          <div class="section-title">손든 학생 (3명)</div>
+
+          <div class="student-card">
+            <div class="student-header">
+              <div class="student-avatar">
+                <i data-lucide="user" class="icon-md"></i>
+              </div>
+              <div class="student-info">
+                <div class="student-name">이민준</div>
+                <div class="student-wait">대기 2분</div>
+              </div>
+            </div>
+            <div class="student-stats">
+              <span class="stat-item">
+                <i data-lucide="message-circle" class="icon-xs"></i>
+                발언 횟수: 2회
+              </span>
+              <span class="stat-item">
+                <i data-lucide="clock" class="icon-xs"></i>
+                총 발언 시간: 3:45
+              </span>
+            </div>
+            <button class="btn btn-primary btn-sm nominate-btn">
+              <i data-lucide="mic" class="icon-xs"></i>
+              지목
+            </button>
+          </div>
+
+          <div class="student-card">
+            <div class="student-header">
+              <div class="student-avatar">
+                <i data-lucide="user" class="icon-md"></i>
+              </div>
+              <div class="student-info">
+                <div class="student-name">박서연</div>
+                <div class="student-wait">대기 1분</div>
+              </div>
+            </div>
+            <div class="student-stats">
+              <span class="stat-item">
+                <i data-lucide="message-circle" class="icon-xs"></i>
+                발언 횟수: 2회
+              </span>
+              <span class="stat-item">
+                <i data-lucide="clock" class="icon-xs"></i>
+                총 발언 시간: 2:30
+              </span>
+            </div>
+            <button class="btn btn-primary btn-sm nominate-btn">
+              <i data-lucide="mic" class="icon-xs"></i>
+              지목
+            </button>
+          </div>
+
+          <div class="student-card">
+            <div class="student-header">
+              <div class="student-avatar">
+                <i data-lucide="user" class="icon-md"></i>
+              </div>
+              <div class="student-info">
+                <div class="student-name">강수아</div>
+                <div class="student-wait">대기 30초</div>
+              </div>
+            </div>
+            <div class="student-stats">
+              <span class="stat-item">
+                <i data-lucide="message-circle" class="icon-xs"></i>
+                발언 횟수: 1회
+              </span>
+              <span class="stat-item">
+                <i data-lucide="clock" class="icon-xs"></i>
+                총 발언 시간: 1:15
+              </span>
+            </div>
+            <button class="btn btn-primary btn-sm nominate-btn">
+              <i data-lucide="mic" class="icon-xs"></i>
+              지목
+            </button>
+          </div>
+        </div>
+
+        <div class="separator"></div>
+
+        <div class="suggestion-section">
+          <div class="suggestion-card">
+            <div class="suggestion-header">
+              <i data-lucide="lightbulb" class="icon-sm" style="color: hsl(var(--warning))"></i>
+              <span class="suggestion-title">참여 권장 학생 (발언 0회)</span>
+            </div>
+            <p class="suggestion-desc">아직 발언하지 않은 학생들입니다. 참여를 권장해 보세요.</p>
+            <div class="suggestion-students">
+              <div class="suggestion-student">
+                <div class="suggestion-student-avatar">
+                  <i data-lucide="user" class="icon-sm"></i>
+                </div>
+                <span class="suggestion-student-name">최유진</span>
+                <button class="btn btn-outline btn-sm">
+                  <i data-lucide="mic" class="icon-xs"></i>
+                  지목
+                </button>
+              </div>
+              <div class="suggestion-student">
+                <div class="suggestion-student-avatar">
+                  <i data-lucide="user" class="icon-sm"></i>
+                </div>
+                <span class="suggestion-student-name">한지민</span>
+                <button class="btn btn-outline btn-sm">
+                  <i data-lucide="mic" class="icon-xs"></i>
+                  지목
+                </button>
+              </div>
+              <div class="suggestion-student">
+                <div class="suggestion-student-avatar">
+                  <i data-lucide="user" class="icon-sm"></i>
+                </div>
+                <span class="suggestion-student-name">윤아름</span>
+                <button class="btn btn-outline btn-sm">
+                  <i data-lucide="mic" class="icon-xs"></i>
+                  지목
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

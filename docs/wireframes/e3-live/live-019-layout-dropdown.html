@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIVE-019: 레이아웃 선택 드롭다운 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .dropdown-panel {
+      width: 320px;
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      margin: var(--spacing-6) auto;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+    .dropdown-header {
+      padding: var(--spacing-3) var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+      font-weight: var(--font-semibold);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .dropdown-content {
+      padding: var(--spacing-2);
+    }
+    .layout-option {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+      padding: var(--spacing-3);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .layout-option:hover {
+      background: hsl(var(--muted) / 0.5);
+    }
+    .layout-option.selected {
+      background: hsl(var(--brand-primary) / 0.1);
+    }
+    .layout-icon {
+      width: 40px;
+      height: 40px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .layout-info {
+      flex: 1;
+    }
+    .layout-name {
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-1);
+    }
+    .layout-desc {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .layout-check {
+      color: hsl(var(--brand-primary));
+    }
+    .professor-section {
+      padding: var(--spacing-3) var(--spacing-4);
+      border-top: 1px solid hsl(var(--border));
+      background: hsl(var(--muted) / 0.3);
+    }
+    .professor-title {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-2);
+    }
+    .lock-option {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+      padding: var(--spacing-2);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .lock-option:hover {
+      background: hsl(var(--muted) / 0.5);
+    }
+  </style>
+</head>
+<body style="background: hsl(var(--muted) / 0.3);">
+  <div class="dropdown-panel">
+    <div class="dropdown-header">
+      <i data-lucide="layout-grid" class="icon-sm"></i>
+      레이아웃 선택
+    </div>
+
+    <div class="dropdown-content">
+      <!-- Grid View -->
+      <div class="layout-option selected">
+        <div class="layout-icon">
+          <i data-lucide="layout-grid" class="icon-md text-muted"></i>
+        </div>
+        <div class="layout-info">
+          <div class="layout-name">그리드 뷰</div>
+          <div class="layout-desc">모든 참가자를 균등하게 표시</div>
+        </div>
+        <i data-lucide="check" class="icon-sm layout-check"></i>
+      </div>
+
+      <!-- Speaker View -->
+      <div class="layout-option">
+        <div class="layout-icon">
+          <i data-lucide="user" class="icon-md text-muted"></i>
+        </div>
+        <div class="layout-info">
+          <div class="layout-name">발표자 뷰</div>
+          <div class="layout-desc">발표자 크게, 나머지 작게</div>
+        </div>
+      </div>
+
+      <!-- Spotlight View -->
+      <div class="layout-option">
+        <div class="layout-icon">
+          <i data-lucide="focus" class="icon-md text-muted"></i>
+        </div>
+        <div class="layout-info">
+          <div class="layout-name">스포트라이트</div>
+          <div class="layout-desc">특정 참가자만 강조</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Professor Only Section -->
+    <div class="professor-section">
+      <div class="professor-title">교수 전용 (전체 강제 적용)</div>
+      <div class="lock-option">
+        <div class="layout-icon">
+          <i data-lucide="lock" class="icon-md text-muted"></i>
+        </div>
+        <div class="layout-info">
+          <div class="layout-name">전체 레이아웃 고정</div>
+          <div class="layout-desc">모든 참가자에게 동일 레이아웃 적용</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

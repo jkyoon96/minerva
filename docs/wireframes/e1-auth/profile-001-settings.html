@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PROFILE-001: 프로필 설정 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="#" class="nav-link">대시보드</a>
+        <a href="#" class="nav-link">내 코스</a>
+        <a href="#" class="nav-link active">설정</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-icon">
+          <i data-lucide="bell" class="icon-md"></i>
+        </button>
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">김철수</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container py-8">
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-sm text-muted mb-4">
+      <span>설정</span>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <span class="font-medium" style="color: hsl(var(--foreground))">프로필</span>
+    </div>
+
+    <h1 class="text-2xl font-bold mb-6">프로필 설정</h1>
+
+    <div class="grid gap-8" style="grid-template-columns: 240px 1fr;">
+      <!-- Profile Card (Left) -->
+      <div class="card">
+        <div class="card-content text-center">
+          <div class="avatar avatar-xl mx-auto mb-4">
+            <i data-lucide="user" class="icon-xl"></i>
+          </div>
+          <button class="btn btn-outline btn-sm mb-4">
+            <i data-lucide="camera" class="icon-sm"></i>
+            사진 변경
+          </button>
+          <div class="badge" style="background-color: hsl(38 92% 50% / 0.1); color: hsl(38 92% 40%);">
+            <i data-lucide="user-check" class="icon-xs"></i>
+            교수자
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Form (Right) -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">기본 정보</h2>
+        </div>
+        <div class="card-content">
+          <form class="flex flex-col gap-4">
+            <!-- 이름 -->
+            <div class="form-group">
+              <label class="form-label form-label-required">이름</label>
+              <input type="text" class="input" value="김철수">
+            </div>
+
+            <!-- 이메일 -->
+            <div class="form-group">
+              <label class="form-label">이메일</label>
+              <div class="input-group">
+                <span class="input-icon">
+                  <i data-lucide="mail" class="icon-sm"></i>
+                </span>
+                <input type="email" class="input" style="padding-left: 2.5rem" value="professor@university.edu">
+              </div>
+              <span class="form-hint flex items-center gap-1">
+                <i data-lucide="alert-triangle" class="icon-xs" style="color: hsl(var(--warning))"></i>
+                이메일 변경 시 재인증이 필요합니다
+              </span>
+            </div>
+
+            <!-- 소속 기관 -->
+            <div class="form-group">
+              <label class="form-label">소속 기관</label>
+              <input type="text" class="input" value="한국대학교 경영학과">
+            </div>
+
+            <!-- 자기소개 -->
+            <div class="form-group">
+              <label class="form-label">자기소개</label>
+              <textarea class="input" rows="4" style="resize: vertical;">경영학개론, 마케팅원론을 담당하고 있습니다. 학생들의 능동적인 참여를 통한 학습을 중요시합니다.</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+              <i data-lucide="save" class="icon-sm"></i>
+              변경사항 저장
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="separator my-8"></div>
+
+    <!-- Security Settings -->
+    <h2 class="text-lg font-semibold mb-4">보안 설정</h2>
+
+    <div class="flex flex-col gap-4">
+      <!-- Password Change -->
+      <div class="card">
+        <div class="card-content">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <div class="p-3 rounded-lg bg-muted">
+                <i data-lucide="lock" class="icon-lg text-muted"></i>
+              </div>
+              <div>
+                <div class="font-semibold">비밀번호 변경</div>
+                <div class="text-sm text-muted">마지막 변경: 2024-06-15</div>
+              </div>
+            </div>
+            <a href="profile-003-change-password.html" class="btn btn-outline">
+              비밀번호 변경
+              <i data-lucide="chevron-right" class="icon-sm"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2FA -->
+      <div class="card">
+        <div class="card-content">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <div class="p-3 rounded-lg bg-success-light">
+                <i data-lucide="shield-check" class="icon-lg" style="color: hsl(var(--success))"></i>
+              </div>
+              <div>
+                <div class="font-semibold">2단계 인증</div>
+                <div class="text-sm flex items-center gap-1">
+                  <span class="badge badge-success">활성화됨</span>
+                </div>
+              </div>
+            </div>
+            <a href="auth-008-2fa-setup.html" class="btn btn-outline">
+              2FA 설정 관리
+              <i data-lucide="chevron-right" class="icon-sm"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Connected Accounts -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">연결된 계정</h3>
+        </div>
+        <div class="card-content">
+          <div class="flex flex-col gap-4">
+            <!-- Google -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <svg width="24" height="24" viewBox="0 0 24 24">
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                <div>
+                  <div class="font-medium">Google</div>
+                  <div class="text-sm text-muted">user@gmail.com</div>
+                </div>
+              </div>
+              <button class="btn btn-outline btn-sm text-destructive">
+                연결 해제
+              </button>
+            </div>
+
+            <div class="separator"></div>
+
+            <!-- Microsoft -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <svg width="24" height="24" viewBox="0 0 23 23">
+                  <path fill="#f35325" d="M0 0h11v11H0z"/>
+                  <path fill="#81bc06" d="M12 0h11v11H12z"/>
+                  <path fill="#05a6f0" d="M0 12h11v11H0z"/>
+                  <path fill="#ffba08" d="M12 12h11v11H12z"/>
+                </svg>
+                <div>
+                  <div class="font-medium">Microsoft</div>
+                  <div class="text-sm text-muted">연결되지 않음</div>
+                </div>
+              </div>
+              <button class="btn btn-primary btn-sm">
+                <i data-lucide="link" class="icon-sm"></i>
+                연결하기
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

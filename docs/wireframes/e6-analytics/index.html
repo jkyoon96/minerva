@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E6: 학습 분석 - EduForum Wireframes</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .story-section {
+      margin-bottom: var(--spacing-6);
+    }
+    .story-title {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-size: var(--text-lg);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-3);
+      padding-bottom: var(--spacing-2);
+      border-bottom: 2px solid hsl(var(--brand-primary));
+    }
+    .screen-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--spacing-4);
+    }
+    .screen-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      transition: all 0.2s ease;
+    }
+    .screen-card:hover {
+      border-color: hsl(var(--brand-primary));
+      box-shadow: 0 4px 12px hsl(var(--brand-primary) / 0.1);
+    }
+    .screen-id {
+      font-size: var(--text-xs);
+      color: hsl(var(--brand-primary));
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-1);
+    }
+    .screen-name {
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-2);
+    }
+    .screen-desc {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-3);
+    }
+    .screen-meta {
+      display: flex;
+      gap: var(--spacing-2);
+      flex-wrap: wrap;
+    }
+    .meta-badge {
+      font-size: var(--text-xs);
+      padding: var(--spacing-1) var(--spacing-2);
+      background: hsl(var(--muted) / 0.5);
+      border-radius: var(--radius-sm);
+    }
+    .meta-badge.professor {
+      background: hsl(var(--brand-primary) / 0.1);
+      color: hsl(var(--brand-primary));
+    }
+    .meta-badge.student {
+      background: hsl(var(--success) / 0.1);
+      color: hsl(var(--success));
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <a href="../index.html" class="btn btn-ghost btn-icon">
+      <i data-lucide="arrow-left" class="icon-md"></i>
+    </a>
+    <div>
+      <h1 class="font-bold text-xl">E6: 학습 분석</h1>
+      <p class="text-sm text-muted">실시간 대시보드, 학습 리포트, 조기 경보 시스템</p>
+    </div>
+  </header>
+
+  <main class="container py-6">
+    <!-- E6-S1: 실시간 참여도 대시보드 -->
+    <div class="story-section">
+      <h2 class="story-title">
+        <i data-lucide="activity" class="icon-md"></i>
+        E6-S1: 실시간 참여도 대시보드 (TalkTime)
+      </h2>
+      <div class="screen-grid">
+        <a href="analytics-001-realtime.html" class="screen-card">
+          <div class="screen-id">ANALYTICS-001</div>
+          <div class="screen-name">실시간 참여도 대시보드</div>
+          <div class="screen-desc">세션 중 학생별 발언 시간, 참여율, 투표/채팅 활성도를 실시간 모니터링</div>
+          <div class="screen-meta">
+            <span class="meta-badge professor">교수용</span>
+            <span class="meta-badge">세션 중</span>
+          </div>
+        </a>
+
+        <a href="analytics-002-mini.html" class="screen-card">
+          <div class="screen-id">ANALYTICS-002</div>
+          <div class="screen-name">참여도 미니 위젯</div>
+          <div class="screen-desc">라이브 세션 화면에 오버레이되는 소형 참여도 위젯</div>
+          <div class="screen-meta">
+            <span class="meta-badge professor">교수용</span>
+            <span class="meta-badge">오버레이</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- E6-S2: 학습 분석 리포트 -->
+    <div class="story-section">
+      <h2 class="story-title">
+        <i data-lucide="file-text" class="icon-md"></i>
+        E6-S2: 학습 분석 리포트
+      </h2>
+      <div class="screen-grid">
+        <a href="report-001-personal.html" class="screen-card">
+          <div class="screen-id">REPORT-001</div>
+          <div class="screen-name">개인별 학습 리포트</div>
+          <div class="screen-desc">학기 종합 분석, 주차별 추이, 강점/약점, 클래스 내 위치 제공</div>
+          <div class="screen-meta">
+            <span class="meta-badge student">학생용</span>
+            <span class="meta-badge">리포트</span>
+          </div>
+        </a>
+
+        <a href="report-002-course.html" class="screen-card">
+          <div class="screen-id">REPORT-002</div>
+          <div class="screen-name">코스 전체 분석 리포트</div>
+          <div class="screen-desc">코스 개요, 참여도 트렌드, 성적 분포, 참여도-성적 상관관계 분석</div>
+          <div class="screen-meta">
+            <span class="meta-badge professor">교수용</span>
+            <span class="meta-badge">리포트</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- E6-S3: 조기 경보 시스템 -->
+    <div class="story-section">
+      <h2 class="story-title">
+        <i data-lucide="alert-triangle" class="icon-md"></i>
+        E6-S3: 조기 경보 시스템
+      </h2>
+      <div class="screen-grid">
+        <a href="alert-001-dashboard.html" class="screen-card">
+          <div class="screen-id">ALERT-001</div>
+          <div class="screen-name">학업 위험 학생 대시보드</div>
+          <div class="screen-desc">위험/주의/정상 현황 요약, 위험 학생 목록, 권장 조치, 경보 설정</div>
+          <div class="screen-meta">
+            <span class="meta-badge professor">교수용</span>
+            <span class="meta-badge">경보</span>
+          </div>
+        </a>
+
+        <a href="alert-002-tracking.html" class="screen-card">
+          <div class="screen-id">ALERT-002</div>
+          <div class="screen-name">개입 기록 및 추적</div>
+          <div class="screen-desc">학생별 위험 지표 추이, 개입 기록 타임라인, 새 기록 추가</div>
+          <div class="screen-meta">
+            <span class="meta-badge professor">교수용</span>
+            <span class="meta-badge">추적</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- E6-S4: 토론 네트워크 분석 -->
+    <div class="story-section">
+      <h2 class="story-title">
+        <i data-lucide="share-2" class="icon-md"></i>
+        E6-S4: 토론 네트워크 분석
+      </h2>
+      <div class="screen-grid">
+        <a href="network-001-visualization.html" class="screen-card">
+          <div class="screen-id">NETWORK-001</div>
+          <div class="screen-name">토론 네트워크 시각화</div>
+          <div class="screen-desc">상호작용 네트워크 그래프, 중심 인물/고립 학생, 클러스터 분석</div>
+          <div class="screen-meta">
+            <span class="meta-badge professor">교수용</span>
+            <span class="meta-badge">시각화</span>
+          </div>
+        </a>
+
+        <a href="network-002-individual.html" class="screen-card">
+          <div class="screen-id">NETWORK-002</div>
+          <div class="screen-name">개인 네트워크 상세</div>
+          <div class="screen-desc">개인 네트워크 프로필, 상호작용 유형 분석, 주차별 추이, 피드백</div>
+          <div class="screen-meta">
+            <span class="meta-badge professor">교수용</span>
+            <span class="meta-badge">상세</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="card mt-6">
+      <div class="card-content">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="font-semibold">E6 학습 분석 총 8개 화면</div>
+            <div class="text-sm text-muted">실시간 분석 2 / 리포트 2 / 경보 2 / 네트워크 2</div>
+          </div>
+          <a href="../index.html" class="btn btn-outline">
+            <i data-lucide="arrow-left" class="icon-sm"></i>
+            전체 목록으로
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

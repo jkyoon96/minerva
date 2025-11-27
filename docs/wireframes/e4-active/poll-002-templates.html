@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POLL-002: 투표 템플릿 목록 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal-content {
+      background: hsl(var(--card));
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .modal-body {
+      padding: var(--spacing-4);
+      overflow-y: auto;
+      flex: 1;
+    }
+    .modal-footer {
+      padding: var(--spacing-4);
+      border-top: 1px solid hsl(var(--border));
+    }
+    .template-item {
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-3);
+    }
+    .template-header {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-3);
+      margin-bottom: var(--spacing-2);
+    }
+    .template-icon {
+      width: 36px;
+      height: 36px;
+      background: hsl(var(--brand-primary) / 0.1);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: hsl(var(--brand-primary));
+    }
+    .template-info {
+      flex: 1;
+    }
+    .template-title {
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-1);
+    }
+    .template-meta {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .template-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--spacing-2);
+      margin-top: var(--spacing-3);
+      padding-top: var(--spacing-3);
+      border-top: 1px solid hsl(var(--border) / 0.5);
+    }
+  </style>
+</head>
+<body>
+  <!-- Modal Overlay -->
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="flex items-center gap-2">
+          <i data-lucide="folder" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          <h2 class="font-semibold">저장된 투표 템플릿</h2>
+        </div>
+        <button class="btn btn-ghost btn-icon btn-sm">
+          <i data-lucide="x" class="icon-sm"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="input-group mb-4">
+          <i data-lucide="search" class="icon-sm text-muted"></i>
+          <input type="text" class="input" placeholder="템플릿 검색...">
+        </div>
+
+        <div class="template-item">
+          <div class="template-header">
+            <div class="template-icon">
+              <i data-lucide="bar-chart-2" class="icon-sm"></i>
+            </div>
+            <div class="template-info">
+              <div class="template-title">마케팅 4P 퀴즈</div>
+              <div class="template-meta">객관식 · 4개 선택지</div>
+              <div class="template-meta">최종 사용: 2024-11-15</div>
+            </div>
+          </div>
+          <div class="template-actions">
+            <button class="btn btn-ghost btn-sm">
+              <i data-lucide="trash-2" class="icon-xs"></i>
+              삭제
+            </button>
+            <button class="btn btn-ghost btn-sm">
+              <i data-lucide="edit" class="icon-xs"></i>
+              수정
+            </button>
+            <button class="btn btn-primary btn-sm">
+              <i data-lucide="play" class="icon-xs"></i>
+              사용
+            </button>
+          </div>
+        </div>
+
+        <div class="template-item">
+          <div class="template-header">
+            <div class="template-icon">
+              <i data-lucide="check-circle" class="icon-sm"></i>
+            </div>
+            <div class="template-info">
+              <div class="template-title">수업 이해도 체크</div>
+              <div class="template-meta">O/X · 2개 선택지</div>
+              <div class="template-meta">최종 사용: 2024-11-10</div>
+            </div>
+          </div>
+          <div class="template-actions">
+            <button class="btn btn-ghost btn-sm">
+              <i data-lucide="trash-2" class="icon-xs"></i>
+              삭제
+            </button>
+            <button class="btn btn-ghost btn-sm">
+              <i data-lucide="edit" class="icon-xs"></i>
+              수정
+            </button>
+            <button class="btn btn-primary btn-sm">
+              <i data-lucide="play" class="icon-xs"></i>
+              사용
+            </button>
+          </div>
+        </div>
+
+        <div class="template-item">
+          <div class="template-header">
+            <div class="template-icon">
+              <i data-lucide="message-square" class="icon-sm"></i>
+            </div>
+            <div class="template-info">
+              <div class="template-title">의견 수렴</div>
+              <div class="template-meta">주관식</div>
+              <div class="template-meta">최종 사용: 2024-11-08</div>
+            </div>
+          </div>
+          <div class="template-actions">
+            <button class="btn btn-ghost btn-sm">
+              <i data-lucide="trash-2" class="icon-xs"></i>
+              삭제
+            </button>
+            <button class="btn btn-ghost btn-sm">
+              <i data-lucide="edit" class="icon-xs"></i>
+              수정
+            </button>
+            <button class="btn btn-primary btn-sm">
+              <i data-lucide="play" class="icon-xs"></i>
+              사용
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline w-full">
+          <i data-lucide="plus" class="icon-sm"></i>
+          새 투표 만들기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRS-003: 코스 상세 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .main-content {
+      margin-left: 280px;
+      padding: var(--spacing-6);
+    }
+    .course-hero {
+      background: linear-gradient(135deg, hsl(221 83% 53%) 0%, hsl(262 83% 58%) 100%);
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-8);
+      margin-bottom: var(--spacing-6);
+    }
+    .stat-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+    }
+    .live-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background-color: hsl(var(--destructive));
+      color: white;
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+    }
+    .live-indicator::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background-color: white;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="#" class="nav-link">대시보드</a>
+        <a href="crs-001-course-list.html" class="nav-link active">내 코스</a>
+        <a href="#" class="nav-link">분석</a>
+        <a href="#" class="nav-link">설정</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-icon">
+          <i data-lucide="bell" class="icon-md"></i>
+        </button>
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">김교수</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" style="top: 57px; height: calc(100vh - 57px);">
+    <div class="sidebar-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">코스 메뉴</div>
+        <a href="#" class="sidebar-link active">
+          <i data-lucide="home" class="icon-md"></i>
+          개요
+        </a>
+        <a href="ses-001-session-list.html" class="sidebar-link">
+          <i data-lucide="video" class="icon-md"></i>
+          세션
+        </a>
+        <a href="crs-004-students.html" class="sidebar-link">
+          <i data-lucide="users" class="icon-md"></i>
+          수강생
+        </a>
+        <a href="cnt-001-content-library.html" class="sidebar-link">
+          <i data-lucide="folder" class="icon-md"></i>
+          콘텐츠
+        </a>
+        <a href="asg-001-assignment-list.html" class="sidebar-link">
+          <i data-lucide="file-text" class="icon-md"></i>
+          과제
+        </a>
+        <a href="grd-001-grade-dashboard.html" class="sidebar-link">
+          <i data-lucide="bar-chart-3" class="icon-md"></i>
+          성적
+        </a>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="trending-up" class="icon-md"></i>
+          분석
+        </a>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="settings" class="icon-md"></i>
+          설정
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Course Hero -->
+    <div class="course-hero">
+      <h1 class="text-3xl font-bold mb-2">경영학개론</h1>
+      <p class="mb-4" style="opacity: 0.9;">BUSS101 · 2024년 2학기</p>
+      <div class="flex items-center gap-6 mb-6" style="opacity: 0.9;">
+        <span class="flex items-center gap-2">
+          <i data-lucide="users" class="icon-md"></i>
+          28명
+        </span>
+        <span class="flex items-center gap-2">
+          <i data-lucide="video" class="icon-md"></i>
+          12세션
+        </span>
+        <span class="flex items-center gap-2">
+          <i data-lucide="calendar" class="icon-md"></i>
+          화 10:00-11:30
+        </span>
+      </div>
+      <div class="flex gap-3">
+        <button class="btn" style="background: white; color: hsl(var(--brand-primary));">
+          <i data-lucide="play" class="icon-sm"></i>
+          세션 시작
+        </button>
+        <button class="btn btn-outline" style="border-color: white; color: white;">
+          <i data-lucide="settings" class="icon-sm"></i>
+          설정
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats & Alerts -->
+    <div class="grid grid-cols-2 gap-6 mb-6">
+      <!-- Stats -->
+      <div class="stat-card">
+        <h3 class="font-semibold mb-4 flex items-center gap-2">
+          <i data-lucide="bar-chart-2" class="icon-md text-muted"></i>
+          통계 요약
+        </h3>
+        <div class="separator mb-4"></div>
+        <div class="flex flex-col gap-3 text-sm">
+          <div class="flex justify-between">
+            <span class="text-muted">평균 참여율</span>
+            <span class="font-medium text-success">87% ↑</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-muted">출석률</span>
+            <span class="font-medium">94%</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-muted">퀴즈 평균</span>
+            <span class="font-medium">78점</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-muted">완료 세션</span>
+            <span class="font-medium">12개</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div class="stat-card">
+        <h3 class="font-semibold mb-4 flex items-center gap-2">
+          <i data-lucide="bell" class="icon-md text-muted"></i>
+          알림
+        </h3>
+        <div class="separator mb-4"></div>
+        <div class="flex flex-col gap-3 text-sm">
+          <div class="flex items-center gap-2">
+            <i data-lucide="alert-triangle" class="icon-sm" style="color: hsl(var(--warning))"></i>
+            <span>김예준: 3회 결석</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i data-lucide="alert-triangle" class="icon-sm" style="color: hsl(var(--warning))"></i>
+            <span>최서아: 참여 급락</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i data-lucide="file-text" class="icon-sm text-muted"></i>
+            <span>과제 1: 38/45 제출</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Sessions -->
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-semibold">최근 세션</h2>
+      <a href="ses-001-session-list.html" class="text-sm">모두 보기</a>
+    </div>
+    <div class="separator mb-4"></div>
+
+    <div class="card mb-6">
+      <div class="list">
+        <div class="list-item list-item-interactive flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <span class="live-indicator">LIVE</span>
+            <div>
+              <div class="font-medium">세션 #12: 마케팅 믹스 4P</div>
+              <div class="text-sm text-muted">26/28명 참석 중</div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm">입장</button>
+        </div>
+        <div class="list-item list-item-interactive flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <span class="badge badge-success">완료</span>
+            <div>
+              <div class="font-medium">세션 #11: STP 전략</div>
+              <div class="text-sm text-muted">27/28명 참석</div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm">녹화</button>
+        </div>
+        <div class="list-item list-item-interactive flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <span class="badge badge-success">완료</span>
+            <div>
+              <div class="font-medium">세션 #10: 경쟁사 분석</div>
+              <div class="text-sm text-muted">25/28명 참석</div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm">녹화</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Assignments -->
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-semibold">최근 과제</h2>
+      <a href="asg-001-assignment-list.html" class="text-sm">모두 보기</a>
+    </div>
+    <div class="separator mb-4"></div>
+
+    <div class="card mb-6">
+      <div class="list">
+        <div class="list-item list-item-interactive flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <span class="badge badge-warning">마감임박</span>
+            <div>
+              <div class="font-medium">과제 1: 연결 리스트</div>
+              <div class="text-sm text-muted">38/45 제출</div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm">보기</button>
+        </div>
+        <div class="list-item list-item-interactive flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <span class="badge badge-success">채점완료</span>
+            <div>
+              <div class="font-medium">퀴즈 #5: 마케팅 전략</div>
+              <div class="text-sm text-muted">45/45 제출</div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm">결과</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <h2 class="text-lg font-semibold mb-4">빠른 작업</h2>
+    <div class="separator mb-4"></div>
+    <div class="flex gap-3 mb-6">
+      <a href="ses-002-create-session.html" class="btn btn-outline">
+        <i data-lucide="plus" class="icon-sm"></i>
+        새 세션
+      </a>
+      <a href="asg-002-create-assignment.html" class="btn btn-outline">
+        <i data-lucide="plus" class="icon-sm"></i>
+        과제 추가
+      </a>
+      <a href="crs-004-students.html" class="btn btn-outline">
+        <i data-lucide="user-plus" class="icon-sm"></i>
+        수강생 추가
+      </a>
+      <a href="cnt-002-upload.html" class="btn btn-outline">
+        <i data-lucide="upload" class="icon-sm"></i>
+        콘텐츠 업로드
+      </a>
+    </div>
+
+    <!-- Invite Code -->
+    <h2 class="text-lg font-semibold mb-4">초대 코드</h2>
+    <div class="separator mb-4"></div>
+    <div class="card">
+      <div class="card-content">
+        <div class="flex items-center gap-4">
+          <code class="flex-1 p-3 bg-muted rounded-lg font-mono text-lg">BUSS101-2024-F</code>
+          <button class="btn btn-outline">
+            <i data-lucide="copy" class="icon-sm"></i>
+            복사
+          </button>
+          <button class="btn btn-outline">
+            <i data-lucide="refresh-cw" class="icon-sm"></i>
+            재생성
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

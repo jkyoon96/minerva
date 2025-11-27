@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADMIN-001: 역할 관리 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="#" class="nav-link">대시보드</a>
+        <a href="#" class="nav-link">코스</a>
+        <a href="#" class="nav-link active">사용자 관리</a>
+        <a href="#" class="nav-link">설정</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-icon">
+          <i data-lucide="bell" class="icon-md"></i>
+        </button>
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">관리자</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container py-8">
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-sm text-muted mb-4">
+      <span>사용자 관리</span>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <span class="font-medium" style="color: hsl(var(--foreground))">역할 관리</span>
+    </div>
+
+    <h1 class="text-2xl font-bold mb-6">역할 관리</h1>
+
+    <!-- Search and Filter -->
+    <div class="flex gap-4 mb-6">
+      <div class="input-group flex-1">
+        <span class="input-icon">
+          <i data-lucide="search" class="icon-sm"></i>
+        </span>
+        <input type="text" class="input" style="padding-left: 2.5rem" placeholder="사용자 검색...">
+      </div>
+      <select class="select" style="width: 160px;">
+        <option value="">역할 필터</option>
+        <option value="admin">Admin</option>
+        <option value="instructor">교수자</option>
+        <option value="ta">TA</option>
+        <option value="student">학습자</option>
+      </select>
+    </div>
+
+    <!-- Users Table -->
+    <div class="table-wrapper mb-8">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>사용자</th>
+            <th>이메일</th>
+            <th>역할</th>
+            <th>상태</th>
+            <th>작업</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="flex items-center gap-3">
+                <div class="avatar avatar-sm" style="background-color: hsl(var(--destructive) / 0.1); color: hsl(var(--destructive));">
+                  <i data-lucide="shield" class="icon-sm"></i>
+                </div>
+                <span class="font-medium">김철수 (Admin)</span>
+              </div>
+            </td>
+            <td>admin@edu.kr</td>
+            <td><span class="badge" style="background-color: hsl(0 84% 60% / 0.1); color: hsl(0 84% 50%);">Admin</span></td>
+            <td><span class="badge badge-success">활성</span></td>
+            <td>
+              <button class="btn btn-ghost btn-icon-sm">
+                <i data-lucide="settings" class="icon-sm"></i>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="flex items-center gap-3">
+                <div class="avatar avatar-sm" style="background-color: hsl(38 92% 50% / 0.1); color: hsl(38 92% 40%);">
+                  <i data-lucide="user-check" class="icon-sm"></i>
+                </div>
+                <span class="font-medium">이영희</span>
+              </div>
+            </td>
+            <td>lee@edu.kr</td>
+            <td><span class="badge" style="background-color: hsl(38 92% 50% / 0.1); color: hsl(38 92% 40%);">교수자</span></td>
+            <td><span class="badge badge-success">활성</span></td>
+            <td>
+              <button class="btn btn-ghost btn-icon-sm">
+                <i data-lucide="settings" class="icon-sm"></i>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="flex items-center gap-3">
+                <div class="avatar avatar-sm" style="background-color: hsl(var(--success) / 0.1); color: hsl(var(--success));">
+                  <i data-lucide="user" class="icon-sm"></i>
+                </div>
+                <span class="font-medium">박민수</span>
+              </div>
+            </td>
+            <td>park@edu.kr</td>
+            <td><span class="badge" style="background-color: hsl(var(--success) / 0.1); color: hsl(142 76% 36%);">TA</span></td>
+            <td><span class="badge badge-success">활성</span></td>
+            <td>
+              <button class="btn btn-ghost btn-icon-sm">
+                <i data-lucide="settings" class="icon-sm"></i>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="flex items-center gap-3">
+                <div class="avatar avatar-sm" style="background-color: hsl(var(--brand-primary) / 0.1); color: hsl(var(--brand-primary));">
+                  <i data-lucide="book-open" class="icon-sm"></i>
+                </div>
+                <span class="font-medium">최지영</span>
+              </div>
+            </td>
+            <td>choi@edu.kr</td>
+            <td><span class="badge badge-primary">학습자</span></td>
+            <td><span class="badge badge-success">활성</span></td>
+            <td>
+              <button class="btn btn-ghost btn-icon-sm">
+                <i data-lucide="settings" class="icon-sm"></i>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="flex items-center gap-3">
+                <div class="avatar avatar-sm" style="background-color: hsl(var(--brand-primary) / 0.1); color: hsl(var(--brand-primary));">
+                  <i data-lucide="book-open" class="icon-sm"></i>
+                </div>
+                <span class="font-medium">정수민</span>
+              </div>
+            </td>
+            <td>jung@edu.kr</td>
+            <td><span class="badge badge-primary">학습자</span></td>
+            <td><span class="badge badge-default">비활성</span></td>
+            <td>
+              <button class="btn btn-ghost btn-icon-sm">
+                <i data-lucide="settings" class="icon-sm"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex items-center justify-center gap-2 mb-8">
+      <button class="btn btn-outline btn-sm">
+        <i data-lucide="chevron-left" class="icon-sm"></i>
+        이전
+      </button>
+      <button class="btn btn-primary btn-sm">1</button>
+      <button class="btn btn-outline btn-sm">2</button>
+      <button class="btn btn-outline btn-sm">3</button>
+      <span class="text-muted">...</span>
+      <button class="btn btn-outline btn-sm">10</button>
+      <button class="btn btn-outline btn-sm">
+        다음
+        <i data-lucide="chevron-right" class="icon-sm"></i>
+      </button>
+    </div>
+
+    <div class="separator my-6"></div>
+
+    <!-- Permission Matrix -->
+    <h2 class="text-lg font-semibold mb-4">역할별 권한 매트릭스</h2>
+
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>기능</th>
+            <th class="text-center">Admin</th>
+            <th class="text-center">교수자</th>
+            <th class="text-center">TA</th>
+            <th class="text-center">학습자</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>시스템 설정</td>
+            <td class="text-center"><i data-lucide="check" class="icon-sm" style="color: hsl(var(--success))"></i></td>
+            <td class="text-center"><i data-lucide="minus" class="icon-sm text-muted"></i></td>
+            <td class="text-center"><i data-lucide="minus" class="icon-sm text-muted"></i></td>
+            <td class="text-center"><i data-lucide="minus" class="icon-sm text-muted"></i></td>
+          </tr>
+          <tr>
+            <td>사용자 관리</td>
+            <td class="text-center"><i data-lucide="check" class="icon-sm" style="color: hsl(var(--success))"></i></td>
+            <td class="text-center"><i data-lucide="minus" class="icon-sm text-muted"></i></td>
+            <td class="text-center"><i data-lucide="minus" class="icon-sm text-muted"></i></td>
+            <td class="text-center"><i data-lucide="minus" class="icon-sm text-muted"></i></td>
+          </tr>
+          <tr>
+            <td>코스 생성</td>
+            <td class="text-center"><i data-lucide="check" class="icon-sm" style="color: hsl(var(--success))"></i></td>
+            <td class="text-center"><i data-lucide="check" class="icon-sm" style="color: hsl(var(--success))"></i></td>
+            <td class="text-center"><i data-lucide="minus" class="icon-sm text-muted"></i></td>
+            <td class="text-center"><i data-lucide="minus" class="icon-sm text-muted"></i></td>
+          </tr>
+          <tr>
+            <td>세션 시작</td>
+            <td class="text-center"><i data-lucide="check" class="icon-sm" style="color: hsl(var(--success))"></i></td>
+            <td class="text-center"><i data-lucide="check" class="icon-sm" style="color: hsl(var(--success))"></i></td>
+            <td class="text-center"><i data-lucide="check" class="icon-sm" style="color: hsl(var(--success))"></i></td>
+            <td class="text-center"><i data-lucide="minus" class="icon-sm text-muted"></i></td>
+          </tr>
+          <tr>
+            <td>성적 입력</td>
+            <td class="text-center"><i data-lucide="check" class="icon-sm" style="color: hsl(var(--success))"></i></td>
+            <td class="text-center"><i data-lucide="check" class="icon-sm" style="color: hsl(var(--success))"></i></td>
+            <td class="text-center"><i data-lucide="check" class="icon-sm" style="color: hsl(var(--success))"></i></td>
+            <td class="text-center"><i data-lucide="minus" class="icon-sm text-muted"></i></td>
+          </tr>
+          <tr>
+            <td>세션 참여</td>
+            <td class="text-center"><i data-lucide="check" class="icon-sm" style="color: hsl(var(--success))"></i></td>
+            <td class="text-center"><i data-lucide="check" class="icon-sm" style="color: hsl(var(--success))"></i></td>
+            <td class="text-center"><i data-lucide="check" class="icon-sm" style="color: hsl(var(--success))"></i></td>
+            <td class="text-center"><i data-lucide="check" class="icon-sm" style="color: hsl(var(--success))"></i></td>
+          </tr>
+          <tr>
+            <td>성적 조회 (본인)</td>
+            <td class="text-center"><i data-lucide="check" class="icon-sm" style="color: hsl(var(--success))"></i></td>
+            <td class="text-center"><i data-lucide="check" class="icon-sm" style="color: hsl(var(--success))"></i></td>
+            <td class="text-center"><i data-lucide="check" class="icon-sm" style="color: hsl(var(--success))"></i></td>
+            <td class="text-center"><i data-lucide="check" class="icon-sm" style="color: hsl(var(--success))"></i></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

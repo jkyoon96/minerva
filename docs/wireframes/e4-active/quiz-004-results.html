@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUIZ-004: 퀴즈 결과 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    body {
+      background: hsl(var(--background));
+    }
+    .result-container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: var(--spacing-6);
+    }
+    .result-header {
+      text-align: center;
+      margin-bottom: var(--spacing-4);
+    }
+    .result-card {
+      background: hsl(var(--card));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-6);
+      margin-bottom: var(--spacing-4);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .celebration-icon {
+      font-size: 48px;
+      margin-bottom: var(--spacing-3);
+    }
+    .score-display {
+      background: hsl(var(--brand-primary) / 0.1);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-4);
+      margin: var(--spacing-4) 0;
+      text-align: center;
+    }
+    .score-value {
+      font-size: var(--text-3xl);
+      font-weight: var(--font-bold);
+      color: hsl(var(--brand-primary));
+    }
+    .score-label {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-6);
+      margin-top: var(--spacing-3);
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-value {
+      font-size: var(--text-lg);
+      font-weight: var(--font-semibold);
+    }
+    .stat-label {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .questions-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--spacing-2);
+      margin: var(--spacing-4) 0;
+    }
+    .question-result {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-1);
+      padding: var(--spacing-2);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+    }
+    .question-result.correct {
+      background: hsl(var(--success) / 0.1);
+      color: hsl(var(--success));
+    }
+    .question-result.incorrect {
+      background: hsl(var(--destructive) / 0.1);
+      color: hsl(var(--destructive));
+    }
+    .recommendation-card {
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-4);
+    }
+    .recommendation-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-3);
+    }
+    .recommendation-title {
+      font-weight: var(--font-semibold);
+    }
+    .recommendation-text {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-3);
+    }
+    .resource-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .resource-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) 0;
+      font-size: var(--text-sm);
+    }
+    .resource-item i {
+      color: hsl(var(--brand-primary));
+    }
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-3);
+      margin-top: var(--spacing-4);
+    }
+  </style>
+</head>
+<body>
+  <div class="result-container">
+    <div class="result-header">
+      <div class="flex items-center justify-center gap-2 mb-2">
+        <i data-lucide="file-text" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        <span class="text-sm text-muted">퀴즈 결과</span>
+      </div>
+    </div>
+
+    <div class="result-card text-center">
+      <div class="celebration-icon">🎉</div>
+      <h1 class="text-2xl font-bold mb-2">퀴즈 완료!</h1>
+
+      <div class="score-display">
+        <div class="score-value">80점</div>
+        <div class="score-label">정답: 8/10 문제</div>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">75점</div>
+            <div class="stat-label">평균 점수</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">상위 30%</div>
+            <div class="stat-label">순위</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="separator my-4"></div>
+
+      <h3 class="font-semibold mb-2">문항별 결과</h3>
+      <div class="questions-grid">
+        <div class="question-result correct">
+          Q1. <i data-lucide="check" class="icon-xs"></i>
+        </div>
+        <div class="question-result correct">
+          Q2. <i data-lucide="check" class="icon-xs"></i>
+        </div>
+        <div class="question-result correct">
+          Q3. <i data-lucide="check" class="icon-xs"></i>
+        </div>
+        <div class="question-result incorrect">
+          Q4. <i data-lucide="x" class="icon-xs"></i>
+        </div>
+        <div class="question-result correct">
+          Q5. <i data-lucide="check" class="icon-xs"></i>
+        </div>
+        <div class="question-result correct">
+          Q6. <i data-lucide="check" class="icon-xs"></i>
+        </div>
+        <div class="question-result incorrect">
+          Q7. <i data-lucide="x" class="icon-xs"></i>
+        </div>
+        <div class="question-result correct">
+          Q8. <i data-lucide="check" class="icon-xs"></i>
+        </div>
+        <div class="question-result correct">
+          Q9. <i data-lucide="check" class="icon-xs"></i>
+        </div>
+        <div class="question-result correct">
+          Q10. <i data-lucide="check" class="icon-xs"></i>
+        </div>
+      </div>
+
+      <div class="separator my-4"></div>
+
+      <div class="recommendation-card text-left">
+        <div class="recommendation-header">
+          <i data-lucide="lightbulb" class="icon-md" style="color: hsl(var(--warning))"></i>
+          <span class="recommendation-title">학습 추천</span>
+        </div>
+        <p class="recommendation-text">
+          Q4, Q7에서 오답이 발생했습니다.
+        </p>
+        <div class="text-sm font-medium mb-2">관련 학습 자료:</div>
+        <ul class="resource-list">
+          <li class="resource-item">
+            <i data-lucide="book-open" class="icon-sm"></i>
+            <span>SWOT 분석의 이해 (3주차 강의 노트)</span>
+          </li>
+          <li class="resource-item">
+            <i data-lucide="presentation" class="icon-sm"></i>
+            <span>경쟁사 분석 방법론 (4주차 슬라이드)</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn btn-outline">
+          <i data-lucide="file-search" class="icon-sm"></i>
+          오답 해설 보기
+        </button>
+        <button class="btn btn-primary">
+          코스로 돌아가기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

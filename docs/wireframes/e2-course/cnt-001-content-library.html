@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CNT-001: 콘텐츠 라이브러리 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .main-content {
+      margin-left: 280px;
+      padding: var(--spacing-6);
+    }
+    .folder-tree {
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      min-height: 400px;
+    }
+    .folder-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: var(--text-sm);
+    }
+    .folder-item:hover {
+      background: hsl(var(--muted));
+    }
+    .folder-item.active {
+      background: hsl(var(--brand-primary) / 0.1);
+      color: hsl(var(--brand-primary));
+    }
+    .folder-children {
+      padding-left: var(--spacing-6);
+    }
+    .file-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-3);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .file-item:last-child {
+      border-bottom: none;
+    }
+    .file-item:hover {
+      background: hsl(var(--muted) / 0.5);
+    }
+    .storage-bar {
+      height: 8px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+    .storage-bar-fill {
+      height: 100%;
+      background: hsl(var(--brand-primary));
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="#" class="nav-link">대시보드</a>
+        <a href="crs-001-course-list.html" class="nav-link active">내 코스</a>
+        <a href="#" class="nav-link">분석</a>
+        <a href="#" class="nav-link">설정</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-icon">
+          <i data-lucide="bell" class="icon-md"></i>
+        </button>
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">김교수</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" style="top: 57px; height: calc(100vh - 57px);">
+    <div class="sidebar-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">코스 메뉴</div>
+        <a href="crs-003-course-detail.html" class="sidebar-link">
+          <i data-lucide="home" class="icon-md"></i>
+          개요
+        </a>
+        <a href="ses-001-session-list.html" class="sidebar-link">
+          <i data-lucide="video" class="icon-md"></i>
+          세션
+        </a>
+        <a href="crs-004-students.html" class="sidebar-link">
+          <i data-lucide="users" class="icon-md"></i>
+          수강생
+        </a>
+        <a href="#" class="sidebar-link active">
+          <i data-lucide="folder" class="icon-md"></i>
+          콘텐츠
+        </a>
+        <a href="asg-001-assignment-list.html" class="sidebar-link">
+          <i data-lucide="file-text" class="icon-md"></i>
+          과제
+        </a>
+        <a href="grd-001-grade-dashboard.html" class="sidebar-link">
+          <i data-lucide="bar-chart-3" class="icon-md"></i>
+          성적
+        </a>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="trending-up" class="icon-md"></i>
+          분석
+        </a>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="settings" class="icon-md"></i>
+          설정
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-sm text-muted mb-4">
+      <a href="crs-003-course-detail.html">경영학개론</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <span class="font-medium" style="color: hsl(var(--foreground))">콘텐츠</span>
+    </div>
+
+    <h1 class="text-2xl font-bold mb-6">콘텐츠 라이브러리</h1>
+
+    <!-- Search and Actions -->
+    <div class="card mb-6">
+      <div class="card-content">
+        <div class="flex items-center gap-4">
+          <div class="input-group flex-1">
+            <span class="input-icon">
+              <i data-lucide="search" class="icon-sm"></i>
+            </span>
+            <input type="text" class="input" style="padding-left: 2.5rem" placeholder="파일 검색...">
+          </div>
+          <a href="cnt-002-upload.html" class="btn btn-primary">
+            <i data-lucide="upload" class="icon-sm"></i>
+            업로드
+          </a>
+          <button class="btn btn-outline">
+            <i data-lucide="folder-plus" class="icon-sm"></i>
+            새 폴더
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="grid grid-cols-3 gap-6 mb-6">
+      <!-- Folder Tree -->
+      <div class="folder-tree">
+        <h3 class="font-semibold mb-4 flex items-center gap-2">
+          <i data-lucide="folder-tree" class="icon-md text-muted"></i>
+          폴더
+        </h3>
+        <div class="separator mb-4"></div>
+
+        <div class="folder-item active">
+          <i data-lucide="folder-open" class="icon-sm"></i>
+          강의자료
+        </div>
+        <div class="folder-children">
+          <div class="folder-item">
+            <i data-lucide="folder" class="icon-sm"></i>
+            1주차
+          </div>
+          <div class="folder-item">
+            <i data-lucide="folder" class="icon-sm"></i>
+            2주차
+          </div>
+          <div class="folder-item">
+            <i data-lucide="folder" class="icon-sm"></i>
+            3주차
+          </div>
+        </div>
+        <div class="folder-item">
+          <i data-lucide="folder" class="icon-sm"></i>
+          과제 참고자료
+        </div>
+        <div class="folder-item">
+          <i data-lucide="folder" class="icon-sm"></i>
+          보충 자료
+        </div>
+      </div>
+
+      <!-- File List -->
+      <div class="col-span-2">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">파일 목록</h3>
+          </div>
+          <div class="card-content p-0">
+            <div class="file-item">
+              <div class="flex items-center gap-3">
+                <input type="checkbox" class="checkbox">
+                <i data-lucide="file-text" class="icon-md" style="color: hsl(var(--destructive))"></i>
+                <div>
+                  <div class="font-medium">1주차_강의노트.pdf</div>
+                  <div class="text-xs text-muted">100KB · 2024-09-02</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 text-sm text-muted">
+                <span class="flex items-center gap-1">
+                  <i data-lucide="eye" class="icon-xs"></i>
+                  28
+                </span>
+                <span class="flex items-center gap-1">
+                  <i data-lucide="download" class="icon-xs"></i>
+                  25
+                </span>
+                <button class="btn btn-ghost btn-icon btn-sm">
+                  <i data-lucide="more-vertical" class="icon-sm"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="file-item">
+              <div class="flex items-center gap-3">
+                <input type="checkbox" class="checkbox">
+                <i data-lucide="presentation" class="icon-md" style="color: hsl(var(--warning))"></i>
+                <div>
+                  <div class="font-medium">1주차_슬라이드.pptx</div>
+                  <div class="text-xs text-muted">2.5MB · 2024-09-02</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 text-sm text-muted">
+                <span class="flex items-center gap-1">
+                  <i data-lucide="eye" class="icon-xs"></i>
+                  28
+                </span>
+                <span class="flex items-center gap-1">
+                  <i data-lucide="download" class="icon-xs"></i>
+                  27
+                </span>
+                <button class="btn btn-ghost btn-icon btn-sm">
+                  <i data-lucide="more-vertical" class="icon-sm"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="file-item">
+              <div class="flex items-center gap-3">
+                <input type="checkbox" class="checkbox">
+                <i data-lucide="video" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+                <div>
+                  <div class="font-medium">1주차_녹화.mp4</div>
+                  <div class="text-xs text-muted">150MB · 2024-09-03</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 text-sm text-muted">
+                <span class="flex items-center gap-1">
+                  <i data-lucide="eye" class="icon-xs"></i>
+                  26
+                </span>
+                <span class="flex items-center gap-1">
+                  <i data-lucide="download" class="icon-xs"></i>
+                  0
+                </span>
+                <button class="btn btn-ghost btn-icon btn-sm">
+                  <i data-lucide="more-vertical" class="icon-sm"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bulk Actions -->
+        <div class="card mt-4">
+          <div class="card-content">
+            <div class="flex items-center justify-between">
+              <span class="text-sm">선택: 0개</span>
+              <div class="flex gap-2">
+                <button class="btn btn-outline btn-sm" disabled>
+                  <i data-lucide="link" class="icon-sm"></i>
+                  공유
+                </button>
+                <button class="btn btn-outline btn-sm" disabled>
+                  <i data-lucide="download" class="icon-sm"></i>
+                  다운로드
+                </button>
+                <button class="btn btn-outline btn-sm" disabled>
+                  <i data-lucide="trash-2" class="icon-sm"></i>
+                  삭제
+                </button>
+                <button class="btn btn-outline btn-sm" disabled>
+                  <i data-lucide="folder" class="icon-sm"></i>
+                  이동
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Storage Info -->
+    <div class="card">
+      <div class="card-content">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-medium">저장 공간</span>
+          <span class="text-sm text-muted">2.5GB / 10GB (25%)</span>
+        </div>
+        <div class="storage-bar">
+          <div class="storage-bar-fill" style="width: 25%"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

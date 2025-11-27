@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRS-002: 새 코스 만들기 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .main-content {
+      margin-left: 280px;
+      padding: var(--spacing-6);
+    }
+    .weight-slider {
+      width: 100%;
+      appearance: none;
+      height: 8px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-full);
+      outline: none;
+    }
+    .weight-slider::-webkit-slider-thumb {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: hsl(var(--brand-primary));
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .upload-zone {
+      border: 2px dashed hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-8);
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .upload-zone:hover {
+      border-color: hsl(var(--brand-primary));
+      background-color: hsl(var(--brand-primary) / 0.05);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="#" class="nav-link">대시보드</a>
+        <a href="crs-001-course-list.html" class="nav-link active">내 코스</a>
+        <a href="#" class="nav-link">분석</a>
+        <a href="#" class="nav-link">설정</a>
+      </div>
+      <div class="navbar-actions">
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">김교수</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" style="top: 57px; height: calc(100vh - 57px);">
+    <div class="sidebar-nav">
+      <div class="sidebar-section">
+        <a href="#" class="sidebar-link">
+          <i data-lucide="layout-dashboard" class="icon-md"></i>
+          대시보드
+        </a>
+        <a href="crs-001-course-list.html" class="sidebar-link active">
+          <i data-lucide="book-open" class="icon-md"></i>
+          내 코스
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-sm text-muted mb-4">
+      <a href="crs-001-course-list.html">내 코스</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <span class="font-medium" style="color: hsl(var(--foreground))">새 코스 만들기</span>
+    </div>
+
+    <div class="card" style="max-width: 800px;">
+      <div class="card-header">
+        <h1 class="card-title flex items-center gap-2">
+          <i data-lucide="book-plus" class="icon-lg" style="color: hsl(var(--brand-primary))"></i>
+          새 코스 만들기
+        </h1>
+      </div>
+      <div class="card-content">
+        <form>
+          <!-- 기본 정보 -->
+          <h2 class="font-semibold mb-4">기본 정보</h2>
+          <div class="separator mb-4"></div>
+
+          <div class="form-group mb-4">
+            <label class="form-label form-label-required">코스명</label>
+            <input type="text" class="input" placeholder="예: 경영학개론" value="경영학개론">
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="form-group">
+              <label class="form-label form-label-required">코스 코드</label>
+              <input type="text" class="input" placeholder="예: BUSS101" value="BUSS101">
+            </div>
+            <div class="form-group">
+              <label class="form-label form-label-required">학기</label>
+              <select class="select">
+                <option>2024년 2학기</option>
+                <option>2024년 1학기</option>
+                <option>2023년 2학기</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group mb-6">
+            <label class="form-label">코스 설명</label>
+            <textarea class="input" rows="3" placeholder="코스에 대한 설명을 입력하세요">경영학의 기초 개념과 이론을 학습합니다. 마케팅, 재무, 인사, 운영관리 등 경영의 주요 분야를 소개합니다.</textarea>
+          </div>
+
+          <!-- 일정 설정 -->
+          <h2 class="font-semibold mb-4">일정 설정</h2>
+          <div class="separator mb-4"></div>
+
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="form-group">
+              <label class="form-label form-label-required">시작일</label>
+              <div class="input-group">
+                <input type="date" class="input" value="2024-09-02">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label form-label-required">종료일</label>
+              <div class="input-group">
+                <input type="date" class="input" value="2024-12-20">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group mb-6">
+            <label class="form-label">정규 수업 시간</label>
+            <div class="flex items-center gap-3">
+              <select class="select" style="width: 120px;">
+                <option>화요일</option>
+                <option>월요일</option>
+                <option>수요일</option>
+                <option>목요일</option>
+                <option>금요일</option>
+              </select>
+              <input type="time" class="input" style="width: 120px;" value="10:00">
+              <span class="text-muted">~</span>
+              <input type="time" class="input" style="width: 120px;" value="11:30">
+              <button type="button" class="btn btn-outline btn-sm">
+                <i data-lucide="plus" class="icon-sm"></i>
+                추가
+              </button>
+            </div>
+          </div>
+
+          <!-- 수강생 설정 -->
+          <h2 class="font-semibold mb-4">수강생 설정</h2>
+          <div class="separator mb-4"></div>
+
+          <div class="form-group mb-4">
+            <label class="form-label">최대 수강 인원</label>
+            <div class="flex items-center gap-2">
+              <input type="number" class="input" style="width: 100px;" value="50">
+              <span class="text-sm text-muted">명 (빈 칸: 제한 없음)</span>
+            </div>
+          </div>
+
+          <div class="form-group mb-6">
+            <label class="form-label">등록 방식</label>
+            <div class="flex flex-col gap-2">
+              <label class="radio-wrapper">
+                <input type="radio" name="enroll" class="radio" checked>
+                <span class="radio-label">초대 코드로 등록</span>
+              </label>
+              <label class="radio-wrapper">
+                <input type="radio" name="enroll" class="radio">
+                <span class="radio-label">승인 후 등록 (수동 승인)</span>
+              </label>
+              <label class="radio-wrapper">
+                <input type="radio" name="enroll" class="radio">
+                <span class="radio-label">자유 등록 (누구나 등록 가능)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 평가 기준 -->
+          <h2 class="font-semibold mb-4">평가 기준</h2>
+          <div class="separator mb-4"></div>
+
+          <div class="table-wrapper mb-6">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>항목</th>
+                  <th style="width: 80px;">비중</th>
+                  <th>조절</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="flex items-center gap-2">
+                      <i data-lucide="bar-chart-2" class="icon-sm text-muted"></i>
+                      참여도
+                    </div>
+                  </td>
+                  <td><strong>30%</strong></td>
+                  <td><input type="range" class="weight-slider" value="30" min="0" max="100"></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="flex items-center gap-2">
+                      <i data-lucide="file-question" class="icon-sm text-muted"></i>
+                      퀴즈
+                    </div>
+                  </td>
+                  <td><strong>30%</strong></td>
+                  <td><input type="range" class="weight-slider" value="30" min="0" max="100"></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="flex items-center gap-2">
+                      <i data-lucide="folder" class="icon-sm text-muted"></i>
+                      과제
+                    </div>
+                  </td>
+                  <td><strong>40%</strong></td>
+                  <td><input type="range" class="weight-slider" value="40" min="0" max="100"></td>
+                </tr>
+                <tr>
+                  <td colspan="2"><strong>합계</strong></td>
+                  <td><strong>100%</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 코스 썸네일 -->
+          <h2 class="font-semibold mb-4">코스 썸네일</h2>
+          <div class="separator mb-4"></div>
+
+          <div class="upload-zone mb-6">
+            <i data-lucide="upload" class="icon-2xl text-muted mb-2"></i>
+            <p class="text-muted mb-1">파일을 드래그하거나 클릭</p>
+            <p class="text-xs text-muted">PNG, JPG, GIF (최대 5MB)</p>
+          </div>
+
+          <div class="separator mb-4"></div>
+
+          <!-- Actions -->
+          <div class="flex items-center justify-between">
+            <a href="crs-001-course-list.html" class="btn btn-secondary">취소</a>
+            <div class="flex gap-3">
+              <button type="button" class="btn btn-outline">임시 저장</button>
+              <button type="submit" class="btn btn-primary">
+                <i data-lucide="plus" class="icon-sm"></i>
+                코스 만들기
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

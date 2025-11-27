@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIVE-009: 채팅 패널 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .chat-panel {
+      width: 320px;
+      height: 600px;
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      margin: var(--spacing-6) auto;
+    }
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-3) var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .chat-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--spacing-3);
+    }
+    .chat-input-area {
+      padding: var(--spacing-3);
+      border-top: 1px solid hsl(var(--border));
+    }
+    .system-message {
+      background: hsl(var(--muted) / 0.5);
+      padding: var(--spacing-2);
+      border-radius: var(--radius-md);
+      font-size: var(--text-xs);
+      text-align: center;
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-3);
+    }
+    .chat-message {
+      margin-bottom: var(--spacing-3);
+    }
+    .chat-message .header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-1);
+    }
+    .chat-message .sender {
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+    }
+    .chat-message .sender.professor {
+      color: hsl(var(--brand-primary));
+    }
+    .chat-message .time {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .chat-bubble {
+      background: hsl(var(--muted));
+      padding: var(--spacing-2) var(--spacing-3);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      display: inline-block;
+      max-width: 90%;
+    }
+    .chat-message.mine {
+      text-align: right;
+    }
+    .chat-message.mine .chat-bubble {
+      background: hsl(var(--brand-primary));
+      color: white;
+      text-align: left;
+    }
+    .poll-message {
+      background: hsl(var(--brand-primary) / 0.1);
+      border: 1px solid hsl(var(--brand-primary) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+      margin-bottom: var(--spacing-3);
+    }
+    .poll-message .icon {
+      color: hsl(var(--brand-primary));
+    }
+    .input-actions {
+      display: flex;
+      gap: var(--spacing-1);
+      margin-top: var(--spacing-2);
+    }
+  </style>
+</head>
+<body style="background: hsl(var(--muted) / 0.3);">
+  <div class="chat-panel">
+    <div class="panel-header">
+      <span class="font-semibold">채팅</span>
+      <button class="btn btn-ghost btn-icon btn-sm">
+        <i data-lucide="minus" class="icon-sm"></i>
+      </button>
+    </div>
+
+    <div class="chat-content">
+      <!-- System Message -->
+      <div class="system-message">
+        세션이 시작되었습니다
+      </div>
+
+      <!-- Professor Message -->
+      <div class="chat-message">
+        <div class="header">
+          <span class="sender professor">김철수 (교수)</span>
+          <span class="time">10:05</span>
+        </div>
+        <div class="chat-bubble">
+          오늘은 마케팅 믹스 4P에 대해 알아보겠습니다.
+        </div>
+      </div>
+
+      <!-- Student Message -->
+      <div class="chat-message">
+        <div class="header">
+          <span class="sender">박서연</span>
+          <span class="time">10:08</span>
+        </div>
+        <div class="chat-bubble">
+          교수님, Price와 관련해서 질문이 있습니다!
+        </div>
+      </div>
+
+      <!-- My Message -->
+      <div class="chat-message mine">
+        <div class="header">
+          <span class="time">10:10</span>
+          <span class="sender">나</span>
+        </div>
+        <div class="chat-bubble">
+          저도 같은 궁금증이 있어요
+        </div>
+      </div>
+
+      <!-- Professor Message -->
+      <div class="chat-message">
+        <div class="header">
+          <span class="sender professor">김철수 (교수)</span>
+          <span class="time">10:12</span>
+        </div>
+        <div class="chat-bubble">
+          좋은 질문이네요. 잠시 후 투표를 통해 확인해보겠습니다
+        </div>
+      </div>
+
+      <!-- Poll System Message -->
+      <div class="poll-message">
+        <div class="flex items-center gap-2 text-sm">
+          <i data-lucide="bar-chart-2" class="icon-sm icon"></i>
+          <span>교수님이 투표를 시작했습니다</span>
+        </div>
+      </div>
+
+      <!-- Student Message -->
+      <div class="chat-message">
+        <div class="header">
+          <span class="sender">정도윤</span>
+          <span class="time">10:15</span>
+        </div>
+        <div class="chat-bubble">
+          C번 같아요!
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-input-area">
+      <input type="text" class="input" placeholder="메시지를 입력하세요...">
+      <div class="input-actions">
+        <button class="btn btn-ghost btn-icon btn-sm">
+          <i data-lucide="paperclip" class="icon-sm"></i>
+        </button>
+        <button class="btn btn-ghost btn-icon btn-sm">
+          <i data-lucide="smile" class="icon-sm"></i>
+        </button>
+        <button class="btn btn-primary btn-icon btn-sm ml-auto">
+          <i data-lucide="send" class="icon-sm"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRADE-002: 문항별 정답률 통계 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .overview-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .overview-stats {
+      display: flex;
+      gap: var(--spacing-6);
+      margin-bottom: var(--spacing-4);
+      font-size: var(--text-sm);
+    }
+    .distribution-title {
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-2);
+    }
+    .distribution-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-1);
+      font-size: var(--text-sm);
+    }
+    .distribution-label {
+      width: 60px;
+    }
+    .distribution-bar {
+      flex: 1;
+      height: 20px;
+      background: hsl(var(--brand-primary));
+      border-radius: var(--radius-sm);
+    }
+    .distribution-count {
+      width: 100px;
+      text-align: right;
+      color: hsl(var(--muted-foreground));
+    }
+    .stats-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .stats-table th,
+    .stats-table td {
+      padding: var(--spacing-2) var(--spacing-3);
+      text-align: left;
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .stats-table th {
+      font-weight: var(--font-medium);
+      color: hsl(var(--muted-foreground));
+      font-size: var(--text-xs);
+    }
+    .rate-bar-container {
+      width: 150px;
+    }
+    .rate-bar {
+      height: 16px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .rate-bar-fill {
+      height: 100%;
+      background: hsl(var(--brand-primary));
+    }
+    .rate-bar-fill.low {
+      background: hsl(var(--destructive));
+    }
+    .warning-icon {
+      color: hsl(var(--warning));
+    }
+    .warning-note {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) var(--spacing-3);
+      background: hsl(var(--warning) / 0.1);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      color: hsl(var(--warning));
+      margin-top: var(--spacing-3);
+    }
+    .detail-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-top: var(--spacing-4);
+    }
+    .detail-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-3);
+    }
+    .question-preview {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-4);
+    }
+    .response-distribution {
+      margin-bottom: var(--spacing-4);
+    }
+    .response-option {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-2);
+      font-size: var(--text-sm);
+    }
+    .response-option.correct {
+      color: hsl(var(--success));
+    }
+    .option-label {
+      width: 220px;
+    }
+    .option-bar-container {
+      flex: 1;
+      max-width: 200px;
+    }
+    .option-bar {
+      height: 16px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-sm);
+    }
+    .option-bar-fill {
+      height: 100%;
+      background: hsl(var(--brand-primary) / 0.7);
+      border-radius: var(--radius-sm);
+    }
+    .option-bar-fill.correct {
+      background: hsl(var(--success));
+    }
+    .option-count {
+      width: 100px;
+      text-align: right;
+      color: hsl(var(--muted-foreground));
+    }
+    .insight-box {
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+      margin-bottom: var(--spacing-4);
+    }
+    .insight-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-2);
+    }
+    .insight-text {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .action-buttons {
+      display: flex;
+      gap: var(--spacing-3);
+    }
+    .sort-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <a href="index.html" class="btn btn-ghost btn-icon">
+      <i data-lucide="arrow-left" class="icon-md"></i>
+    </a>
+    <h1 class="font-semibold">Ch.3 객체지향 퀴즈 - 통계</h1>
+  </header>
+
+  <main class="container py-6">
+    <!-- Overview Card -->
+    <div class="overview-card">
+      <div class="flex items-center gap-2 mb-3">
+        <i data-lucide="bar-chart-2" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        <span class="font-semibold">전체 개요</span>
+      </div>
+      <div class="overview-stats">
+        <span>참여자: 45명/48명 (93.8%)</span>
+        <span>평균 점수: 76.5점</span>
+        <span>최고: 100점</span>
+        <span>최저: 45점</span>
+        <span>표준편차: 12.3</span>
+      </div>
+      <div class="distribution-title">점수 분포</div>
+      <div class="distribution-row">
+        <span class="distribution-label">90-100</span>
+        <div class="distribution-bar" style="width: 26.7%;"></div>
+        <span class="distribution-count">12명 (26.7%)</span>
+      </div>
+      <div class="distribution-row">
+        <span class="distribution-label">80-89</span>
+        <div class="distribution-bar" style="width: 33.3%;"></div>
+        <span class="distribution-count">15명 (33.3%)</span>
+      </div>
+      <div class="distribution-row">
+        <span class="distribution-label">70-79</span>
+        <div class="distribution-bar" style="width: 20%;"></div>
+        <span class="distribution-count">9명 (20.0%)</span>
+      </div>
+      <div class="distribution-row">
+        <span class="distribution-label">60-69</span>
+        <div class="distribution-bar" style="width: 11.1%;"></div>
+        <span class="distribution-count">5명 (11.1%)</span>
+      </div>
+      <div class="distribution-row">
+        <span class="distribution-label">~59</span>
+        <div class="distribution-bar" style="width: 8.9%;"></div>
+        <span class="distribution-count">4명 (8.9%)</span>
+      </div>
+    </div>
+
+    <!-- Questions Statistics -->
+    <div class="card">
+      <div class="card-header">
+        <div class="flex items-center justify-between w-full">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="clipboard-list" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            문항별 정답률
+          </h2>
+          <span class="sort-btn">
+            정답률순
+            <i data-lucide="chevron-down" class="icon-xs"></i>
+          </span>
+        </div>
+      </div>
+      <div class="card-content">
+        <table class="stats-table">
+          <thead>
+            <tr>
+              <th>문항</th>
+              <th>정답률</th>
+              <th>그래프</th>
+              <th>평균시간</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Q1</td>
+              <td>95.6%</td>
+              <td class="rate-bar-container">
+                <div class="rate-bar"><div class="rate-bar-fill" style="width: 95.6%;"></div></div>
+              </td>
+              <td>0:45</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Q2</td>
+              <td>88.9%</td>
+              <td class="rate-bar-container">
+                <div class="rate-bar"><div class="rate-bar-fill" style="width: 88.9%;"></div></div>
+              </td>
+              <td>1:02</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Q3</td>
+              <td>84.4%</td>
+              <td class="rate-bar-container">
+                <div class="rate-bar"><div class="rate-bar-fill" style="width: 84.4%;"></div></div>
+              </td>
+              <td>1:15</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Q4</td>
+              <td>73.3%</td>
+              <td class="rate-bar-container">
+                <div class="rate-bar"><div class="rate-bar-fill" style="width: 73.3%;"></div></div>
+              </td>
+              <td>1:45</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Q5</td>
+              <td>66.7%</td>
+              <td class="rate-bar-container">
+                <div class="rate-bar"><div class="rate-bar-fill" style="width: 66.7%;"></div></div>
+              </td>
+              <td>2:01</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Q6</td>
+              <td>51.1%</td>
+              <td class="rate-bar-container">
+                <div class="rate-bar"><div class="rate-bar-fill low" style="width: 51.1%;"></div></div>
+              </td>
+              <td>2:34</td>
+              <td><i data-lucide="alert-triangle" class="icon-sm warning-icon"></i></td>
+            </tr>
+            <tr>
+              <td>Q7</td>
+              <td>44.4%</td>
+              <td class="rate-bar-container">
+                <div class="rate-bar"><div class="rate-bar-fill low" style="width: 44.4%;"></div></div>
+              </td>
+              <td>2:48</td>
+              <td><i data-lucide="alert-triangle" class="icon-sm warning-icon"></i></td>
+            </tr>
+            <tr>
+              <td>Q8</td>
+              <td>62.2%</td>
+              <td class="rate-bar-container">
+                <div class="rate-bar"><div class="rate-bar-fill" style="width: 62.2%;"></div></div>
+              </td>
+              <td>1:52</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Q9</td>
+              <td>77.8%</td>
+              <td class="rate-bar-container">
+                <div class="rate-bar"><div class="rate-bar-fill" style="width: 77.8%;"></div></div>
+              </td>
+              <td>1:28</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Q10</td>
+              <td>82.2%</td>
+              <td class="rate-bar-container">
+                <div class="rate-bar"><div class="rate-bar-fill" style="width: 82.2%;"></div></div>
+              </td>
+              <td>1:10</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="warning-note">
+          <i data-lucide="alert-triangle" class="icon-sm"></i>
+          정답률 50% 미만 문항 - 추가 설명 권장
+        </div>
+      </div>
+    </div>
+
+    <!-- Question Detail Analysis -->
+    <div class="detail-card">
+      <div class="detail-header">
+        <i data-lucide="search" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        <span class="font-semibold">Q6 상세 분석 (정답률 51.1%)</span>
+      </div>
+      <p class="question-preview">
+        문제: 다음 중 인터페이스와 추상클래스의 차이점으로 옳지 않은 것은?
+      </p>
+
+      <div class="distribution-title">선택지별 응답 분포:</div>
+      <div class="response-distribution">
+        <div class="response-option">
+          <span class="option-label">A. 인터페이스는 다중 상속 가능</span>
+          <div class="option-bar-container">
+            <div class="option-bar"><div class="option-bar-fill" style="width: 17.8%;"></div></div>
+          </div>
+          <span class="option-count">8명 (17.8%)</span>
+        </div>
+        <div class="response-option">
+          <span class="option-label">B. 추상클래스는 일반 메서드 포함 가능</span>
+          <div class="option-bar-container">
+            <div class="option-bar"><div class="option-bar-fill" style="width: 22.2%;"></div></div>
+          </div>
+          <span class="option-count">10명 (22.2%)</span>
+        </div>
+        <div class="response-option correct">
+          <span class="option-label">C. 인터페이스는 변수 선언 불가 (정답)</span>
+          <div class="option-bar-container">
+            <div class="option-bar"><div class="option-bar-fill correct" style="width: 51.1%;"></div></div>
+          </div>
+          <span class="option-count">23명 (51.1%)</span>
+        </div>
+        <div class="response-option">
+          <span class="option-label">D. 둘 다 인스턴스화 불가</span>
+          <div class="option-bar-container">
+            <div class="option-bar"><div class="option-bar-fill" style="width: 8.9%;"></div></div>
+          </div>
+          <span class="option-count">4명 (8.9%)</span>
+        </div>
+      </div>
+
+      <div class="insight-box">
+        <div class="insight-header">
+          <i data-lucide="lightbulb" class="icon-sm" style="color: hsl(var(--warning))"></i>
+          오답 집중 영역
+        </div>
+        <p class="insight-text">
+          B번 선택자가 많음 - 추상클래스의 특성에 대한 추가 설명 필요
+        </p>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn btn-outline">
+          <i data-lucide="mail" class="icon-sm"></i>
+          보충 자료 발송
+        </button>
+        <button class="btn btn-outline">
+          <i data-lucide="file-text" class="icon-sm"></i>
+          다음 수업 반영
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

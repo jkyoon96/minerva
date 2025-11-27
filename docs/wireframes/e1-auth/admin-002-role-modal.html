@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADMIN-002: 역할 변경 모달 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="#" class="nav-link">대시보드</a>
+        <a href="#" class="nav-link">코스</a>
+        <a href="#" class="nav-link active">사용자 관리</a>
+        <a href="#" class="nav-link">설정</a>
+      </div>
+      <div class="navbar-actions">
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">관리자</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container py-8" style="filter: blur(2px); pointer-events: none;">
+    <!-- Background content (dimmed) -->
+    <h1 class="text-2xl font-bold mb-6">역할 관리</h1>
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>사용자</th>
+            <th>이메일</th>
+            <th>역할</th>
+            <th>상태</th>
+            <th>작업</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>박민수</td>
+            <td>park@edu.kr</td>
+            <td><span class="badge badge-success">TA</span></td>
+            <td><span class="badge badge-success">활성</span></td>
+            <td><button class="btn btn-ghost btn-icon-sm"><i data-lucide="settings"></i></button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Modal Overlay -->
+  <div class="modal-overlay">
+    <div class="modal" style="max-width: 450px;">
+      <div class="modal-header">
+        <h2 class="modal-title">역할 변경</h2>
+        <button class="modal-close">
+          <i data-lucide="x" class="icon-md"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- User Info -->
+        <div class="flex items-center gap-3 p-3 bg-muted rounded-lg mb-6">
+          <div class="avatar avatar-md">
+            <i data-lucide="user" class="icon-md"></i>
+          </div>
+          <div>
+            <div class="font-medium">박민수</div>
+            <div class="text-sm text-muted">park@edu.kr</div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <span class="text-sm text-muted">현재 역할:</span>
+          <span class="badge" style="background-color: hsl(var(--success) / 0.1); color: hsl(142 76% 36%); margin-left: 0.5rem;">TA</span>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label">새 역할 선택:</label>
+        </div>
+
+        <!-- Role Options -->
+        <div class="flex flex-col gap-3">
+          <label class="card p-4 cursor-pointer border" style="opacity: 0.7;">
+            <div class="flex items-start gap-3">
+              <input type="radio" name="role" value="admin" class="radio mt-1">
+              <div>
+                <div class="font-medium">Admin (시스템 관리자)</div>
+                <div class="text-sm text-muted">모든 기능에 접근 가능</div>
+              </div>
+            </div>
+          </label>
+
+          <label class="card p-4 cursor-pointer border">
+            <div class="flex items-start gap-3">
+              <input type="radio" name="role" value="instructor" class="radio mt-1">
+              <div>
+                <div class="font-medium">교수자 (Instructor)</div>
+                <div class="text-sm text-muted">코스 생성/관리, 세션 진행</div>
+              </div>
+            </div>
+          </label>
+
+          <label class="card p-4 cursor-pointer border-primary" style="border-width: 2px;">
+            <div class="flex items-start gap-3">
+              <input type="radio" name="role" value="ta" class="radio mt-1" checked>
+              <div>
+                <div class="font-medium" style="color: hsl(var(--brand-primary))">TA (Teaching Assistant)</div>
+                <div class="text-sm text-muted">교수자가 지정한 코스에서 보조 역할</div>
+              </div>
+            </div>
+          </label>
+
+          <label class="card p-4 cursor-pointer border">
+            <div class="flex items-start gap-3">
+              <input type="radio" name="role" value="student" class="radio mt-1">
+              <div>
+                <div class="font-medium">학습자 (Student)</div>
+                <div class="text-sm text-muted">등록된 코스의 세션 참여</div>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary">취소</button>
+        <button class="btn btn-primary">
+          <i data-lucide="save" class="icon-sm"></i>
+          저장
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

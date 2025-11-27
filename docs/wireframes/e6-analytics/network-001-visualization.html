@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NETWORK-001: 토론 네트워크 시각화 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-3) var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .network-container {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .network-graph {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      min-height: 400px;
+    }
+    .graph-placeholder {
+      height: 320px;
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--spacing-3);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .graph-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-3);
+      font-size: var(--text-sm);
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+    }
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .legend-dot.active {
+      background: hsl(var(--brand-primary));
+    }
+    .legend-dot.isolated {
+      background: transparent;
+      border: 2px solid hsl(var(--muted-foreground));
+    }
+    .legend-line {
+      width: 20px;
+      height: 2px;
+      background: hsl(var(--muted-foreground));
+    }
+    .network-stats {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+    }
+    .stats-section {
+      margin-bottom: var(--spacing-4);
+      padding-bottom: var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .stats-section:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    .stats-section-title {
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-3);
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: var(--text-sm);
+      margin-bottom: var(--spacing-2);
+    }
+    .stat-label {
+      color: hsl(var(--muted-foreground));
+    }
+    .central-list {
+      font-size: var(--text-sm);
+    }
+    .central-item {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--spacing-1) 0;
+    }
+    .central-rank {
+      color: hsl(var(--muted-foreground));
+      width: 20px;
+    }
+    .central-score {
+      color: hsl(var(--muted-foreground));
+    }
+    .isolated-list {
+      font-size: var(--text-sm);
+    }
+    .isolated-item {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--spacing-1) 0;
+      color: hsl(var(--warning));
+    }
+    .cluster-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-3);
+      margin-bottom: var(--spacing-4);
+    }
+    .cluster-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+    }
+    .cluster-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-2);
+    }
+    .cluster-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .cluster-dot.blue { background: hsl(var(--brand-primary)); }
+    .cluster-dot.green { background: hsl(var(--success)); }
+    .cluster-dot.yellow { background: hsl(var(--warning)); }
+    .cluster-dot.gray { background: hsl(var(--muted-foreground)); }
+    .cluster-info {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .cluster-feature {
+      font-size: var(--text-xs);
+      margin-top: var(--spacing-2);
+      padding: var(--spacing-1) var(--spacing-2);
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-sm);
+    }
+    .timeline-slider {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .slider-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-3);
+    }
+    .slider-track {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      margin-bottom: var(--spacing-3);
+    }
+    .slider-week {
+      flex: 1;
+      height: 8px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-full);
+      cursor: pointer;
+    }
+    .slider-week.active {
+      background: hsl(var(--brand-primary));
+    }
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-3);
+    }
+    .week-insight {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .week-insight li {
+      margin-bottom: var(--spacing-1);
+    }
+    .insight-card {
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+    }
+    .insight-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-2);
+      font-size: var(--text-sm);
+      margin-bottom: var(--spacing-3);
+    }
+    .insight-item:last-child {
+      margin-bottom: 0;
+    }
+    .insight-number {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: hsl(var(--brand-primary));
+      color: white;
+      border-radius: 50%;
+      font-size: var(--text-xs);
+      flex-shrink: 0;
+    }
+    .action-buttons {
+      display: flex;
+      gap: var(--spacing-3);
+      margin-top: var(--spacing-4);
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <div class="header-left">
+      <a href="index.html" class="btn btn-ghost btn-icon">
+        <i data-lucide="arrow-left" class="icon-md"></i>
+      </a>
+      <h1 class="font-semibold">토론 네트워크 분석</h1>
+    </div>
+    <select class="form-select" style="width: auto;">
+      <option>Week 12 세션</option>
+      <option>Week 11 세션</option>
+      <option>Week 10 세션</option>
+      <option>전체 학기</option>
+    </select>
+  </header>
+
+  <main class="container py-6">
+    <!-- Network Graph & Stats -->
+    <div class="network-container">
+      <div class="network-graph">
+        <div class="flex items-center gap-2 mb-3">
+          <i data-lucide="share-2" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          <span class="font-semibold">상호작용 네트워크</span>
+        </div>
+        <div class="graph-placeholder">
+          [인터랙티브 네트워크 그래프 - 노드(학생) + 엣지(상호작용)]
+        </div>
+        <div class="graph-legend">
+          <div class="legend-item">
+            <div class="legend-dot active"></div>
+            <span>활발한 참여자</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot isolated"></div>
+            <span>고립된 학생</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-line"></div>
+            <span>상호작용 (두꺼울수록 多)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="network-stats">
+        <div class="stats-section">
+          <div class="stats-section-title flex items-center gap-2">
+            <i data-lucide="bar-chart-2" class="icon-sm" style="color: hsl(var(--brand-primary))"></i>
+            네트워크 통계
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">노드(학생):</span>
+            <strong>45명</strong>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">엣지(대화):</span>
+            <strong>312건</strong>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">네트워크 밀도:</span>
+            <strong>0.32</strong>
+          </div>
+        </div>
+
+        <div class="stats-section">
+          <div class="stats-section-title flex items-center gap-2">
+            <i data-lucide="star" class="icon-sm" style="color: hsl(var(--warning))"></i>
+            중심 인물 (Top 5)
+          </div>
+          <div class="central-list">
+            <div class="central-item">
+              <span><span class="central-rank">1.</span> 이영희</span>
+              <span class="central-score">0.89</span>
+            </div>
+            <div class="central-item">
+              <span><span class="central-rank">2.</span> 김철수</span>
+              <span class="central-score">0.76</span>
+            </div>
+            <div class="central-item">
+              <span><span class="central-rank">3.</span> 박민수</span>
+              <span class="central-score">0.68</span>
+            </div>
+            <div class="central-item">
+              <span><span class="central-rank">4.</span> 정수진</span>
+              <span class="central-score">0.62</span>
+            </div>
+            <div class="central-item">
+              <span><span class="central-rank">5.</span> 최현우</span>
+              <span class="central-score">0.58</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-section">
+          <div class="stats-section-title flex items-center gap-2">
+            <i data-lucide="alert-triangle" class="icon-sm" style="color: hsl(var(--destructive))"></i>
+            고립된 학생 (3명)
+          </div>
+          <div class="isolated-list">
+            <div class="isolated-item">
+              <span>권태희</span>
+              <span>연결: 0</span>
+            </div>
+            <div class="isolated-item">
+              <span>오지훈</span>
+              <span>연결: 1</span>
+            </div>
+            <div class="isolated-item">
+              <span>백승민</span>
+              <span>연결: 1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cluster Analysis -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="users" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          클러스터 분석
+        </h2>
+        <span class="text-sm text-muted">자동 감지된 그룹: 4개</span>
+      </div>
+      <div class="card-content">
+        <div class="cluster-grid">
+          <div class="cluster-card">
+            <div class="cluster-header">
+              <div class="cluster-dot blue"></div>
+              그룹 A (12명)
+            </div>
+            <div class="cluster-info">
+              <div>리더: 이영희</div>
+              <div>내부 연결: 높음</div>
+            </div>
+            <div class="cluster-feature">
+              특징: 활발한 의견 교환
+            </div>
+          </div>
+
+          <div class="cluster-card">
+            <div class="cluster-header">
+              <div class="cluster-dot green"></div>
+              그룹 B (10명)
+            </div>
+            <div class="cluster-info">
+              <div>리더: 박민수</div>
+              <div>내부 연결: 중간</div>
+            </div>
+            <div class="cluster-feature">
+              특징: 기술적 토론 중심
+            </div>
+          </div>
+
+          <div class="cluster-card">
+            <div class="cluster-header">
+              <div class="cluster-dot yellow"></div>
+              그룹 C (15명)
+            </div>
+            <div class="cluster-info">
+              <div>리더: 정수진</div>
+              <div>내부 연결: 높음</div>
+            </div>
+            <div class="cluster-feature">
+              특징: 질문/답변 위주
+            </div>
+          </div>
+
+          <div class="cluster-card">
+            <div class="cluster-header">
+              <div class="cluster-dot gray"></div>
+              고립 그룹 (5명)
+            </div>
+            <div class="cluster-info">
+              <div>그룹 간 연결 약함</div>
+              <div style="color: hsl(var(--destructive));">개입 권장</div>
+            </div>
+            <div class="cluster-feature">
+              특징: 상호작용 부족
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Time Evolution -->
+    <div class="timeline-slider">
+      <div class="slider-header">
+        <div class="flex items-center gap-2">
+          <i data-lucide="clock" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          <span class="font-semibold">시간별 네트워크 변화</span>
+        </div>
+        <button class="btn btn-outline btn-sm">
+          <i data-lucide="play" class="icon-sm"></i>
+          재생
+        </button>
+      </div>
+
+      <div class="slider-track">
+        <div class="slider-week"></div>
+        <div class="slider-week"></div>
+        <div class="slider-week"></div>
+        <div class="slider-week active"></div>
+        <div class="slider-week active"></div>
+        <div class="slider-week active"></div>
+        <div class="slider-week active"></div>
+        <div class="slider-week active"></div>
+        <div class="slider-week active"></div>
+        <div class="slider-week"></div>
+        <div class="slider-week"></div>
+        <div class="slider-week"></div>
+      </div>
+      <div class="slider-labels">
+        <span>W1</span>
+        <span>W2</span>
+        <span>W3</span>
+        <span>W4</span>
+        <span>W5</span>
+        <span>W6</span>
+        <span>W7</span>
+        <span>W8 ▲</span>
+        <span>W9</span>
+        <span>W10</span>
+        <span>W11</span>
+        <span>W12</span>
+      </div>
+
+      <div class="text-sm mb-2"><strong>Week 8 특징:</strong></div>
+      <ul class="week-insight">
+        <li>네트워크 밀도 최고점 (0.45)</li>
+        <li>그룹 프로젝트 시작으로 상호작용 증가</li>
+        <li>새로운 연결 42건 형성</li>
+      </ul>
+    </div>
+
+    <!-- Insights & Recommendations -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="lightbulb" class="icon-md" style="color: hsl(var(--warning))"></i>
+          인사이트 및 권장 조치
+        </h2>
+      </div>
+      <div class="card-content">
+        <div class="insight-card">
+          <div class="insight-item">
+            <div class="insight-number">1</div>
+            <div>
+              고립된 학생 (권태희, 오지훈, 백승민)을 활발한 그룹에 배정하여 분반 활동 시 상호작용 유도 권장
+            </div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-number">2</div>
+            <div>
+              이영희가 네트워크 중심 역할 수행 중 → 그룹 리더/멘토 역할 공식화 고려
+            </div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-number">3</div>
+            <div>
+              그룹 B와 C 사이 연결 약함 → 크로스 그룹 토론 활동 권장
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-outline mt-4">
+          <i data-lucide="mail" class="icon-sm"></i>
+          고립 학생에게 참여 독려 이메일 보내기
+        </button>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-outline">
+        <i data-lucide="download" class="icon-sm"></i>
+        리포트 다운로드
+      </button>
+      <button class="btn btn-outline">
+        <i data-lucide="users" class="icon-sm"></i>
+        분반 배정에 반영
+      </button>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

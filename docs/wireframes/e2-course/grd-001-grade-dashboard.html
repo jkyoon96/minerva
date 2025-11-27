@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRD-001: 성적 관리 대시보드 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .main-content {
+      margin-left: 280px;
+      padding: var(--spacing-6);
+    }
+    .stat-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      text-align: center;
+    }
+    .stat-value {
+      font-size: var(--text-2xl);
+      font-weight: var(--font-bold);
+      color: hsl(var(--brand-primary));
+    }
+    .chart-placeholder {
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-6);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: var(--spacing-2);
+      height: 200px;
+    }
+    .chart-bar {
+      background: hsl(var(--brand-primary));
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+      width: 40px;
+    }
+    .warning-cell {
+      color: hsl(var(--warning));
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="#" class="nav-link">대시보드</a>
+        <a href="crs-001-course-list.html" class="nav-link active">내 코스</a>
+        <a href="#" class="nav-link">분석</a>
+        <a href="#" class="nav-link">설정</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-icon">
+          <i data-lucide="bell" class="icon-md"></i>
+        </button>
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">김교수</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" style="top: 57px; height: calc(100vh - 57px);">
+    <div class="sidebar-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">코스 메뉴</div>
+        <a href="crs-003-course-detail.html" class="sidebar-link">
+          <i data-lucide="home" class="icon-md"></i>
+          개요
+        </a>
+        <a href="ses-001-session-list.html" class="sidebar-link">
+          <i data-lucide="video" class="icon-md"></i>
+          세션
+        </a>
+        <a href="crs-004-students.html" class="sidebar-link">
+          <i data-lucide="users" class="icon-md"></i>
+          수강생
+        </a>
+        <a href="cnt-001-content-library.html" class="sidebar-link">
+          <i data-lucide="folder" class="icon-md"></i>
+          콘텐츠
+        </a>
+        <a href="asg-001-assignment-list.html" class="sidebar-link">
+          <i data-lucide="file-text" class="icon-md"></i>
+          과제
+        </a>
+        <a href="#" class="sidebar-link active">
+          <i data-lucide="bar-chart-3" class="icon-md"></i>
+          성적
+        </a>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="trending-up" class="icon-md"></i>
+          분석
+        </a>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="settings" class="icon-md"></i>
+          설정
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-sm text-muted mb-4">
+      <a href="crs-003-course-detail.html">경영학개론</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <span class="font-medium" style="color: hsl(var(--foreground))">성적</span>
+    </div>
+
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-2xl font-bold">성적 관리</h1>
+      <button class="btn btn-outline">
+        <i data-lucide="upload" class="icon-sm"></i>
+        내보내기
+      </button>
+    </div>
+
+    <!-- Search -->
+    <div class="card mb-6">
+      <div class="card-content">
+        <div class="input-group">
+          <span class="input-icon">
+            <i data-lucide="search" class="icon-sm"></i>
+          </span>
+          <input type="text" class="input" style="padding-left: 2.5rem" placeholder="학생 검색...">
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistics -->
+    <h2 class="text-lg font-semibold mb-4">성적 통계</h2>
+    <div class="separator mb-4"></div>
+
+    <div class="grid grid-cols-4 gap-4 mb-6">
+      <div class="stat-card">
+        <div class="stat-value">78.5</div>
+        <div class="text-sm text-muted">평균</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">98</div>
+        <div class="text-sm text-muted">최고점</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">45</div>
+        <div class="text-sm text-muted">최저점</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">80</div>
+        <div class="text-sm text-muted">중간값</div>
+      </div>
+    </div>
+
+    <!-- Grade Distribution -->
+    <h2 class="text-lg font-semibold mb-4">성적 분포</h2>
+    <div class="separator mb-4"></div>
+
+    <div class="card mb-6">
+      <div class="card-content">
+        <div class="chart-placeholder">
+          <div class="chart-bar" style="height: 40px;">
+            <div class="text-xs text-center mt-2 text-white">2</div>
+          </div>
+          <div class="chart-bar" style="height: 60px;">
+            <div class="text-xs text-center mt-2 text-white">4</div>
+          </div>
+          <div class="chart-bar" style="height: 100px;">
+            <div class="text-xs text-center mt-2 text-white">8</div>
+          </div>
+          <div class="chart-bar" style="height: 140px;">
+            <div class="text-xs text-center mt-2 text-white">12</div>
+          </div>
+          <div class="chart-bar" style="height: 120px;">
+            <div class="text-xs text-center mt-2 text-white">10</div>
+          </div>
+          <div class="chart-bar" style="height: 80px;">
+            <div class="text-xs text-center mt-2 text-white">6</div>
+          </div>
+          <div class="chart-bar" style="height: 50px;">
+            <div class="text-xs text-center mt-2 text-white">3</div>
+          </div>
+        </div>
+        <div class="flex justify-center gap-8 mt-2 text-sm text-muted">
+          <span>F</span>
+          <span>D</span>
+          <span>C</span>
+          <span>B</span>
+          <span>B+</span>
+          <span>A</span>
+          <span>A+</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grade Table -->
+    <h2 class="text-lg font-semibold mb-4">성적표</h2>
+    <div class="separator mb-4"></div>
+
+    <div class="card mb-6">
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>이름</th>
+              <th>참여도 (30)</th>
+              <th>퀴즈 (30)</th>
+              <th>과제 (40)</th>
+              <th>총점</th>
+              <th>등급</th>
+              <th style="width: 60px;"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>김민수</td>
+              <td>28</td>
+              <td>27</td>
+              <td>38</td>
+              <td><strong>93</strong></td>
+              <td><span class="badge badge-success">A</span></td>
+              <td><a href="grd-002-student-detail.html" class="text-sm text-primary">보기</a></td>
+            </tr>
+            <tr>
+              <td>이서연</td>
+              <td>25</td>
+              <td>30</td>
+              <td>36</td>
+              <td><strong>91</strong></td>
+              <td><span class="badge badge-success">A</span></td>
+              <td><a href="grd-002-student-detail.html" class="text-sm text-primary">보기</a></td>
+            </tr>
+            <tr>
+              <td>박준혁</td>
+              <td>27</td>
+              <td>24</td>
+              <td>34</td>
+              <td><strong>85</strong></td>
+              <td><span class="badge badge-primary">B+</span></td>
+              <td><a href="grd-002-student-detail.html" class="text-sm text-primary">보기</a></td>
+            </tr>
+            <tr>
+              <td>최유진</td>
+              <td class="warning-cell">18</td>
+              <td class="warning-cell">20</td>
+              <td>30</td>
+              <td><strong>68</strong></td>
+              <td><span class="badge badge-default">C</span></td>
+              <td>
+                <span class="flex items-center gap-1">
+                  <i data-lucide="alert-triangle" class="icon-sm warning-cell"></i>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>정다운</td>
+              <td>26</td>
+              <td>25</td>
+              <td>32</td>
+              <td><strong>83</strong></td>
+              <td><span class="badge badge-primary">B</span></td>
+              <td><a href="grd-002-student-detail.html" class="text-sm text-primary">보기</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex gap-3">
+      <button class="btn btn-outline">
+        <i data-lucide="sliders" class="icon-sm"></i>
+        가중치 설정
+      </button>
+      <button class="btn btn-outline">
+        <i data-lucide="settings-2" class="icon-sm"></i>
+        등급 기준 설정
+      </button>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

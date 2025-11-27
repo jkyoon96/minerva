@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIVE-002: 세션 입장 (학생) - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .join-container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: var(--spacing-6);
+    }
+    .video-preview {
+      background: hsl(var(--muted));
+      border-radius: var(--radius-lg);
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--spacing-4);
+    }
+    .mic-level {
+      height: 8px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+    .mic-level-fill {
+      height: 100%;
+      width: 30%;
+      background: hsl(var(--success));
+    }
+    .toggle-card {
+      border: 2px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .toggle-card.active {
+      border-color: hsl(var(--brand-primary));
+      background: hsl(var(--brand-primary) / 0.05);
+    }
+    .toggle-card.inactive {
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+  <!-- Main Content -->
+  <main class="join-container">
+    <div class="text-center mb-6">
+      <h1 class="text-2xl font-bold mb-2">세션 입장 준비</h1>
+    </div>
+
+    <div class="card">
+      <div class="card-content">
+        <!-- Session Info -->
+        <div class="mb-6 text-center">
+          <div class="flex items-center justify-center gap-2 mb-1">
+            <i data-lucide="book-open" class="icon-sm" style="color: hsl(var(--brand-primary))"></i>
+            <span class="font-semibold">경영학개론 - 세션 #12</span>
+          </div>
+          <div class="text-lg font-medium mb-2">마케팅 믹스 4P</div>
+          <div class="text-sm text-muted">
+            <i data-lucide="user" class="icon-xs inline"></i>
+            김철수 교수
+          </div>
+        </div>
+
+        <div class="separator my-4"></div>
+
+        <!-- Camera Preview -->
+        <div class="text-center mb-2 text-sm text-muted">카메라 미리보기</div>
+        <div class="video-preview">
+          <div class="text-center text-muted">
+            <div class="avatar avatar-lg mb-2">
+              <i data-lucide="user" class="icon-lg"></i>
+            </div>
+            <div class="font-medium">이학생</div>
+          </div>
+        </div>
+
+        <!-- Mic Test -->
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2 text-sm">
+              <i data-lucide="mic" class="icon-sm text-muted"></i>
+              <span>마이크 테스트</span>
+            </div>
+            <button class="btn btn-outline btn-sm">테스트</button>
+          </div>
+          <div class="mic-level">
+            <div class="mic-level-fill"></div>
+          </div>
+        </div>
+
+        <div class="separator my-4"></div>
+
+        <!-- Entry Settings -->
+        <div class="mb-6">
+          <div class="text-sm text-muted mb-3 text-center">입장 설정</div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="toggle-card active">
+              <i data-lucide="video" class="icon-lg mb-2" style="color: hsl(var(--brand-primary))"></i>
+              <div class="font-medium">카메라</div>
+              <div class="text-sm text-muted">ON</div>
+            </div>
+            <div class="toggle-card inactive">
+              <i data-lucide="mic-off" class="icon-lg mb-2 text-muted"></i>
+              <div class="font-medium">마이크</div>
+              <div class="text-sm text-muted">OFF</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="separator my-4"></div>
+
+        <!-- Actions -->
+        <button class="btn btn-primary w-full">
+          세션 입장
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIVE-021: 네트워크 문제 알림 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal-content {
+      background: hsl(var(--card));
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 420px;
+      overflow: hidden;
+    }
+    .warning-header {
+      background: hsl(var(--warning) / 0.1);
+      padding: var(--spacing-4);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+    }
+    .warning-icon {
+      width: 48px;
+      height: 48px;
+      background: hsl(var(--warning) / 0.2);
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: hsl(var(--warning));
+    }
+    .modal-body {
+      padding: var(--spacing-4);
+    }
+    .recommendation-list {
+      margin: var(--spacing-4) 0;
+    }
+    .recommendation-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) 0;
+      font-size: var(--text-sm);
+    }
+    .recommendation-item i {
+      color: hsl(var(--muted-foreground));
+    }
+    .modal-footer {
+      padding: var(--spacing-4);
+      border-top: 1px solid hsl(var(--border));
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-2);
+    }
+  </style>
+</head>
+<body>
+  <!-- Modal Overlay -->
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="warning-header">
+        <div class="warning-icon">
+          <i data-lucide="alert-triangle" class="icon-lg"></i>
+        </div>
+        <div>
+          <h2 class="font-semibold">네트워크 연결이 불안정합니다</h2>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <p class="text-sm text-muted mb-4">
+          현재 네트워크 상태가 좋지 않습니다.<br>
+          비디오 품질이 자동으로 낮아질 수 있습니다.
+        </p>
+
+        <div class="text-sm font-medium mb-2">권장 조치:</div>
+        <div class="recommendation-list">
+          <div class="recommendation-item">
+            <i data-lucide="wifi" class="icon-sm"></i>
+            <span>Wi-Fi 연결 확인</span>
+          </div>
+          <div class="recommendation-item">
+            <i data-lucide="repeat" class="icon-sm"></i>
+            <span>다른 네트워크로 전환</span>
+          </div>
+          <div class="recommendation-item">
+            <i data-lucide="video-off" class="icon-sm"></i>
+            <span>비디오 OFF로 전환</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary w-full">
+          <i data-lucide="video-off" class="icon-sm"></i>
+          비디오 끄기
+        </button>
+        <button class="btn btn-ghost w-full">무시</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

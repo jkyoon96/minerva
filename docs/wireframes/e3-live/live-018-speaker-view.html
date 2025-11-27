@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIVE-018: 발표자 뷰 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    body {
+      background: hsl(var(--background));
+    }
+    .live-header {
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+      padding: var(--spacing-2) var(--spacing-4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .live-badge {
+      background: hsl(var(--destructive));
+      color: white;
+      padding: var(--spacing-1) var(--spacing-2);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+    }
+    .live-badge::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .main-content {
+      height: calc(100vh - 57px - 72px);
+      padding: var(--spacing-4);
+      display: flex;
+      flex-direction: column;
+    }
+    .speaker-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-4);
+    }
+    .main-speaker {
+      flex: 1;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .speaker-info {
+      position: absolute;
+      bottom: var(--spacing-3);
+      left: var(--spacing-3);
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: var(--spacing-1) var(--spacing-2);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+    }
+    .participant-strip {
+      display: flex;
+      gap: var(--spacing-2);
+      overflow-x: auto;
+      padding-bottom: var(--spacing-2);
+    }
+    .participant-tile {
+      width: 120px;
+      flex-shrink: 0;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-md);
+      aspect-ratio: 4/3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .participant-tile .name {
+      font-size: var(--text-xs);
+      margin-top: var(--spacing-1);
+    }
+    .more-participants {
+      width: 120px;
+      flex-shrink: 0;
+      background: hsl(var(--muted) / 0.5);
+      border-radius: var(--radius-md);
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .controls-bar {
+      background: hsl(var(--card));
+      border-top: 1px solid hsl(var(--border));
+      padding: var(--spacing-3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-3);
+    }
+    .control-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .control-btn.active {
+      background: hsl(var(--brand-primary));
+      color: white;
+    }
+    .control-btn.inactive {
+      background: hsl(var(--muted));
+      color: hsl(var(--muted-foreground));
+    }
+    .control-btn.danger {
+      background: hsl(var(--destructive));
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- Live Header -->
+  <header class="live-header">
+    <div class="flex items-center gap-4">
+      <span class="live-badge">LIVE</span>
+      <span class="font-medium">경영학개론 #12</span>
+      <span class="text-muted">45:23</span>
+      <span class="flex items-center gap-1 text-sm text-muted">
+        <i data-lucide="users" class="icon-sm"></i>
+        26명
+      </span>
+    </div>
+    <div class="flex items-center gap-3">
+      <button class="btn btn-outline btn-sm">
+        <i data-lucide="user" class="icon-sm"></i>
+        발표자
+        <i data-lucide="chevron-down" class="icon-xs ml-1"></i>
+      </button>
+      <button class="btn btn-ghost btn-icon">
+        <i data-lucide="settings" class="icon-md"></i>
+      </button>
+      <button class="btn btn-outline btn-sm">나가기</button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="speaker-container">
+      <!-- Main Speaker -->
+      <div class="main-speaker">
+        <div class="text-center">
+          <div class="avatar avatar-xl mb-3">
+            <i data-lucide="user" class="icon-xl"></i>
+          </div>
+          <div class="text-xl font-semibold">김철수 교수</div>
+          <div class="text-muted">(발표 중)</div>
+        </div>
+        <div class="speaker-info">
+          <i data-lucide="mic" class="icon-xs"></i>
+          <span>김철수 교수</span>
+        </div>
+      </div>
+
+      <!-- Participant Strip -->
+      <div class="participant-strip">
+        <div class="participant-tile">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <div class="name">이민준</div>
+        </div>
+        <div class="participant-tile">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <div class="name">박서연</div>
+        </div>
+        <div class="participant-tile">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <div class="name">정도윤</div>
+        </div>
+        <div class="participant-tile">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <div class="name">강수아</div>
+        </div>
+        <div class="participant-tile">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <div class="name">김예준</div>
+        </div>
+        <div class="more-participants">
+          +21명
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Controls Bar -->
+  <div class="controls-bar">
+    <button class="control-btn active" title="마이크 ON">
+      <i data-lucide="mic" class="icon-md"></i>
+    </button>
+    <button class="control-btn inactive" title="카메라 OFF">
+      <i data-lucide="video-off" class="icon-md"></i>
+    </button>
+    <button class="control-btn inactive" title="손들기">
+      <i data-lucide="hand" class="icon-md"></i>
+    </button>
+    <button class="control-btn danger" title="나가기">
+      <i data-lucide="phone-off" class="icon-md"></i>
+    </button>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FEEDBACK-001: 즉각 피드백 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .wrong-answer-card {
+      background: hsl(var(--destructive) / 0.1);
+      border: 1px solid hsl(var(--destructive) / 0.3);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .wrong-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      color: hsl(var(--destructive));
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-3);
+    }
+    .question-text {
+      font-size: var(--text-sm);
+      margin-bottom: var(--spacing-3);
+    }
+    .answer-row {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .concept-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .concept-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-3);
+    }
+    .concept-text {
+      font-size: var(--text-sm);
+      line-height: 1.7;
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-4);
+    }
+    .concept-list {
+      list-style: disc;
+      padding-left: var(--spacing-4);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-4);
+    }
+    .key-point-box {
+      background: hsl(var(--brand-primary) / 0.1);
+      border: 1px solid hsl(var(--brand-primary) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+    }
+    .key-point-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-semibold);
+      color: hsl(var(--brand-primary));
+      margin-bottom: var(--spacing-2);
+    }
+    .key-point-text {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .material-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--spacing-4);
+    }
+    .material-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-3) var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .material-item:last-child {
+      border-bottom: none;
+    }
+    .material-info {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-1);
+    }
+    .material-title {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-medium);
+    }
+    .material-meta {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .practice-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .practice-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-3);
+    }
+    .practice-question {
+      font-size: var(--text-sm);
+      margin-bottom: var(--spacing-3);
+    }
+    .practice-options {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-3);
+    }
+    .practice-option {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) var(--spacing-3);
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      cursor: pointer;
+    }
+    .practice-option:hover {
+      background: hsl(var(--muted) / 0.4);
+    }
+    .progress-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .progress-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-3);
+    }
+    .progress-stat {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-2);
+    }
+    .suggestion-box {
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-3);
+    }
+    .learning-path {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-size: var(--text-sm);
+      margin-bottom: var(--spacing-3);
+    }
+    .path-step {
+      padding: var(--spacing-1) var(--spacing-2);
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-sm);
+    }
+    .path-arrow {
+      color: hsl(var(--muted-foreground));
+    }
+    .action-buttons {
+      display: flex;
+      gap: var(--spacing-3);
+      margin-top: var(--spacing-4);
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <a href="index.html" class="btn btn-ghost btn-icon">
+      <i data-lucide="arrow-left" class="icon-md"></i>
+    </a>
+    <h1 class="font-semibold">실시간 피드백</h1>
+  </header>
+
+  <main class="container py-6">
+    <!-- Wrong Answer Card -->
+    <div class="wrong-answer-card">
+      <div class="wrong-header">
+        <i data-lucide="x-circle" class="icon-md"></i>
+        오답입니다
+      </div>
+      <p class="question-text">
+        <strong>Q.</strong> HTTP 상태 코드 중 "리소스를 찾을 수 없음"을 나타내는 것은?
+      </p>
+      <div class="answer-row">
+        <div><strong>내 답변:</strong> 500 (서버 내부 오류)</div>
+        <div><strong>정답:</strong> 404 (Not Found)</div>
+      </div>
+    </div>
+
+    <!-- Concept Explanation -->
+    <div class="concept-card">
+      <div class="concept-header">
+        <i data-lucide="lightbulb" class="icon-md" style="color: hsl(var(--warning))"></i>
+        개념 설명
+      </div>
+      <p class="concept-text">
+        HTTP 상태 코드는 크게 5가지 범주로 나뉩니다:
+      </p>
+      <ul class="concept-list">
+        <li>1xx: 정보 응답</li>
+        <li>2xx: 성공 (200 OK, 201 Created)</li>
+        <li>3xx: 리다이렉션 (301 Moved, 302 Found)</li>
+        <li>4xx: 클라이언트 오류 (400 Bad Request, 404 Not Found)</li>
+        <li>5xx: 서버 오류 (500 Internal Error, 503 Unavailable)</li>
+      </ul>
+
+      <div class="key-point-box">
+        <div class="key-point-header">
+          <i data-lucide="key" class="icon-sm"></i>
+          핵심 포인트
+        </div>
+        <p class="key-point-text">
+          404는 클라이언트 측 오류(4xx)로, 요청한 리소스가 서버에 존재하지 않을 때 반환됩니다.<br><br>
+          500은 서버 측 오류(5xx)로, 서버 내부 문제로 요청을 처리할 수 없을 때 반환됩니다.
+        </p>
+      </div>
+    </div>
+
+    <!-- Recommended Materials -->
+    <div class="material-card">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="book-open" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          추천 학습 자료
+        </h2>
+      </div>
+      <div class="material-item">
+        <div class="material-info">
+          <div class="material-title">
+            <i data-lucide="file-text" class="icon-sm" style="color: hsl(var(--brand-primary))"></i>
+            HTTP 상태 코드 완벽 가이드
+          </div>
+          <div class="material-meta">Week 5 강의자료 > Ch.12 REST API</div>
+          <div class="material-meta">예상 학습 시간: 15분</div>
+        </div>
+        <button class="btn btn-outline btn-sm">
+          바로가기
+          <i data-lucide="chevron-right" class="icon-xs"></i>
+        </button>
+      </div>
+      <div class="material-item">
+        <div class="material-info">
+          <div class="material-title">
+            <i data-lucide="video" class="icon-sm" style="color: hsl(var(--brand-primary))"></i>
+            HTTP 상태 코드 이해하기 (동영상)
+          </div>
+          <div class="material-meta">보충 자료 > 웹 개발 기초</div>
+          <div class="material-meta">재생 시간: 8분 30초</div>
+        </div>
+        <button class="btn btn-outline btn-sm">
+          바로가기
+          <i data-lucide="chevron-right" class="icon-xs"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Practice Question -->
+    <div class="practice-card">
+      <div class="practice-header">
+        <i data-lucide="refresh-cw" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        유사 문제 풀어보기
+      </div>
+      <p class="practice-question">
+        <strong>Q.</strong> 다음 중 서버 측 오류를 나타내는 HTTP 상태 코드는?
+      </p>
+      <div class="practice-options">
+        <label class="practice-option">
+          <input type="radio" name="practice">
+          401 Unauthorized
+        </label>
+        <label class="practice-option">
+          <input type="radio" name="practice">
+          404 Not Found
+        </label>
+        <label class="practice-option">
+          <input type="radio" name="practice">
+          503 Service Unavailable
+        </label>
+        <label class="practice-option">
+          <input type="radio" name="practice">
+          302 Found
+        </label>
+      </div>
+      <button class="btn btn-outline">
+        정답 확인
+        <i data-lucide="chevron-right" class="icon-xs"></i>
+      </button>
+    </div>
+
+    <!-- Learning Progress Suggestion -->
+    <div class="progress-card">
+      <div class="progress-header">
+        <i data-lucide="bar-chart-2" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        학습 진도 제안
+      </div>
+      <p class="progress-stat">
+        이 개념(HTTP 상태 코드)의 최근 정답률: <strong>40%</strong>
+      </p>
+      <div class="suggestion-box">
+        💬 "HTTP 상태 코드 관련 문제에서 자주 실수하고 계시네요. 아래 학습 경로를 따라 복습해보시는 것을 추천드립니다."
+      </div>
+      <div class="text-sm font-medium mb-2">제안 학습 경로:</div>
+      <div class="learning-path">
+        <span class="path-step">1. 강의자료 복습</span>
+        <span class="path-arrow">→</span>
+        <span class="path-step">2. 동영상 시청</span>
+        <span class="path-arrow">→</span>
+        <span class="path-step">3. 연습문제 5개</span>
+      </div>
+      <button class="btn btn-primary">
+        <i data-lucide="target" class="icon-sm"></i>
+        학습 경로 시작하기
+      </button>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-outline flex-1">
+        다음 문제 풀기
+        <i data-lucide="arrow-right" class="icon-sm"></i>
+      </button>
+      <button class="btn btn-outline flex-1">
+        퀴즈 결과 보기
+      </button>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

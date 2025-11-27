@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRS-008: 코스 초대 수락 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .invite-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: hsl(var(--muted));
+      padding: var(--spacing-6);
+    }
+    .invite-card {
+      width: 100%;
+      max-width: 450px;
+      background-color: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-xl);
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+      overflow: hidden;
+    }
+    .invite-header {
+      text-align: center;
+      padding: var(--spacing-6);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .invite-body {
+      padding: var(--spacing-6);
+    }
+    .invite-footer {
+      padding: var(--spacing-6);
+      border-top: 1px solid hsl(var(--border));
+      background-color: hsl(var(--muted) / 0.3);
+    }
+    .course-info {
+      background: hsl(var(--brand-primary) / 0.05);
+      border: 1px solid hsl(var(--brand-primary) / 0.2);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-6);
+      text-align: center;
+      margin-bottom: var(--spacing-6);
+    }
+  </style>
+</head>
+<body>
+  <div class="invite-container">
+    <div class="invite-card">
+      <div class="invite-header">
+        <div class="flex items-center justify-center gap-2 mb-2">
+          <i data-lucide="graduation-cap" class="icon-xl" style="color: hsl(var(--brand-primary))"></i>
+        </div>
+        <h1 class="text-xl font-bold">EduForum</h1>
+        <p class="text-sm text-muted mt-1">코스 초대</p>
+      </div>
+
+      <div class="invite-body">
+        <div class="course-info">
+          <div class="text-4xl mb-3">📘</div>
+          <h2 class="text-lg font-semibold mb-1">경영학개론</h2>
+          <p class="text-sm text-muted mb-4">BUSS101</p>
+
+          <div class="flex flex-col gap-2 text-sm">
+            <div class="flex items-center justify-center gap-2">
+              <i data-lucide="user" class="icon-sm text-muted"></i>
+              <span>김철수 교수</span>
+            </div>
+            <div class="flex items-center justify-center gap-2">
+              <i data-lucide="calendar" class="icon-sm text-muted"></i>
+              <span>2024년 2학기</span>
+            </div>
+            <div class="flex items-center justify-center gap-2">
+              <i data-lucide="users" class="icon-sm text-muted"></i>
+              <span>현재 28명 등록</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-center text-muted mb-6">이 코스에 등록하시겠습니까?</p>
+
+        <button class="btn btn-primary w-full mb-3">
+          <i data-lucide="check" class="icon-sm"></i>
+          코스 등록하기
+        </button>
+        <button class="btn btn-outline w-full">
+          취소
+        </button>
+      </div>
+
+      <div class="invite-footer">
+        <p class="text-center text-sm text-muted">
+          로그인하지 않으셨나요?<br>
+          <a href="../e1-auth/auth-004-login.html" style="color: hsl(var(--brand-primary))">로그인</a> 또는
+          <a href="../e1-auth/auth-001-register.html" style="color: hsl(var(--brand-primary))">회원가입</a> 후 등록됩니다
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

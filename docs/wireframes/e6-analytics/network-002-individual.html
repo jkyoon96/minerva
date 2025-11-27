@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NETWORK-002: 개인 네트워크 상세 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .profile-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .profile-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-4);
+      font-size: var(--text-sm);
+    }
+    .profile-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .profile-label {
+      color: hsl(var(--muted-foreground));
+    }
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      padding: var(--spacing-1) var(--spacing-2);
+      background: hsl(var(--brand-primary) / 0.1);
+      color: hsl(var(--brand-primary));
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+    }
+    .network-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .personal-network {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+    }
+    .graph-placeholder {
+      height: 240px;
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--spacing-3);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .connection-stat {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      text-align: center;
+    }
+    .interaction-stats {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-3);
+      margin-bottom: var(--spacing-4);
+    }
+    .stat-box {
+      text-align: center;
+      padding: var(--spacing-2);
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-md);
+    }
+    .stat-value {
+      font-size: var(--text-xl);
+      font-weight: var(--font-bold);
+      color: hsl(var(--brand-primary));
+    }
+    .stat-label {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .top-interactions {
+      font-size: var(--text-sm);
+    }
+    .interaction-item {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--spacing-1) 0;
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .interaction-item:last-child {
+      border-bottom: none;
+    }
+    .interaction-count {
+      color: hsl(var(--muted-foreground));
+    }
+    .type-distribution {
+      margin-bottom: var(--spacing-3);
+    }
+    .type-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-2);
+      font-size: var(--text-sm);
+    }
+    .type-label {
+      width: 80px;
+      flex-shrink: 0;
+    }
+    .type-bar-container {
+      flex: 1;
+      height: 16px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .type-bar {
+      height: 100%;
+      background: hsl(var(--brand-primary));
+    }
+    .type-value {
+      width: 80px;
+      text-align: right;
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .analysis-note {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) var(--spacing-3);
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .trend-chart {
+      height: 180px;
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--spacing-3);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .trend-note {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .feedback-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-4);
+    }
+    .strength-box {
+      background: hsl(var(--success) / 0.1);
+      border: 1px solid hsl(var(--success) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+    }
+    .growth-box {
+      background: hsl(var(--warning) / 0.1);
+      border: 1px solid hsl(var(--warning) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+    }
+    .feedback-title {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-2);
+    }
+    .feedback-list {
+      list-style: disc;
+      padding-left: var(--spacing-4);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .feedback-list li {
+      margin-bottom: var(--spacing-1);
+    }
+    .recommendation-box {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-top: var(--spacing-4);
+      padding: var(--spacing-3);
+      background: hsl(var(--brand-primary) / 0.1);
+      border-radius: var(--radius-md);
+    }
+    .recommendation-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: hsl(var(--brand-primary));
+      color: white;
+      border-radius: 50%;
+    }
+    .recommendation-text {
+      font-size: var(--text-sm);
+    }
+    .recommendation-text strong {
+      display: block;
+      margin-bottom: var(--spacing-1);
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <a href="network-001-visualization.html" class="btn btn-ghost btn-icon">
+      <i data-lucide="arrow-left" class="icon-md"></i>
+    </a>
+    <h1 class="font-semibold">이영희 - 상호작용 상세</h1>
+  </header>
+
+  <main class="container py-6">
+    <!-- Student Network Profile -->
+    <div class="profile-card">
+      <div class="flex items-center gap-2 mb-3">
+        <i data-lucide="user" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        <span class="font-semibold">학생 네트워크 프로필</span>
+      </div>
+      <div class="profile-row">
+        <div class="profile-item">
+          <span class="profile-label">이름:</span>
+          <strong>이영희</strong>
+        </div>
+        <div class="profile-item">
+          <span class="profile-label">네트워크 역할:</span>
+          <span class="role-badge">
+            <i data-lucide="star" class="icon-xs"></i>
+            허브 (Hub)
+          </span>
+        </div>
+        <div class="profile-item">
+          <span class="profile-label">중심성 점수:</span>
+          <strong>0.89</strong>
+          <span class="text-sm text-muted">(1위/45명)</span>
+        </div>
+        <div class="profile-item">
+          <span class="profile-label">연결 수:</span>
+          <strong>38명</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Personal Network & Stats -->
+    <div class="network-container">
+      <div class="personal-network">
+        <div class="flex items-center gap-2 mb-3">
+          <i data-lucide="share-2" class="icon-sm" style="color: hsl(var(--brand-primary))"></i>
+          <span class="font-semibold">개인 네트워크</span>
+        </div>
+        <div class="graph-placeholder">
+          [이영희 중심 네트워크 그래프]
+        </div>
+        <div class="connection-stat">
+          연결 수: 38/44명 (86%)
+        </div>
+      </div>
+
+      <div class="interaction-stats">
+        <div class="flex items-center gap-2 mb-3">
+          <i data-lucide="bar-chart-2" class="icon-sm" style="color: hsl(var(--brand-primary))"></i>
+          <span class="font-semibold">상호작용 통계</span>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-value">156</div>
+            <div class="stat-label">총 대화</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">89</div>
+            <div class="stat-label">주도한 대화 (57%)</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">67</div>
+            <div class="stat-label">응답한 대화 (43%)</div>
+          </div>
+        </div>
+
+        <div class="text-sm font-medium mb-2">상위 상호작용 대상</div>
+        <div class="top-interactions">
+          <div class="interaction-item">
+            <span>1. 김철수</span>
+            <span class="interaction-count">45회</span>
+          </div>
+          <div class="interaction-item">
+            <span>2. 박민수</span>
+            <span class="interaction-count">32회</span>
+          </div>
+          <div class="interaction-item">
+            <span>3. 정수진</span>
+            <span class="interaction-count">28회</span>
+          </div>
+          <div class="interaction-item">
+            <span>4. 최현우</span>
+            <span class="interaction-count">21회</span>
+          </div>
+          <div class="interaction-item">
+            <span>5. 강동원</span>
+            <span class="interaction-count">15회</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interaction Type Analysis -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="pie-chart" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          상호작용 유형 분석
+        </h2>
+      </div>
+      <div class="card-content">
+        <div class="text-sm mb-3">상호작용 유형 분포:</div>
+        <div class="type-distribution">
+          <div class="type-row">
+            <span class="type-label">질문 제기</span>
+            <div class="type-bar-container">
+              <div class="type-bar" style="width: 29%;"></div>
+            </div>
+            <span class="type-value">45건 (29%)</span>
+          </div>
+          <div class="type-row">
+            <span class="type-label">답변 제공</span>
+            <div class="type-bar-container">
+              <div class="type-bar" style="width: 33%;"></div>
+            </div>
+            <span class="type-value">52건 (33%)</span>
+          </div>
+          <div class="type-row">
+            <span class="type-label">의견 제시</span>
+            <div class="type-bar-container">
+              <div class="type-bar" style="width: 21%;"></div>
+            </div>
+            <span class="type-value">32건 (21%)</span>
+          </div>
+          <div class="type-row">
+            <span class="type-label">동의/지지</span>
+            <div class="type-bar-container">
+              <div class="type-bar" style="width: 10%;"></div>
+            </div>
+            <span class="type-value">15건 (10%)</span>
+          </div>
+          <div class="type-row">
+            <span class="type-label">반론/토론</span>
+            <div class="type-bar-container">
+              <div class="type-bar" style="width: 8%;"></div>
+            </div>
+            <span class="type-value">12건 (8%)</span>
+          </div>
+        </div>
+
+        <div class="analysis-note">
+          <i data-lucide="file-text" class="icon-sm"></i>
+          <div>
+            <strong>분석:</strong> 답변 제공 비율이 높아 지식 공유자 역할 수행. 반론/토론 비율이 낮아 갈등 회피 성향 있음.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly Interaction Trend -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="trending-up" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          주차별 상호작용 추이
+        </h2>
+      </div>
+      <div class="card-content">
+        <div class="trend-chart">
+          [주차별 상호작용 횟수 라인 차트 - W1~W12]
+        </div>
+        <div class="trend-note">
+          <i data-lucide="file-text" class="icon-sm"></i>
+          Week 8-9에 상호작용 피크 (그룹 프로젝트 기간)
+        </div>
+      </div>
+    </div>
+
+    <!-- Feedback & Recommendations -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="lightbulb" class="icon-md" style="color: hsl(var(--warning))"></i>
+          피드백 및 권장 사항
+        </h2>
+      </div>
+      <div class="card-content">
+        <div class="feedback-section">
+          <div class="strength-box">
+            <div class="feedback-title" style="color: hsl(var(--success));">
+              <i data-lucide="check-circle" class="icon-sm"></i>
+              강점
+            </div>
+            <ul class="feedback-list">
+              <li>클래스 내 핵심 연결자 역할 수행</li>
+              <li>적극적인 질문과 답변으로 토론 촉진</li>
+              <li>다양한 학생들과 균형 있게 상호작용</li>
+            </ul>
+          </div>
+
+          <div class="growth-box">
+            <div class="feedback-title" style="color: hsl(var(--warning));">
+              <i data-lucide="zap" class="icon-sm"></i>
+              성장 기회
+            </div>
+            <ul class="feedback-list">
+              <li>반론/비판적 토론 참여 확대</li>
+              <li>고립된 학생들과의 연결 시도</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="recommendation-box">
+          <div class="recommendation-icon">
+            <i data-lucide="target" class="icon-md"></i>
+          </div>
+          <div class="recommendation-text">
+            <strong>권장 역할</strong>
+            그룹 활동 시 리더/멘토 역할 배정
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

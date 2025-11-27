@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-GRADE-001: AI 채점 검토 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .overview-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .overview-stats {
+      display: flex;
+      gap: var(--spacing-6);
+      margin-bottom: var(--spacing-3);
+      font-size: var(--text-sm);
+    }
+    .status-summary {
+      display: flex;
+      gap: var(--spacing-3);
+      padding: var(--spacing-2) var(--spacing-3);
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+    }
+    .grading-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .grading-table th,
+    .grading-table td {
+      padding: var(--spacing-2) var(--spacing-3);
+      text-align: left;
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .grading-table th {
+      font-weight: var(--font-medium);
+      color: hsl(var(--muted-foreground));
+      font-size: var(--text-xs);
+    }
+    .status-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+    }
+    .status-icon.warning {
+      color: hsl(var(--warning));
+    }
+    .status-icon.success {
+      color: hsl(var(--success));
+    }
+    .status-icon.edited {
+      color: hsl(var(--brand-primary));
+    }
+    .confidence-badge {
+      padding: var(--spacing-1) var(--spacing-2);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+    }
+    .confidence-badge.low {
+      background: hsl(var(--destructive) / 0.1);
+      color: hsl(var(--destructive));
+    }
+    .confidence-badge.high {
+      background: hsl(var(--success) / 0.1);
+      color: hsl(var(--success));
+    }
+    .action-link {
+      padding: var(--spacing-1) var(--spacing-2);
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+      cursor: pointer;
+    }
+    .detail-panel {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      margin-top: var(--spacing-4);
+    }
+    .detail-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .detail-content {
+      padding: var(--spacing-4);
+    }
+    .question-box {
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+      margin-bottom: var(--spacing-4);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .answer-section,
+    .ai-section,
+    .professor-section {
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-3);
+    }
+    .answer-text {
+      font-size: var(--text-sm);
+      line-height: 1.6;
+      margin-bottom: var(--spacing-3);
+    }
+    .keyword-highlight {
+      background: hsl(var(--success) / 0.2);
+      padding: var(--spacing-1) var(--spacing-2);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+    }
+    .ai-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-4);
+      font-size: var(--text-sm);
+    }
+    .score-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+      margin-bottom: var(--spacing-3);
+    }
+    .score-table th,
+    .score-table td {
+      padding: var(--spacing-2);
+      text-align: left;
+      border: 1px solid hsl(var(--border));
+    }
+    .score-table th {
+      background: hsl(var(--muted) / 0.3);
+      font-weight: var(--font-medium);
+    }
+    .warning-box {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3);
+      background: hsl(var(--warning) / 0.1);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      color: hsl(var(--warning));
+    }
+    .score-input-group {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-2);
+      font-size: var(--text-sm);
+    }
+    .score-input-group label {
+      width: 140px;
+    }
+    .score-input-group input {
+      width: 60px;
+      padding: var(--spacing-1) var(--spacing-2);
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-sm);
+      text-align: center;
+    }
+    .feedback-textarea {
+      width: 100%;
+      min-height: 80px;
+      padding: var(--spacing-2);
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-md);
+      resize: vertical;
+      font-size: var(--text-sm);
+    }
+    .action-buttons {
+      display: flex;
+      gap: var(--spacing-3);
+      margin-top: var(--spacing-4);
+    }
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <a href="index.html" class="btn btn-ghost btn-icon">
+      <i data-lucide="arrow-left" class="icon-md"></i>
+    </a>
+    <h1 class="font-semibold">AI 채점 검토 - 중간 에세이</h1>
+  </header>
+
+  <main class="container py-6">
+    <!-- Overview -->
+    <div class="overview-card">
+      <div class="flex items-center gap-2 mb-3">
+        <i data-lucide="bar-chart-2" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        <span class="font-semibold">AI 채점 개요</span>
+      </div>
+      <div class="overview-stats">
+        <span>총 제출: 45건</span>
+        <span>AI 채점 완료: 45건 ✓</span>
+        <span>평균 점수: 78.3점</span>
+        <span>신뢰도 평균: 87.2%</span>
+      </div>
+      <div class="status-summary">
+        <span>검토 필요: 8건</span>
+        <span>신뢰도 낮음: 5건</span>
+        <span>완료: 32건</span>
+      </div>
+    </div>
+
+    <!-- Grading List -->
+    <div class="card">
+      <div class="card-header">
+        <div class="flex items-center justify-between w-full">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="clipboard-list" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            채점 목록
+          </h2>
+          <div class="filter-row">
+            <span class="text-sm text-muted">신뢰도순</span>
+            <i data-lucide="chevron-down" class="icon-xs"></i>
+            <button class="btn btn-outline btn-sm">
+              <i data-lucide="filter" class="icon-xs"></i>
+              필터
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-content">
+        <table class="grading-table">
+          <thead>
+            <tr>
+              <th>상태</th>
+              <th>학생</th>
+              <th>AI점수</th>
+              <th>신뢰도</th>
+              <th>최종점수</th>
+              <th>작업</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="status-icon warning"><i data-lucide="alert-triangle" class="icon-sm"></i></span></td>
+              <td>김민수</td>
+              <td>72</td>
+              <td><span class="confidence-badge low">63% ⚠️</span></td>
+              <td>--</td>
+              <td><span class="action-link">검토 필요</span></td>
+            </tr>
+            <tr>
+              <td><span class="status-icon warning"><i data-lucide="alert-triangle" class="icon-sm"></i></span></td>
+              <td>이수진</td>
+              <td>85</td>
+              <td><span class="confidence-badge low">71% ⚠️</span></td>
+              <td>--</td>
+              <td><span class="action-link">검토 필요</span></td>
+            </tr>
+            <tr>
+              <td><span class="status-icon success"><i data-lucide="check" class="icon-sm"></i></span></td>
+              <td>박지영</td>
+              <td>90</td>
+              <td><span class="confidence-badge high">95%</span></td>
+              <td>90</td>
+              <td><span class="action-link">확정됨</span></td>
+            </tr>
+            <tr>
+              <td><span class="status-icon success"><i data-lucide="check" class="icon-sm"></i></span></td>
+              <td>최현우</td>
+              <td>78</td>
+              <td><span class="confidence-badge high">92%</span></td>
+              <td>78</td>
+              <td><span class="action-link">확정됨</span></td>
+            </tr>
+            <tr>
+              <td><span class="status-icon edited"><i data-lucide="pencil" class="icon-sm"></i></span></td>
+              <td>정예은</td>
+              <td>68</td>
+              <td><span class="confidence-badge high">88%</span></td>
+              <td>75</td>
+              <td><span class="action-link">수정됨</span></td>
+            </tr>
+            <tr>
+              <td><span class="status-icon warning"><i data-lucide="alert-triangle" class="icon-sm"></i></span></td>
+              <td>강동원</td>
+              <td>55</td>
+              <td><span class="confidence-badge low">58% ⚠️</span></td>
+              <td>--</td>
+              <td><span class="action-link">검토 필요</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Detail Review Panel -->
+    <div class="detail-panel">
+      <div class="detail-header">
+        <i data-lucide="search" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        <span class="font-semibold">상세 검토: 김민수</span>
+      </div>
+      <div class="detail-content">
+        <div class="question-box">
+          <strong>문제:</strong> 객체지향 프로그래밍의 4대 원칙을 설명하고, 각각의 실제 활용 사례를 제시하시오. (100점)
+        </div>
+
+        <!-- Student Answer -->
+        <div class="answer-section">
+          <div class="section-header">
+            <i data-lucide="file-text" class="icon-sm"></i>
+            학생 답안
+          </div>
+          <p class="answer-text">
+            객체지향 프로그래밍의 4대 원칙은 캡슐화, 상속, 다형성, 추상화입니다.<br><br>
+            첫째, <span class="keyword-highlight">캡슐화</span>는 데이터와 메서드를 하나로 묶는 것으로...<br>
+            둘째, <span class="keyword-highlight">상속</span>은 기존 클래스를 확장하여 새로운 클래스를...<br>
+            셋째, 다형성은 같은 인터페이스로 다른 구현을 할 수 있는...<br>
+            넷째, 추상화는 복잡한 시스템에서 핵심적인 개념을...
+          </p>
+          <div class="text-xs text-muted">
+            [키워드 하이라이트: 캡슐화✓, 상속✓, 다형성✓, 추상화✓]
+          </div>
+        </div>
+
+        <!-- AI Analysis -->
+        <div class="ai-section">
+          <div class="section-header">
+            <i data-lucide="bot" class="icon-sm"></i>
+            AI 분석 결과
+          </div>
+          <div class="ai-metrics">
+            <span>• 의미적 유사도: 73% (모범답안 대비)</span>
+            <span>• 키워드 포함율: 100% (4/4 핵심 키워드)</span>
+            <span>• 구체적 사례: 2/4 (캡슐화, 상속만 사례 포함)</span>
+          </div>
+
+          <div class="font-medium text-sm mb-2">항목별 점수</div>
+          <table class="score-table">
+            <thead>
+              <tr>
+                <th>항목</th>
+                <th>배점</th>
+                <th>AI 채점</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>4대 원칙 설명</td>
+                <td>60</td>
+                <td>52 - 설명은 정확하나 깊이 부족</td>
+              </tr>
+              <tr>
+                <td>활용 사례</td>
+                <td>40</td>
+                <td>20 - 2개 사례만 제시 (캡슐화,상속)</td>
+              </tr>
+              <tr>
+                <td><strong>AI 총점</strong></td>
+                <td><strong>100</strong></td>
+                <td><strong>72점 (신뢰도: 63%)</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="warning-box">
+            <i data-lucide="alert-triangle" class="icon-sm"></i>
+            <div>
+              <strong>신뢰도 낮음 이유:</strong> 모범답안과의 의미적 유사도가 평균(85%) 대비 낮음. 사례 부분의 평가가 불확실함.
+            </div>
+          </div>
+        </div>
+
+        <!-- Professor Final Score -->
+        <div class="professor-section">
+          <div class="section-header">
+            <i data-lucide="pencil" class="icon-sm"></i>
+            교수 최종 점수
+          </div>
+
+          <div class="mb-4">
+            <div class="text-sm font-medium mb-2">항목별 점수 수정:</div>
+            <div class="score-input-group">
+              <label>4대 원칙 설명:</label>
+              <input type="number" value="55"> / 60
+            </div>
+            <div class="score-input-group">
+              <label>활용 사례:</label>
+              <input type="number" value="25"> / 40
+            </div>
+            <div class="score-input-group">
+              <label><strong>최종 점수:</strong></label>
+              <input type="number" value="80"> / 100
+            </div>
+          </div>
+
+          <div class="text-sm font-medium mb-2">피드백 코멘트:</div>
+          <textarea class="feedback-textarea" placeholder="학생에게 전달할 피드백을 작성하세요...">4대 원칙에 대한 기본적인 이해는 좋습니다. 다만, 다형성과 추상화에 대한 구체적인 활용 사례가 빠져 있어 감점하였습니다. 교재 Ch.5를 참고해주세요.</textarea>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn btn-outline">AI 점수 확정</button>
+          <button class="btn btn-primary">수정 후 저장</button>
+          <button class="btn btn-outline">
+            다음 답안 검토
+            <i data-lucide="arrow-right" class="icon-sm"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

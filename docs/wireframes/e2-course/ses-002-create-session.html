@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SES-002: 새 세션 만들기 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .main-content {
+      margin-left: 280px;
+      padding: var(--spacing-6);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="#" class="nav-link">대시보드</a>
+        <a href="crs-001-course-list.html" class="nav-link active">내 코스</a>
+        <a href="#" class="nav-link">분석</a>
+        <a href="#" class="nav-link">설정</a>
+      </div>
+      <div class="navbar-actions">
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">김교수</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" style="top: 57px; height: calc(100vh - 57px);">
+    <div class="sidebar-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">코스 메뉴</div>
+        <a href="crs-003-course-detail.html" class="sidebar-link">
+          <i data-lucide="home" class="icon-md"></i>
+          개요
+        </a>
+        <a href="ses-001-session-list.html" class="sidebar-link active">
+          <i data-lucide="video" class="icon-md"></i>
+          세션
+        </a>
+        <a href="crs-004-students.html" class="sidebar-link">
+          <i data-lucide="users" class="icon-md"></i>
+          수강생
+        </a>
+        <a href="cnt-001-content-library.html" class="sidebar-link">
+          <i data-lucide="folder" class="icon-md"></i>
+          콘텐츠
+        </a>
+        <a href="asg-001-assignment-list.html" class="sidebar-link">
+          <i data-lucide="file-text" class="icon-md"></i>
+          과제
+        </a>
+        <a href="grd-001-grade-dashboard.html" class="sidebar-link">
+          <i data-lucide="bar-chart-3" class="icon-md"></i>
+          성적
+        </a>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="trending-up" class="icon-md"></i>
+          분석
+        </a>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="settings" class="icon-md"></i>
+          설정
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-sm text-muted mb-4">
+      <a href="crs-003-course-detail.html">경영학개론</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <a href="ses-001-session-list.html">세션</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <span class="font-medium" style="color: hsl(var(--foreground))">새 세션 만들기</span>
+    </div>
+
+    <div class="card" style="max-width: 600px;">
+      <div class="card-header">
+        <h1 class="card-title flex items-center gap-2">
+          <i data-lucide="video" class="icon-lg" style="color: hsl(var(--brand-primary))"></i>
+          새 세션 만들기
+        </h1>
+      </div>
+      <div class="card-content">
+        <form>
+          <!-- 세션 정보 -->
+          <h2 class="font-semibold mb-4">세션 정보</h2>
+          <div class="separator mb-4"></div>
+
+          <div class="form-group mb-4">
+            <label class="form-label form-label-required">세션 제목</label>
+            <input type="text" class="input" placeholder="예: 세션 #13: 소비자 행동 분석" value="세션 #13: 소비자 행동 분석">
+          </div>
+
+          <div class="form-group mb-6">
+            <label class="form-label">세션 설명</label>
+            <textarea class="input" rows="3" placeholder="세션에 대한 설명을 입력하세요">소비자 의사결정 과정과 영향 요인에 대해 학습합니다.</textarea>
+          </div>
+
+          <!-- 일정 -->
+          <h2 class="font-semibold mb-4">일정</h2>
+          <div class="separator mb-4"></div>
+
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="form-group">
+              <label class="form-label form-label-required">날짜</label>
+              <input type="date" class="input" value="2024-11-26">
+            </div>
+            <div class="form-group">
+              <label class="form-label form-label-required">시작 시간</label>
+              <select class="select">
+                <option value="09:00">09:00</option>
+                <option value="10:00" selected>10:00</option>
+                <option value="11:00">11:00</option>
+                <option value="14:00">14:00</option>
+                <option value="15:00">15:00</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group mb-6">
+            <label class="form-label">예상 소요 시간</label>
+            <select class="select">
+              <option value="30">30분</option>
+              <option value="60">60분</option>
+              <option value="90" selected>90분</option>
+              <option value="120">120분</option>
+            </select>
+          </div>
+
+          <!-- 반복 설정 -->
+          <h2 class="font-semibold mb-4">반복 설정</h2>
+          <div class="separator mb-4"></div>
+
+          <div class="form-group mb-4">
+            <div class="flex flex-col gap-2">
+              <label class="radio-wrapper">
+                <input type="radio" name="repeat" class="radio">
+                <span class="radio-label">반복 없음 (단일 세션)</span>
+              </label>
+              <label class="radio-wrapper">
+                <input type="radio" name="repeat" class="radio" checked>
+                <span class="radio-label">반복 일정 설정</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="card p-4 mb-6" style="background: hsl(var(--muted) / 0.3);">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="text-sm">매주</span>
+              <select class="select" style="width: 120px;">
+                <option>월요일</option>
+                <option selected>화요일</option>
+                <option>수요일</option>
+                <option>목요일</option>
+                <option>금요일</option>
+              </select>
+              <span class="text-sm">반복</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-sm">종료:</span>
+              <input type="date" class="input" style="width: 180px;" value="2024-12-17">
+              <span class="text-sm text-muted">(5회)</span>
+            </div>
+          </div>
+
+          <!-- 알림 설정 -->
+          <h2 class="font-semibold mb-4">알림 설정</h2>
+          <div class="separator mb-4"></div>
+
+          <div class="form-group mb-6">
+            <div class="flex flex-col gap-2">
+              <label class="checkbox-wrapper">
+                <input type="checkbox" class="checkbox" checked>
+                <span class="checkbox-label">세션 시작 30분 전 알림</span>
+              </label>
+              <label class="checkbox-wrapper">
+                <input type="checkbox" class="checkbox" checked>
+                <span class="checkbox-label">세션 시작 시 알림</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="separator mb-4"></div>
+
+          <!-- Actions -->
+          <div class="flex items-center justify-between">
+            <a href="ses-001-session-list.html" class="btn btn-secondary">취소</a>
+            <button type="submit" class="btn btn-primary">
+              <i data-lucide="plus" class="icon-sm"></i>
+              세션 만들기
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

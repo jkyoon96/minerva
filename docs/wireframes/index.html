@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduForum CSS Wireframes</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum Wireframes
+      </a>
+      <div class="navbar-actions">
+        <span class="badge badge-primary">shadcn/ui</span>
+        <span class="badge badge-outline">Lucide Icons</span>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container py-12">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold mb-4">EduForum CSS Wireframes</h1>
+      <p class="text-lg text-muted">Interactive Learning Platform UI/UX Design System</p>
+      <p class="text-sm text-muted mt-2">shadcn/ui 기반 컴포넌트 + Lucide 아이콘</p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-6" style="max-width: 900px; margin: 0 auto;">
+      <!-- E1: 사용자 인증 및 관리 -->
+      <a href="e1-auth/index.html" class="card p-6 hover:shadow-lg transition cursor-pointer">
+        <div class="flex items-start gap-4">
+          <div class="p-3 rounded-lg" style="background-color: hsl(var(--brand-primary) / 0.1);">
+            <i data-lucide="shield" class="icon-xl" style="color: hsl(var(--brand-primary))"></i>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="badge badge-primary">P0</span>
+              <h2 class="text-lg font-semibold">E1. 사용자 인증 및 관리</h2>
+            </div>
+            <p class="text-sm text-muted mb-3">사용자 계정 생성, 인증, 권한 관리 시스템</p>
+            <div class="flex gap-2 flex-wrap">
+              <span class="badge badge-outline text-xs">회원가입</span>
+              <span class="badge badge-outline text-xs">로그인</span>
+              <span class="badge badge-outline text-xs">2FA</span>
+              <span class="badge badge-outline text-xs">RBAC</span>
+            </div>
+            <div class="text-xs text-muted mt-3">20개 화면</div>
+          </div>
+        </div>
+      </a>
+
+      <!-- E2: 코스 관리 -->
+      <a href="e2-course/index.html" class="card p-6 hover:shadow-lg transition cursor-pointer">
+        <div class="flex items-start gap-4">
+          <div class="p-3 rounded-lg" style="background-color: hsl(var(--brand-primary) / 0.1);">
+            <i data-lucide="book-open" class="icon-xl" style="color: hsl(var(--brand-primary))"></i>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="badge badge-primary">P0</span>
+              <h2 class="text-lg font-semibold">E2. 코스 관리</h2>
+            </div>
+            <p class="text-sm text-muted mb-3">코스 생성, 학습자 등록 및 콘텐츠 관리</p>
+            <div class="flex gap-2 flex-wrap">
+              <span class="badge badge-outline text-xs">코스 생성</span>
+              <span class="badge badge-outline text-xs">학습자 관리</span>
+              <span class="badge badge-outline text-xs">콘텐츠</span>
+            </div>
+            <div class="text-xs text-muted mt-3">16개 화면</div>
+          </div>
+        </div>
+      </a>
+
+      <!-- E3: 실시간 세션 -->
+      <a href="e3-live/index.html" class="card p-6 hover:shadow-lg transition cursor-pointer">
+        <div class="flex items-start gap-4">
+          <div class="p-3 rounded-lg" style="background-color: hsl(var(--brand-primary) / 0.1);">
+            <i data-lucide="video" class="icon-xl" style="color: hsl(var(--brand-primary))"></i>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="badge badge-primary">P0</span>
+              <h2 class="text-lg font-semibold">E3. 실시간 세션</h2>
+            </div>
+            <p class="text-sm text-muted mb-3">WebRTC 기반 화상 회의, 화면 공유, 채팅, 녹화</p>
+            <div class="flex gap-2 flex-wrap">
+              <span class="badge badge-outline text-xs">세션 진행</span>
+              <span class="badge badge-outline text-xs">화면 공유</span>
+              <span class="badge badge-outline text-xs">실시간 채팅</span>
+            </div>
+            <div class="text-xs text-muted mt-3">23개 화면</div>
+          </div>
+        </div>
+      </a>
+
+      <!-- E4: 능동적 학습 도구 -->
+      <a href="e4-active/index.html" class="card p-6 hover:shadow-lg transition cursor-pointer">
+        <div class="flex items-start gap-4">
+          <div class="p-3 rounded-lg" style="background-color: hsl(var(--brand-primary) / 0.1);">
+            <i data-lucide="sparkles" class="icon-xl" style="color: hsl(var(--brand-primary))"></i>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="badge badge-primary">P0</span>
+              <h2 class="text-lg font-semibold">E4. 능동적 학습 도구</h2>
+            </div>
+            <p class="text-sm text-muted mb-3">투표, 퀴즈, 분반, 화이트보드 등 참여형 학습 활동</p>
+            <div class="flex gap-2 flex-wrap">
+              <span class="badge badge-outline text-xs">퀴즈</span>
+              <span class="badge badge-outline text-xs">실시간 투표</span>
+              <span class="badge badge-outline text-xs">분반</span>
+            </div>
+            <div class="text-xs text-muted mt-3">16개 화면</div>
+          </div>
+        </div>
+      </a>
+
+      <!-- E5: 평가 및 피드백 -->
+      <a href="e5-assessment/index.html" class="card p-6 hover:shadow-lg transition cursor-pointer">
+        <div class="flex items-start gap-4">
+          <div class="p-3 rounded-lg" style="background-color: hsl(var(--brand-primary) / 0.1);">
+            <i data-lucide="clipboard-check" class="icon-xl" style="color: hsl(var(--brand-primary))"></i>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="badge badge-primary">P1</span>
+              <h2 class="text-lg font-semibold">E5. 평가 및 피드백</h2>
+            </div>
+            <p class="text-sm text-muted mb-3">자동 채점, AI 피드백, 코드 평가 시스템</p>
+            <div class="flex gap-2 flex-wrap">
+              <span class="badge badge-outline text-xs">자동 채점</span>
+              <span class="badge badge-outline text-xs">AI 피드백</span>
+              <span class="badge badge-outline text-xs">코드 평가</span>
+            </div>
+            <div class="text-xs text-muted mt-3">11개 화면</div>
+          </div>
+        </div>
+      </a>
+
+      <!-- E6: 학습 분석 -->
+      <a href="e6-analytics/index.html" class="card p-6 hover:shadow-lg transition cursor-pointer">
+        <div class="flex items-start gap-4">
+          <div class="p-3 rounded-lg" style="background-color: hsl(var(--brand-primary) / 0.1);">
+            <i data-lucide="bar-chart-3" class="icon-xl" style="color: hsl(var(--brand-primary))"></i>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="badge badge-primary">P1</span>
+              <h2 class="text-lg font-semibold">E6. 학습 분석</h2>
+            </div>
+            <p class="text-sm text-muted mb-3">실시간 대시보드, 학습 리포트, 조기 경보 시스템</p>
+            <div class="flex gap-2 flex-wrap">
+              <span class="badge badge-outline text-xs">TalkTime</span>
+              <span class="badge badge-outline text-xs">리포트</span>
+              <span class="badge badge-outline text-xs">조기 경보</span>
+              <span class="badge badge-outline text-xs">네트워크</span>
+            </div>
+            <div class="text-xs text-muted mt-3">8개 화면</div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Design System Info -->
+    <div class="mt-12 text-center">
+      <div class="separator my-8"></div>
+      <h2 class="text-xl font-semibold mb-4">Design System</h2>
+      <div class="flex justify-center gap-4 flex-wrap">
+        <a href="css/variables.css" class="btn btn-outline">
+          <i data-lucide="palette" class="icon-sm"></i>
+          CSS Variables
+        </a>
+        <a href="css/base.css" class="btn btn-outline">
+          <i data-lucide="layers" class="icon-sm"></i>
+          Base Styles
+        </a>
+        <a href="css/components.css" class="btn btn-outline">
+          <i data-lucide="component" class="icon-sm"></i>
+          Components
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer mt-8">
+    <div class="footer-content text-center">
+      <p class="footer-text">EduForum CSS Wireframes - Interactive Learning Platform</p>
+      <p class="footer-text mt-2">
+        Built with
+        <a href="https://ui.shadcn.com/" target="_blank">shadcn/ui</a> &
+        <a href="https://lucide.dev/" target="_blank">Lucide Icons</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AUTH-002: 이메일 인증 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <div class="auth-layout">
+    <div class="auth-container">
+      <!-- Logo -->
+      <div class="auth-logo mb-6">
+        <i data-lucide="graduation-cap" class="icon-xl" style="color: hsl(var(--brand-primary))"></i>
+        <span class="text-2xl font-bold" style="color: hsl(var(--brand-primary))">EduForum</span>
+      </div>
+
+      <div class="auth-card text-center">
+        <!-- Email Icon -->
+        <div class="verification-icon verification-icon-pending mx-auto">
+          <i data-lucide="mail" class="icon-xl"></i>
+        </div>
+
+        <h1 class="text-2xl font-bold mb-2">이메일을 확인해주세요</h1>
+
+        <div class="separator my-6"></div>
+
+        <div class="text-muted mb-6">
+          <p class="mb-2">
+            <strong style="color: hsl(var(--foreground))">example@university.edu</strong> 로
+          </p>
+          <p>인증 메일을 발송했습니다.</p>
+          <p class="mt-4">이메일의 인증 링크를 클릭하여</p>
+          <p>회원가입을 완료해주세요.</p>
+        </div>
+
+        <div class="separator my-6"></div>
+
+        <p class="text-sm text-muted mb-4">메일을 받지 못하셨나요?</p>
+
+        <button class="btn btn-outline w-full mb-6">
+          <i data-lucide="refresh-cw" class="icon-sm"></i>
+          인증 메일 다시 보내기
+        </button>
+
+        <ul class="text-left text-sm text-muted" style="list-style: disc; padding-left: 1.5rem;">
+          <li class="mb-1">스팸 메일함을 확인해주세요</li>
+          <li>인증 링크는 1시간 동안 유효합니다</li>
+        </ul>
+
+        <div class="mt-6">
+          <a href="auth-004-login.html" class="text-sm flex items-center justify-center gap-2">
+            <i data-lucide="arrow-left" class="icon-sm"></i>
+            로그인으로 돌아가기
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BRK-003: 분반 모니터링 대시보드 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .session-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-3) var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .session-info {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-4);
+    }
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      padding: var(--spacing-1) var(--spacing-2);
+      background: hsl(var(--destructive));
+      color: white;
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+    }
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: var(--radius-full);
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .timer-display {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) var(--spacing-3);
+      background: hsl(var(--warning) / 0.1);
+      border-radius: var(--radius-md);
+    }
+    .timer-label {
+      font-size: var(--text-sm);
+    }
+    .timer-value {
+      font-size: var(--text-lg);
+      font-weight: var(--font-bold);
+      color: hsl(var(--warning));
+    }
+    .main-content {
+      padding: var(--spacing-4);
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-4);
+    }
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-4);
+      margin-bottom: var(--spacing-6);
+    }
+    .room-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+    }
+    .room-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-3);
+    }
+    .room-title {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-semibold);
+    }
+    .room-title i {
+      color: hsl(var(--brand-primary));
+    }
+    .member-count {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .activity-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-3);
+    }
+    .activity-label {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .activity-level {
+      display: flex;
+      gap: 2px;
+    }
+    .activity-segment {
+      width: 16px;
+      height: 8px;
+      background: hsl(var(--muted));
+      border-radius: 2px;
+    }
+    .activity-segment.active {
+      background: hsl(var(--success));
+    }
+    .activity-segment.warning {
+      background: hsl(var(--warning));
+    }
+    .activity-text {
+      font-size: var(--text-xs);
+      margin-left: auto;
+    }
+    .activity-text.active { color: hsl(var(--success)); }
+    .activity-text.moderate { color: hsl(var(--warning)); }
+    .activity-text.quiet { color: hsl(var(--muted-foreground)); }
+    .member-list {
+      margin-bottom: var(--spacing-3);
+    }
+    .member-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-1) 0;
+      font-size: var(--text-sm);
+    }
+    .member-status {
+      display: flex;
+      gap: var(--spacing-1);
+    }
+    .room-actions {
+      display: flex;
+      gap: var(--spacing-2);
+    }
+    .broadcast-section {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+    }
+    .broadcast-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-3);
+    }
+    .broadcast-input {
+      display: flex;
+      gap: var(--spacing-2);
+    }
+    .broadcast-input input {
+      flex: 1;
+    }
+    .time-controls {
+      display: flex;
+      gap: var(--spacing-2);
+      margin-top: var(--spacing-4);
+    }
+  </style>
+</head>
+<body>
+  <div class="session-header">
+    <div class="session-info">
+      <span class="live-badge">
+        <span class="live-dot"></span>
+        LIVE
+      </span>
+      <span class="font-semibold">경영학개론 #12</span>
+      <span class="text-muted">|</span>
+      <span class="text-sm text-muted">분반 진행 중</span>
+    </div>
+    <div class="timer-display">
+      <i data-lucide="clock" class="icon-sm" style="color: hsl(var(--warning))"></i>
+      <span class="timer-label">남은 시간:</span>
+      <span class="timer-value">7:23</span>
+    </div>
+  </div>
+
+  <main class="main-content">
+    <div class="section-header">
+      <h2 class="text-lg font-semibold">분반 현황</h2>
+      <div class="flex gap-2">
+        <button class="btn btn-outline">
+          <i data-lucide="users" class="icon-sm"></i>
+          전체 복귀
+        </button>
+        <button class="btn btn-outline">
+          <i data-lucide="megaphone" class="icon-sm"></i>
+          공지
+        </button>
+      </div>
+    </div>
+
+    <div class="rooms-grid">
+      <div class="room-card">
+        <div class="room-card-header">
+          <span class="room-title">
+            <i data-lucide="map-pin" class="icon-sm"></i>
+            분반 1
+          </span>
+          <span class="member-count">
+            <i data-lucide="users" class="icon-xs"></i>
+            5명
+          </span>
+        </div>
+        <div class="activity-bar">
+          <span class="activity-label">🎤</span>
+          <div class="activity-level">
+            <span class="activity-segment active"></span>
+            <span class="activity-segment active"></span>
+            <span class="activity-segment active"></span>
+            <span class="activity-segment active"></span>
+          </div>
+          <span class="activity-text active">활발</span>
+        </div>
+        <div class="member-list">
+          <div class="member-item">
+            <span>김민수</span>
+            <span class="member-status">
+              <i data-lucide="mic" class="icon-xs" style="color: hsl(var(--success))"></i>
+            </span>
+          </div>
+          <div class="member-item">
+            <span>이서연</span>
+            <span class="member-status">
+              <i data-lucide="mic-off" class="icon-xs text-muted"></i>
+            </span>
+          </div>
+          <div class="member-item">
+            <span>박준혁</span>
+            <span class="member-status">
+              <i data-lucide="mic" class="icon-xs" style="color: hsl(var(--success))"></i>
+            </span>
+          </div>
+          <div class="member-item">
+            <span>최유진</span>
+          </div>
+          <div class="member-item">
+            <span>강하늘</span>
+            <span class="member-status">
+              <i data-lucide="mic" class="icon-xs" style="color: hsl(var(--success))"></i>
+            </span>
+          </div>
+        </div>
+        <div class="room-actions">
+          <button class="btn btn-ghost btn-sm">
+            <i data-lucide="eye" class="icon-xs"></i>
+            참관
+          </button>
+          <button class="btn btn-outline btn-sm">
+            <i data-lucide="map-pin" class="icon-xs"></i>
+            입장
+          </button>
+        </div>
+      </div>
+
+      <div class="room-card">
+        <div class="room-card-header">
+          <span class="room-title">
+            <i data-lucide="map-pin" class="icon-sm"></i>
+            분반 2
+          </span>
+          <span class="member-count">
+            <i data-lucide="users" class="icon-xs"></i>
+            5명
+          </span>
+        </div>
+        <div class="activity-bar">
+          <span class="activity-label">🎤</span>
+          <div class="activity-level">
+            <span class="activity-segment active"></span>
+            <span class="activity-segment active"></span>
+            <span class="activity-segment"></span>
+            <span class="activity-segment"></span>
+          </div>
+          <span class="activity-text moderate">보통</span>
+        </div>
+        <div class="member-list">
+          <div class="member-item">
+            <span>오세훈</span>
+            <span class="member-status">
+              <i data-lucide="mic" class="icon-xs" style="color: hsl(var(--success))"></i>
+            </span>
+          </div>
+          <div class="member-item">
+            <span>임수빈</span>
+          </div>
+          <div class="member-item">
+            <span>조현우</span>
+            <span class="member-status">
+              <i data-lucide="mic" class="icon-xs" style="color: hsl(var(--success))"></i>
+            </span>
+          </div>
+          <div class="member-item">
+            <span>...</span>
+          </div>
+        </div>
+        <div class="room-actions">
+          <button class="btn btn-ghost btn-sm">
+            <i data-lucide="eye" class="icon-xs"></i>
+            참관
+          </button>
+          <button class="btn btn-outline btn-sm">
+            <i data-lucide="map-pin" class="icon-xs"></i>
+            입장
+          </button>
+        </div>
+      </div>
+
+      <div class="room-card">
+        <div class="room-card-header">
+          <span class="room-title">
+            <i data-lucide="map-pin" class="icon-sm"></i>
+            분반 3
+          </span>
+          <span class="member-count">
+            <i data-lucide="users" class="icon-xs"></i>
+            5명
+          </span>
+        </div>
+        <div class="activity-bar">
+          <span class="activity-label">🎤</span>
+          <div class="activity-level">
+            <span class="activity-segment warning"></span>
+            <span class="activity-segment"></span>
+            <span class="activity-segment"></span>
+            <span class="activity-segment"></span>
+          </div>
+          <span class="activity-text quiet">조용</span>
+        </div>
+        <div class="member-list">
+          <div class="member-item">
+            <span>유지원</span>
+            <span class="member-status">
+              <i data-lucide="mic" class="icon-xs" style="color: hsl(var(--success))"></i>
+            </span>
+          </div>
+          <div class="member-item">
+            <span>장민호</span>
+          </div>
+          <div class="member-item">
+            <span>최서아</span>
+          </div>
+          <div class="member-item">
+            <span>...</span>
+          </div>
+        </div>
+        <div class="room-actions">
+          <button class="btn btn-ghost btn-sm">
+            <i data-lucide="eye" class="icon-xs"></i>
+            참관
+          </button>
+          <button class="btn btn-outline btn-sm">
+            <i data-lucide="map-pin" class="icon-xs"></i>
+            입장
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="broadcast-section">
+      <div class="broadcast-header">
+        <i data-lucide="megaphone" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        <span class="font-semibold">전체 공지 메시지</span>
+      </div>
+      <div class="broadcast-input">
+        <input type="text" class="input" placeholder="5분 후 메인 세션으로 복귀합니다.">
+        <button class="btn btn-primary">전송</button>
+      </div>
+
+      <div class="time-controls">
+        <button class="btn btn-outline">
+          <i data-lucide="clock" class="icon-sm"></i>
+          시간 연장 +5분
+        </button>
+        <button class="btn btn-outline">
+          <i data-lucide="clock" class="icon-sm"></i>
+          시간 단축 -5분
+        </button>
+        <button class="btn btn-destructive">
+          <i data-lucide="circle" class="icon-sm"></i>
+          전체 복귀
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

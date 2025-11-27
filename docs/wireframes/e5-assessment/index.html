@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E5. 평가 및 피드백 - EduForum Wireframes</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar">
+      <a href="../index.html" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum Wireframes
+      </a>
+    </nav>
+  </header>
+
+  <main class="container py-8">
+    <div class="flex items-center gap-2 text-sm text-muted mb-4">
+      <a href="../index.html">홈</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <span class="font-medium" style="color: hsl(var(--foreground))">E5. 평가 및 피드백</span>
+    </div>
+
+    <h1 class="text-3xl font-bold mb-2">E5. 평가 및 피드백</h1>
+    <p class="text-muted mb-8">자동 채점, AI 피드백, 참여도 평가, 동료 평가 시스템</p>
+
+    <div class="grid gap-6">
+      <!-- S1: 객관식 자동 채점 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="check-circle" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E5-S1: 객관식 자동 채점
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="grade-001-quiz-result.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">GRADE-001</div>
+              <div class="text-xs text-muted">객관식 퀴즈 결과 (학생)</div>
+            </a>
+            <a href="grade-002-statistics.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">GRADE-002</div>
+              <div class="text-xs text-muted">문항별 정답률 통계 (교수)</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S2: 주관식 AI 채점 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="bot" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E5-S2: 주관식 AI 채점
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="ai-grade-001-review.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">AI-GRADE-001</div>
+              <div class="text-xs text-muted">AI 채점 결과 검토 (교수)</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S3: 코딩 문제 자동 채점 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="code" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E5-S3: 코딩 문제 자동 채점
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="code-001-submit.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">CODE-001</div>
+              <div class="text-xs text-muted">코딩 문제 제출 (학생)</div>
+            </a>
+            <a href="code-002-result.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">CODE-002</div>
+              <div class="text-xs text-muted">코딩 문제 채점 결과 (학생)</div>
+            </a>
+            <a href="code-003-plagiarism.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">CODE-003</div>
+              <div class="text-xs text-muted">표절 검사 결과 (교수)</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S4: 즉각 피드백 시스템 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="zap" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E5-S4: 즉각 피드백 시스템
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="feedback-001-instant.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">FEEDBACK-001</div>
+              <div class="text-xs text-muted">즉각 피드백 표시 (학생)</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S5: 참여도 자동 측정 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="activity" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E5-S5: 참여도 자동 측정
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="engage-001-settings.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">ENGAGE-001</div>
+              <div class="text-xs text-muted">참여도 가중치 설정 (교수)</div>
+            </a>
+            <a href="engage-002-dashboard.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">ENGAGE-002</div>
+              <div class="text-xs text-muted">학생 참여도 대시보드 (학생)</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S6: 동료 평가 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="users" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E5-S6: 동료 평가
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="peer-001-evaluate.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">PEER-001</div>
+              <div class="text-xs text-muted">동료 평가 작성 (학생)</div>
+            </a>
+            <a href="peer-002-result.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">PEER-002</div>
+              <div class="text-xs text-muted">동료 평가 결과 (교수)</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer mt-8">
+    <div class="footer-content text-center">
+      <p class="footer-text">EduForum CSS Wireframes - shadcn/ui & Lucide Icons</p>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

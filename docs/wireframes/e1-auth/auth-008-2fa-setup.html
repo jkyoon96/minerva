@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AUTH-008: 2FA 설정 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="flex items-center gap-2 text-muted">
+        <i data-lucide="arrow-left" class="icon-md"></i>
+        보안 설정
+      </a>
+    </nav>
+  </header>
+
+  <main class="container py-8" style="max-width: 600px;">
+    <h1 class="text-2xl font-bold mb-2">2단계 인증 (2FA)</h1>
+    <div class="separator my-4"></div>
+
+    <p class="text-muted mb-6">추가 보안 계층으로 계정을 보호하세요.</p>
+
+    <!-- Current Status Card -->
+    <div class="card mb-8">
+      <div class="card-content">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="font-medium">현재 상태</div>
+            <div class="badge badge-default mt-2">비활성화</div>
+          </div>
+          <button class="btn btn-primary">
+            <i data-lucide="shield-check" class="icon-sm"></i>
+            2FA 활성화하기
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="separator my-6"></div>
+
+    <!-- Instructions -->
+    <div class="flex items-start gap-3 mb-6">
+      <i data-lucide="smartphone" class="icon-lg text-muted flex-shrink-0"></i>
+      <div>
+        <h2 class="font-semibold mb-4">인증 앱 사용 방법</h2>
+
+        <ol class="flex flex-col gap-4 text-sm">
+          <li class="flex gap-3">
+            <span class="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-medium flex-shrink-0" style="background: hsl(var(--brand-primary)); color: white;">1</span>
+            <div>
+              <strong>Google Authenticator</strong> 또는<br>
+              <strong>Microsoft Authenticator</strong> 앱을 설치하세요
+            </div>
+          </li>
+          <li class="flex gap-3">
+            <span class="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-medium flex-shrink-0" style="background: hsl(var(--brand-primary)); color: white;">2</span>
+            <div>
+              앱에서 QR 코드를 스캔하거나<br>
+              설정 키를 직접 입력하세요
+            </div>
+          </li>
+          <li class="flex gap-3">
+            <span class="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-medium flex-shrink-0" style="background: hsl(var(--brand-primary)); color: white;">3</span>
+            <div>
+              앱에 표시되는 6자리 코드를 입력하여<br>
+              설정을 완료하세요
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- App Download Links -->
+    <div class="card bg-muted">
+      <div class="card-content">
+        <div class="text-sm text-muted mb-3">인증 앱 다운로드</div>
+        <div class="flex gap-3">
+          <a href="#" class="btn btn-outline btn-sm flex-1">
+            <i data-lucide="download" class="icon-sm"></i>
+            Google Authenticator
+          </a>
+          <a href="#" class="btn btn-outline btn-sm flex-1">
+            <i data-lucide="download" class="icon-sm"></i>
+            MS Authenticator
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

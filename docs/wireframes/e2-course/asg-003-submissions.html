@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASG-003: 제출물 관리 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .main-content {
+      margin-left: 280px;
+      padding: var(--spacing-6);
+    }
+    .progress-bar {
+      height: 8px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: hsl(var(--brand-primary));
+    }
+    .status-pending {
+      color: hsl(var(--warning));
+    }
+    .status-graded {
+      color: hsl(var(--success));
+    }
+    .status-missing {
+      color: hsl(var(--destructive));
+    }
+    .late-indicator {
+      color: hsl(var(--warning));
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="#" class="nav-link">대시보드</a>
+        <a href="crs-001-course-list.html" class="nav-link active">내 코스</a>
+        <a href="#" class="nav-link">분석</a>
+        <a href="#" class="nav-link">설정</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-icon">
+          <i data-lucide="bell" class="icon-md"></i>
+        </button>
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">김교수</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content (Full Width) -->
+  <main style="padding: var(--spacing-6);">
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-sm text-muted mb-4">
+      <a href="crs-003-course-detail.html">경영학개론</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <a href="asg-001-assignment-list.html">과제</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <span class="font-medium" style="color: hsl(var(--foreground))">과제 1: 연결 리스트 구현</span>
+    </div>
+
+    <h1 class="text-2xl font-bold mb-6">제출물 관리</h1>
+
+    <!-- Search and Actions -->
+    <div class="card mb-6">
+      <div class="card-content">
+        <div class="flex items-center gap-4">
+          <div class="input-group flex-1">
+            <span class="input-icon">
+              <i data-lucide="search" class="icon-sm"></i>
+            </span>
+            <input type="text" class="input" style="padding-left: 2.5rem" placeholder="학생 검색...">
+          </div>
+          <select class="select" style="width: 120px;">
+            <option>상태</option>
+            <option>미채점</option>
+            <option>채점완료</option>
+            <option>미제출</option>
+          </select>
+          <select class="select" style="width: 120px;">
+            <option>정렬</option>
+            <option>이름순</option>
+            <option>제출일순</option>
+            <option>점수순</option>
+          </select>
+          <button class="btn btn-outline">
+            <i data-lucide="download" class="icon-sm"></i>
+            전체 다운로드
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="card mb-6">
+      <div class="card-content">
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-medium">진행 상황: 38/45 제출 (84%)</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-bar-fill" style="width: 84%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submissions Table -->
+    <div class="card mb-6">
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>학생</th>
+              <th>제출일시</th>
+              <th>파일</th>
+              <th>상태</th>
+              <th>점수</th>
+              <th style="width: 80px;">작업</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="flex items-center gap-2">
+                  <div class="avatar avatar-sm">
+                    <i data-lucide="user" class="icon-sm"></i>
+                  </div>
+                  김민수
+                </div>
+              </td>
+              <td>11-25 14:30</td>
+              <td>
+                <span class="flex items-center gap-1">
+                  <i data-lucide="paperclip" class="icon-sm text-muted"></i>
+                  2개
+                </span>
+              </td>
+              <td>
+                <span class="flex items-center gap-1 status-pending">
+                  <i data-lucide="clock" class="icon-sm"></i>
+                  미채점
+                </span>
+              </td>
+              <td>-</td>
+              <td>
+                <a href="asg-004-grading.html" class="btn btn-primary btn-sm">채점</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="flex items-center gap-2">
+                  <div class="avatar avatar-sm">
+                    <i data-lucide="user" class="icon-sm"></i>
+                  </div>
+                  이서연
+                </div>
+              </td>
+              <td>11-24 18:45</td>
+              <td>
+                <span class="flex items-center gap-1">
+                  <i data-lucide="paperclip" class="icon-sm text-muted"></i>
+                  1개
+                </span>
+              </td>
+              <td>
+                <span class="flex items-center gap-1 status-graded">
+                  <i data-lucide="check-circle" class="icon-sm"></i>
+                  완료
+                </span>
+              </td>
+              <td><strong>95</strong></td>
+              <td>
+                <button class="btn btn-outline btn-sm">보기</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="flex items-center gap-2">
+                  <div class="avatar avatar-sm">
+                    <i data-lucide="user" class="icon-sm"></i>
+                  </div>
+                  박준혁
+                </div>
+              </td>
+              <td>11-23 09:12</td>
+              <td>
+                <span class="flex items-center gap-1">
+                  <i data-lucide="paperclip" class="icon-sm text-muted"></i>
+                  3개
+                </span>
+              </td>
+              <td>
+                <span class="flex items-center gap-1 status-graded">
+                  <i data-lucide="check-circle" class="icon-sm"></i>
+                  완료
+                </span>
+              </td>
+              <td><strong>88</strong></td>
+              <td>
+                <button class="btn btn-outline btn-sm">보기</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="flex items-center gap-2">
+                  <div class="avatar avatar-sm">
+                    <i data-lucide="user" class="icon-sm"></i>
+                  </div>
+                  최유진
+                </div>
+              </td>
+              <td>-</td>
+              <td>-</td>
+              <td>
+                <span class="flex items-center gap-1 status-missing">
+                  <i data-lucide="x-circle" class="icon-sm"></i>
+                  미제출
+                </span>
+              </td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="flex items-center gap-2">
+                  <div class="avatar avatar-sm">
+                    <i data-lucide="user" class="icon-sm"></i>
+                  </div>
+                  정다운
+                </div>
+              </td>
+              <td>
+                <span class="flex items-center gap-1">
+                  11-28 23:55
+                  <i data-lucide="alert-triangle" class="icon-sm late-indicator"></i>
+                </span>
+              </td>
+              <td>
+                <span class="flex items-center gap-1">
+                  <i data-lucide="paperclip" class="icon-sm text-muted"></i>
+                  1개
+                </span>
+              </td>
+              <td>
+                <span class="flex items-center gap-1 status-pending">
+                  <i data-lucide="clock" class="icon-sm"></i>
+                  미채점
+                </span>
+              </td>
+              <td>-</td>
+              <td>
+                <a href="asg-004-grading.html" class="btn btn-primary btn-sm">채점</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="flex items-center gap-2">
+                  <div class="avatar avatar-sm">
+                    <i data-lucide="user" class="icon-sm"></i>
+                  </div>
+                  강하늘
+                </div>
+              </td>
+              <td>11-26 11:20</td>
+              <td>
+                <span class="flex items-center gap-1">
+                  <i data-lucide="paperclip" class="icon-sm text-muted"></i>
+                  2개
+                </span>
+              </td>
+              <td>
+                <span class="flex items-center gap-1 status-pending">
+                  <i data-lucide="clock" class="icon-sm"></i>
+                  미채점
+                </span>
+              </td>
+              <td>-</td>
+              <td>
+                <a href="asg-004-grading.html" class="btn btn-primary btn-sm">채점</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Summary and Actions -->
+    <div class="card">
+      <div class="card-content">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-6 text-sm">
+            <span class="flex items-center gap-2">
+              <i data-lucide="clock" class="icon-sm status-pending"></i>
+              미채점: 15
+            </span>
+            <span class="flex items-center gap-2">
+              <i data-lucide="check-circle" class="icon-sm status-graded"></i>
+              채점완료: 23
+            </span>
+            <span class="flex items-center gap-2">
+              <i data-lucide="x-circle" class="icon-sm status-missing"></i>
+              미제출: 7
+            </span>
+          </div>
+          <div class="flex gap-2">
+            <button class="btn btn-outline">
+              <i data-lucide="bot" class="icon-sm"></i>
+              AI 자동 채점
+            </button>
+            <button class="btn btn-outline">
+              <i data-lucide="upload" class="icon-sm"></i>
+              성적 내보내기
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

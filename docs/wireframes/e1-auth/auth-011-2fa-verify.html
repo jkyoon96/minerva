@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AUTH-011: 2단계 인증 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <div class="auth-layout">
+    <div class="auth-container">
+      <!-- Logo -->
+      <div class="auth-logo mb-6">
+        <i data-lucide="graduation-cap" class="icon-xl" style="color: hsl(var(--brand-primary))"></i>
+        <span class="text-2xl font-bold" style="color: hsl(var(--brand-primary))">EduForum</span>
+      </div>
+
+      <div class="auth-card text-center">
+        <!-- Lock Icon -->
+        <div class="verification-icon verification-icon-pending mx-auto" style="background-color: hsl(var(--brand-primary) / 0.1); color: hsl(var(--brand-primary));">
+          <i data-lucide="shield" class="icon-xl"></i>
+        </div>
+
+        <h1 class="text-2xl font-bold mb-2">2단계 인증</h1>
+
+        <div class="separator my-6"></div>
+
+        <p class="text-muted mb-6">
+          인증 앱에서 6자리 코드를 확인하여<br>
+          입력해주세요.
+        </p>
+
+        <!-- OTP Input -->
+        <div class="otp-input-group mb-6">
+          <input type="text" class="otp-input" maxlength="1" autofocus>
+          <input type="text" class="otp-input" maxlength="1">
+          <input type="text" class="otp-input" maxlength="1">
+          <input type="text" class="otp-input" maxlength="1">
+          <input type="text" class="otp-input" maxlength="1">
+          <input type="text" class="otp-input" maxlength="1">
+        </div>
+
+        <button class="btn btn-primary w-full btn-lg mb-6">
+          확인
+        </button>
+
+        <div class="text-sm text-muted">
+          <p class="mb-2">인증 앱에 접근할 수 없나요?</p>
+          <a href="#" class="flex items-center justify-center gap-1">
+            <i data-lucide="key" class="icon-sm"></i>
+            백업 코드 사용하기
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // OTP input auto-focus
+    const inputs = document.querySelectorAll('.otp-input');
+    inputs.forEach((input, index) => {
+      input.addEventListener('input', (e) => {
+        if (e.target.value && index < inputs.length - 1) {
+          inputs[index + 1].focus();
+        }
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !e.target.value && index > 0) {
+          inputs[index - 1].focus();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

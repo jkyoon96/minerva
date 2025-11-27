@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BRK-004: 분반 내 화면 (학생) - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .breakout-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-3) var(--spacing-4);
+      background: hsl(var(--brand-primary) / 0.1);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .room-info {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+    }
+    .room-badge {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      padding: var(--spacing-1) var(--spacing-2);
+      background: hsl(var(--brand-primary));
+      color: white;
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+    }
+    .timer-display {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .timer-value {
+      font-weight: var(--font-bold);
+      color: hsl(var(--warning));
+    }
+    .member-count {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      font-size: var(--text-sm);
+    }
+    .video-grid {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-3);
+      padding: var(--spacing-4);
+      background: hsl(var(--muted));
+    }
+    .video-tile {
+      width: 150px;
+      height: 120px;
+      background: hsl(var(--card));
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .video-avatar {
+      width: 48px;
+      height: 48px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--spacing-2);
+    }
+    .video-name {
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+    }
+    .video-status {
+      display: flex;
+      gap: var(--spacing-1);
+      position: absolute;
+      bottom: var(--spacing-2);
+      right: var(--spacing-2);
+    }
+    .status-icon {
+      width: 20px;
+      height: 20px;
+      background: hsl(var(--card));
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .status-icon.on {
+      color: hsl(var(--success));
+    }
+    .status-icon.off {
+      color: hsl(var(--destructive));
+    }
+    .topic-card {
+      margin: var(--spacing-4);
+      padding: var(--spacing-4);
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+    }
+    .topic-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-2);
+    }
+    .topic-title {
+      font-weight: var(--font-semibold);
+      color: hsl(var(--brand-primary));
+    }
+    .topic-content {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      line-height: 1.6;
+    }
+    .announcement {
+      margin: 0 var(--spacing-4);
+      padding: var(--spacing-3);
+      background: hsl(var(--warning) / 0.1);
+      border: 1px solid hsl(var(--warning) / 0.3);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .announcement-icon {
+      color: hsl(var(--warning));
+    }
+    .announcement-text {
+      font-size: var(--text-sm);
+    }
+    .controls-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: var(--spacing-4);
+      background: hsl(var(--card));
+      border-top: 1px solid hsl(var(--border));
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-6);
+    }
+    .control-button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-1);
+      cursor: pointer;
+    }
+    .control-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: hsl(var(--muted));
+      transition: all 0.2s;
+    }
+    .control-icon.on {
+      background: hsl(var(--success) / 0.2);
+      color: hsl(var(--success));
+    }
+    .control-icon.off {
+      background: hsl(var(--muted));
+      color: hsl(var(--muted-foreground));
+    }
+    .control-label {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .control-state {
+      font-size: var(--text-xs);
+      font-weight: var(--font-medium);
+    }
+    .control-state.on {
+      color: hsl(var(--success));
+    }
+    .control-state.off {
+      color: hsl(var(--muted-foreground));
+    }
+    main {
+      padding-bottom: 100px;
+    }
+  </style>
+</head>
+<body>
+  <header class="breakout-header">
+    <div class="room-info">
+      <span class="room-badge">
+        <i data-lucide="map-pin" class="icon-xs"></i>
+        분반 1
+      </span>
+      <span class="font-medium">경영학개론 #12</span>
+    </div>
+    <div class="timer-display">
+      <span class="text-sm">남은 시간:</span>
+      <span class="timer-value">7:23</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <span class="member-count">
+        <i data-lucide="users" class="icon-sm"></i>
+        5명
+      </span>
+      <button class="btn btn-outline btn-sm">나가기</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="video-grid">
+      <div class="video-tile">
+        <div class="video-avatar">
+          <i data-lucide="user" class="icon-lg"></i>
+        </div>
+        <span class="video-name">김민수</span>
+        <div class="video-status">
+          <span class="status-icon on">
+            <i data-lucide="mic" class="icon-xs"></i>
+          </span>
+          <span class="status-icon on">
+            <i data-lucide="video" class="icon-xs"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="video-tile">
+        <div class="video-avatar">
+          <i data-lucide="user" class="icon-lg"></i>
+        </div>
+        <span class="video-name">이서연</span>
+        <div class="video-status">
+          <span class="status-icon off">
+            <i data-lucide="mic-off" class="icon-xs"></i>
+          </span>
+          <span class="status-icon on">
+            <i data-lucide="video" class="icon-xs"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="video-tile">
+        <div class="video-avatar">
+          <i data-lucide="user" class="icon-lg"></i>
+        </div>
+        <span class="video-name">박준혁</span>
+        <div class="video-status">
+          <span class="status-icon on">
+            <i data-lucide="mic" class="icon-xs"></i>
+          </span>
+          <span class="status-icon on">
+            <i data-lucide="video" class="icon-xs"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="video-tile">
+        <div class="video-avatar">
+          <i data-lucide="user" class="icon-lg"></i>
+        </div>
+        <span class="video-name">최유진</span>
+        <div class="video-status">
+          <span class="status-icon off">
+            <i data-lucide="mic-off" class="icon-xs"></i>
+          </span>
+          <span class="status-icon off">
+            <i data-lucide="video-off" class="icon-xs"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="video-tile">
+        <div class="video-avatar">
+          <i data-lucide="user" class="icon-lg"></i>
+        </div>
+        <span class="video-name">강하늘</span>
+        <div class="video-status">
+          <span class="status-icon on">
+            <i data-lucide="mic" class="icon-xs"></i>
+          </span>
+          <span class="status-icon on">
+            <i data-lucide="video" class="icon-xs"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-header">
+        <i data-lucide="clipboard-list" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        <span class="topic-title">마케팅 전략 사례 분석</span>
+      </div>
+      <p class="topic-content">
+        각 팀에서 실제 기업의 마케팅 4P 전략 사례를 하나 선정하여
+        분석해 주세요. 5분 후 전체 발표가 있습니다.
+      </p>
+    </div>
+
+    <div class="announcement">
+      <i data-lucide="megaphone" class="icon-md announcement-icon"></i>
+      <span class="announcement-text">
+        <strong>교수님:</strong> 5분 후 메인 세션으로 복귀합니다.
+      </span>
+    </div>
+  </main>
+
+  <div class="controls-bar">
+    <div class="control-button">
+      <div class="control-icon on">
+        <i data-lucide="mic" class="icon-lg"></i>
+      </div>
+      <span class="control-label">마이크</span>
+      <span class="control-state on">ON</span>
+    </div>
+
+    <div class="control-button">
+      <div class="control-icon on">
+        <i data-lucide="video" class="icon-lg"></i>
+      </div>
+      <span class="control-label">카메라</span>
+      <span class="control-state on">ON</span>
+    </div>
+
+    <div class="control-button">
+      <div class="control-icon off">
+        <i data-lucide="hand" class="icon-lg"></i>
+      </div>
+      <span class="control-label">손들기</span>
+      <span class="control-state off">OFF</span>
+    </div>
+
+    <div class="control-button">
+      <div class="control-icon off">
+        <i data-lucide="edit-3" class="icon-lg"></i>
+      </div>
+      <span class="control-label">화이트보드</span>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

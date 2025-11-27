@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ENGAGE-002: 학생 참여도 대시보드 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .score-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-6);
+      text-align: center;
+      margin-bottom: var(--spacing-4);
+    }
+    .score-display {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 140px;
+      height: 140px;
+      background: hsl(var(--brand-primary) / 0.1);
+      border-radius: var(--radius-full);
+      margin-bottom: var(--spacing-3);
+    }
+    .score-value {
+      font-size: var(--text-2xl);
+      font-weight: var(--font-bold);
+      color: hsl(var(--brand-primary));
+    }
+    .score-label {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      padding: var(--spacing-1) var(--spacing-3);
+      background: hsl(var(--success) / 0.1);
+      color: hsl(var(--success));
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-3);
+    }
+    .score-summary {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-6);
+      color: hsl(var(--muted-foreground));
+      font-size: var(--text-sm);
+    }
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+    .breakdown-table th,
+    .breakdown-table td {
+      padding: var(--spacing-2) var(--spacing-3);
+      text-align: left;
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .breakdown-table th {
+      font-weight: var(--font-medium);
+      color: hsl(var(--muted-foreground));
+      font-size: var(--text-xs);
+    }
+    .score-bar-container {
+      width: 120px;
+    }
+    .score-bar {
+      height: 16px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .score-bar-fill {
+      height: 100%;
+      background: hsl(var(--brand-primary));
+    }
+    .chart-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .chart-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-4);
+    }
+    .chart-area {
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+    }
+    .chart-grid {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      gap: var(--spacing-1);
+      border-bottom: 1px solid hsl(var(--border));
+      padding-bottom: var(--spacing-2);
+    }
+    .chart-bar-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-1);
+    }
+    .chart-bars {
+      display: flex;
+      gap: 2px;
+      align-items: flex-end;
+      height: 150px;
+    }
+    .chart-bar {
+      width: 8px;
+      background: hsl(var(--brand-primary));
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    }
+    .chart-bar.avg {
+      background: hsl(var(--muted-foreground) / 0.5);
+    }
+    .chart-label {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .chart-legend {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-4);
+      margin-top: var(--spacing-3);
+      font-size: var(--text-xs);
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+    }
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: var(--radius-full);
+    }
+    .legend-dot.mine {
+      background: hsl(var(--brand-primary));
+    }
+    .legend-dot.avg {
+      background: hsl(var(--muted-foreground) / 0.5);
+    }
+    .suggestion-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .suggestion-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-3);
+    }
+    .suggestion-box {
+      background: hsl(var(--warning) / 0.1);
+      border: 1px solid hsl(var(--warning) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+    }
+    .suggestion-title {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-2);
+    }
+    .suggestion-text {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-2);
+    }
+    .suggestion-goal {
+      font-size: var(--text-sm);
+      color: hsl(var(--success));
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <a href="index.html" class="btn btn-ghost btn-icon">
+      <i data-lucide="arrow-left" class="icon-md"></i>
+    </a>
+    <h1 class="font-semibold">나의 참여도</h1>
+  </header>
+
+  <main class="container py-6">
+    <!-- Score Card -->
+    <div class="score-card">
+      <div class="flex items-center justify-center gap-2 mb-4">
+        <i data-lucide="bar-chart-2" class="icon-lg" style="color: hsl(var(--brand-primary))"></i>
+        <span class="text-lg font-semibold">전체 참여도 점수</span>
+      </div>
+      <div class="score-display">
+        <span class="score-value">78 / 100</span>
+        <span class="score-label">점</span>
+      </div>
+      <div class="rank-badge">
+        <i data-lucide="target" class="icon-xs"></i>
+        상위 35%
+      </div>
+      <div class="score-summary">
+        <span>학기 평균: 72점</span>
+        <span>클래스 평균: 68점</span>
+        <span>나의 순위: 16/48</span>
+      </div>
+    </div>
+
+    <!-- Category Breakdown -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="pie-chart" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          항목별 참여도
+        </h2>
+      </div>
+      <div class="card-content">
+        <table class="breakdown-table">
+          <thead>
+            <tr>
+              <th>항목</th>
+              <th>내 점수</th>
+              <th>평균</th>
+              <th>최대</th>
+              <th>그래프</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <span class="flex items-center gap-2">
+                  <i data-lucide="mic" class="icon-xs"></i>
+                  발언 참여
+                </span>
+              </td>
+              <td>24/30</td>
+              <td>20</td>
+              <td>30</td>
+              <td class="score-bar-container">
+                <div class="score-bar"><div class="score-bar-fill" style="width: 80%;"></div></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="flex items-center gap-2">
+                  <i data-lucide="message-square" class="icon-xs"></i>
+                  채팅 참여
+                </span>
+              </td>
+              <td>12/15</td>
+              <td>11</td>
+              <td>15</td>
+              <td class="score-bar-container">
+                <div class="score-bar"><div class="score-bar-fill" style="width: 80%;"></div></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="flex items-center gap-2">
+                  <i data-lucide="bar-chart-3" class="icon-xs"></i>
+                  투표/퀴즈
+                </span>
+              </td>
+              <td>22/25</td>
+              <td>18</td>
+              <td>25</td>
+              <td class="score-bar-container">
+                <div class="score-bar"><div class="score-bar-fill" style="width: 88%;"></div></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="flex items-center gap-2">
+                  <i data-lucide="hand" class="icon-xs"></i>
+                  손들기/반응
+                </span>
+              </td>
+              <td>8/10</td>
+              <td>7</td>
+              <td>10</td>
+              <td class="score-bar-container">
+                <div class="score-bar"><div class="score-bar-fill" style="width: 80%;"></div></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="flex items-center gap-2">
+                  <i data-lucide="users" class="icon-xs"></i>
+                  분반 토론
+                </span>
+              </td>
+              <td>12/20</td>
+              <td>12</td>
+              <td>20</td>
+              <td class="score-bar-container">
+                <div class="score-bar"><div class="score-bar-fill" style="width: 60%;"></div></div>
+              </td>
+            </tr>
+            <tr style="font-weight: var(--font-semibold);">
+              <td>총점</td>
+              <td>78/100</td>
+              <td>68</td>
+              <td>100</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Weekly Trend Chart -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <i data-lucide="trending-up" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        주간 참여도 추이
+      </div>
+      <div class="chart-area">
+        <div class="chart-grid">
+          <div class="chart-bar-group">
+            <div class="chart-bars">
+              <div class="chart-bar" style="height: 60px;"></div>
+              <div class="chart-bar avg" style="height: 65px;"></div>
+            </div>
+            <span class="chart-label">W1</span>
+          </div>
+          <div class="chart-bar-group">
+            <div class="chart-bars">
+              <div class="chart-bar" style="height: 45px;"></div>
+              <div class="chart-bar avg" style="height: 65px;"></div>
+            </div>
+            <span class="chart-label">W2</span>
+          </div>
+          <div class="chart-bar-group">
+            <div class="chart-bars">
+              <div class="chart-bar" style="height: 80px;"></div>
+              <div class="chart-bar avg" style="height: 68px;"></div>
+            </div>
+            <span class="chart-label">W3</span>
+          </div>
+          <div class="chart-bar-group">
+            <div class="chart-bars">
+              <div class="chart-bar" style="height: 70px;"></div>
+              <div class="chart-bar avg" style="height: 66px;"></div>
+            </div>
+            <span class="chart-label">W4</span>
+          </div>
+          <div class="chart-bar-group">
+            <div class="chart-bars">
+              <div class="chart-bar" style="height: 85px;"></div>
+              <div class="chart-bar avg" style="height: 68px;"></div>
+            </div>
+            <span class="chart-label">W5</span>
+          </div>
+          <div class="chart-bar-group">
+            <div class="chart-bars">
+              <div class="chart-bar" style="height: 90px;"></div>
+              <div class="chart-bar avg" style="height: 70px;"></div>
+            </div>
+            <span class="chart-label">W6</span>
+          </div>
+          <div class="chart-bar-group">
+            <div class="chart-bars">
+              <div class="chart-bar" style="height: 75px;"></div>
+              <div class="chart-bar avg" style="height: 68px;"></div>
+            </div>
+            <span class="chart-label">W7</span>
+          </div>
+          <div class="chart-bar-group">
+            <div class="chart-bars">
+              <div class="chart-bar" style="height: 70px;"></div>
+              <div class="chart-bar avg" style="height: 65px;"></div>
+            </div>
+            <span class="chart-label">W8</span>
+          </div>
+          <div class="chart-bar-group">
+            <div class="chart-bars">
+              <div class="chart-bar" style="height: 78px;"></div>
+              <div class="chart-bar avg" style="height: 68px;"></div>
+            </div>
+            <span class="chart-label">W9</span>
+          </div>
+          <div class="chart-bar-group">
+            <div class="chart-bars">
+              <div class="chart-bar" style="height: 82px;"></div>
+              <div class="chart-bar avg" style="height: 70px;"></div>
+            </div>
+            <span class="chart-label">W10</span>
+          </div>
+        </div>
+        <div class="chart-legend">
+          <span class="legend-item">
+            <span class="legend-dot mine"></span>
+            나의 점수
+          </span>
+          <span class="legend-item">
+            <span class="legend-dot avg"></span>
+            클래스 평균
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Improvement Suggestion -->
+    <div class="suggestion-card">
+      <div class="suggestion-header">
+        <i data-lucide="lightbulb" class="icon-md" style="color: hsl(var(--warning))"></i>
+        참여도 향상 제안
+      </div>
+      <div class="suggestion-box">
+        <div class="suggestion-title">
+          <i data-lucide="users" class="icon-sm"></i>
+          분반 토론 참여를 늘려보세요!
+        </div>
+        <p class="suggestion-text">
+          현재 분반 토론 점수가 평균 수준입니다. 다음 세션에서 적극적으로 의견을 나눠보세요.
+        </p>
+        <p class="suggestion-goal">
+          <strong>목표:</strong> 발언 비율 25% 이상 → +4점 예상
+        </p>
+      </div>
+    </div>
+
+    <!-- Action Button -->
+    <button class="btn btn-outline w-full">
+      <i data-lucide="bar-chart-2" class="icon-sm"></i>
+      세부 활동 내역 보기
+    </button>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

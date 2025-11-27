@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIVE-016: 녹화본 다시보기 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .main-content {
+      padding: var(--spacing-6);
+    }
+    .video-player {
+      background: #1a1a1a;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: var(--spacing-4);
+    }
+    .video-area {
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .play-button {
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .play-button i {
+      color: #1a1a1a;
+      margin-left: 4px;
+    }
+    .video-controls {
+      background: rgba(0, 0, 0, 0.8);
+      padding: var(--spacing-3) var(--spacing-4);
+    }
+    .progress-slider {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: var(--radius-full);
+      margin-bottom: var(--spacing-3);
+      position: relative;
+    }
+    .progress-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 50%;
+      background: hsl(var(--brand-primary));
+      border-radius: var(--radius-full);
+    }
+    .progress-handle {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 12px;
+      height: 12px;
+      background: white;
+      border-radius: 50%;
+    }
+    .controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: white;
+    }
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .control-btn {
+      background: transparent;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: var(--spacing-1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .control-btn:hover {
+      opacity: 0.8;
+    }
+    .time-display {
+      font-size: var(--text-sm);
+      font-family: monospace;
+    }
+    .volume-slider {
+      width: 80px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: var(--radius-full);
+    }
+    .info-panels {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .chapter-list {
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .chapter-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2);
+      cursor: pointer;
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+    }
+    .chapter-item:hover {
+      background: hsl(var(--muted) / 0.5);
+    }
+    .chapter-time {
+      color: hsl(var(--brand-primary));
+      font-family: monospace;
+      min-width: 50px;
+    }
+    .chat-log {
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .chat-log-item {
+      padding: var(--spacing-2);
+      font-size: var(--text-sm);
+    }
+    .chat-log-item .time {
+      color: hsl(var(--muted-foreground));
+      margin-right: var(--spacing-2);
+    }
+    .chat-log-item .name {
+      font-weight: var(--font-medium);
+      margin-right: var(--spacing-1);
+    }
+    .subtitle-area {
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+      margin-bottom: var(--spacing-4);
+    }
+    .subtitle-label {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-2);
+    }
+    .subtitle-text {
+      font-size: var(--text-sm);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <span class="text-muted">경영학개론 > 세션 #12 녹화</span>
+      </div>
+      <div class="navbar-actions">
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">학생</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <!-- Video Player -->
+    <div class="video-player">
+      <div class="video-area">
+        <div class="play-button">
+          <i data-lucide="play" class="icon-xl"></i>
+        </div>
+      </div>
+      <div class="video-controls">
+        <div class="progress-slider">
+          <div class="progress-fill"></div>
+          <div class="progress-handle"></div>
+        </div>
+        <div class="controls-row">
+          <div class="control-group">
+            <button class="control-btn">
+              <i data-lucide="skip-back" class="icon-md"></i>
+            </button>
+            <button class="control-btn">
+              <i data-lucide="rewind" class="icon-md"></i>
+            </button>
+            <button class="control-btn">
+              <i data-lucide="play" class="icon-md"></i>
+            </button>
+            <button class="control-btn">
+              <i data-lucide="fast-forward" class="icon-md"></i>
+            </button>
+            <span class="time-display">45:23 / 90:00</span>
+          </div>
+          <div class="control-group">
+            <button class="control-btn">
+              <i data-lucide="volume-2" class="icon-md"></i>
+            </button>
+            <div class="volume-slider"></div>
+            <button class="control-btn">
+              <i data-lucide="settings" class="icon-md"></i>
+            </button>
+            <button class="control-btn">
+              <i data-lucide="subtitles" class="icon-md"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info Panels -->
+    <div class="info-panels">
+      <!-- Chapters -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title flex items-center gap-2">
+            <i data-lucide="list" class="icon-sm"></i>
+            챕터
+          </h3>
+        </div>
+        <div class="card-content chapter-list">
+          <div class="chapter-item">
+            <span class="chapter-time">00:00</span>
+            <span>수업 시작</span>
+          </div>
+          <div class="chapter-item">
+            <span class="chapter-time">05:30</span>
+            <span>4P 소개</span>
+          </div>
+          <div class="chapter-item">
+            <span class="chapter-time">15:00</span>
+            <span>Product 설명</span>
+          </div>
+          <div class="chapter-item">
+            <span class="chapter-time">30:00</span>
+            <span>Price 설명</span>
+          </div>
+          <div class="chapter-item">
+            <span class="chapter-time">45:00</span>
+            <span>투표 진행</span>
+          </div>
+          <div class="chapter-item">
+            <span class="chapter-time">60:00</span>
+            <span>Place 설명</span>
+          </div>
+          <div class="chapter-item">
+            <span class="chapter-time">75:00</span>
+            <span>Promotion 설명</span>
+          </div>
+          <div class="chapter-item">
+            <span class="chapter-time">85:00</span>
+            <span>Q&A</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Log -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title flex items-center gap-2">
+            <i data-lucide="message-square" class="icon-sm"></i>
+            채팅 기록
+          </h3>
+        </div>
+        <div class="card-content chat-log">
+          <div class="chat-log-item">
+            <span class="time">10:05</span>
+            <span class="name">김철수:</span>
+            <span>오늘은 마케팅...</span>
+          </div>
+          <div class="chat-log-item">
+            <span class="time">10:08</span>
+            <span class="name">박서연:</span>
+            <span>질문이요!</span>
+          </div>
+          <div class="chat-log-item">
+            <span class="time">10:12</span>
+            <span class="name">김철수:</span>
+            <span>좋은 질문...</span>
+          </div>
+          <div class="chat-log-item">
+            <span class="time">10:15</span>
+            <span class="name">정도윤:</span>
+            <span>C번 같아요!</span>
+          </div>
+        </div>
+        <div class="card-content pt-0">
+          <button class="btn btn-outline btn-sm w-full">전체 채팅 보기</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subtitle Area -->
+    <div class="subtitle-area">
+      <div class="subtitle-label">자막 (자동 생성)</div>
+      <div class="subtitle-text">
+        "그래서 마케팅 믹스의 네 번째 P인 Promotion에 대해 설명하겠습니다..."
+      </div>
+    </div>
+
+    <!-- Download Actions -->
+    <div class="flex gap-3">
+      <button class="btn btn-outline">
+        <i data-lucide="download" class="icon-sm"></i>
+        녹화 다운로드
+      </button>
+      <button class="btn btn-outline">
+        <i data-lucide="file-text" class="icon-sm"></i>
+        자막 다운로드
+      </button>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PEER-002: 동료 평가 결과 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .status-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .status-stats {
+      display: flex;
+      gap: var(--spacing-4);
+      font-size: var(--text-sm);
+      margin-bottom: var(--spacing-2);
+    }
+    .status-period {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .result-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+    .result-table th,
+    .result-table td {
+      padding: var(--spacing-2) var(--spacing-3);
+      text-align: center;
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .result-table th {
+      font-weight: var(--font-medium);
+      color: hsl(var(--muted-foreground));
+      font-size: var(--text-xs);
+      background: hsl(var(--muted) / 0.2);
+    }
+    .result-table td:first-child {
+      text-align: left;
+    }
+    .best-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      padding: var(--spacing-1) var(--spacing-2);
+      background: hsl(var(--success) / 0.1);
+      color: hsl(var(--success));
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+    }
+    .anomaly-note {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) var(--spacing-3);
+      background: hsl(var(--warning) / 0.1);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      color: hsl(var(--warning));
+      margin-top: var(--spacing-3);
+    }
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+    .matrix-table th,
+    .matrix-table td {
+      padding: var(--spacing-2);
+      text-align: center;
+      border: 1px solid hsl(var(--border));
+    }
+    .matrix-table th {
+      background: hsl(var(--muted) / 0.2);
+      font-weight: var(--font-medium);
+      font-size: var(--text-xs);
+    }
+    .matrix-table td.anomaly {
+      background: hsl(var(--warning) / 0.1);
+      color: hsl(var(--warning));
+    }
+    .matrix-note {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+      margin-top: var(--spacing-2);
+    }
+    .comments-section {
+      margin-top: var(--spacing-3);
+    }
+    .comment-group {
+      margin-bottom: var(--spacing-3);
+    }
+    .comment-name {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-2);
+    }
+    .comment-item {
+      padding: var(--spacing-2) var(--spacing-3);
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      margin-bottom: var(--spacing-1);
+      color: hsl(var(--muted-foreground));
+    }
+    .options-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .options-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-3);
+    }
+    .option-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-2);
+    }
+    .option-row label {
+      flex: 1;
+      font-size: var(--text-sm);
+    }
+    .option-row select {
+      padding: var(--spacing-1) var(--spacing-2);
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+    }
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-size: var(--text-sm);
+      margin-bottom: var(--spacing-2);
+    }
+    .action-buttons {
+      display: flex;
+      gap: var(--spacing-3);
+      margin-top: var(--spacing-4);
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <a href="index.html" class="btn btn-ghost btn-icon">
+      <i data-lucide="arrow-left" class="icon-md"></i>
+    </a>
+    <h1 class="font-semibold">동료 평가 결과 - A조</h1>
+  </header>
+
+  <main class="container py-6">
+    <!-- Status Card -->
+    <div class="status-card">
+      <div class="flex items-center gap-2 mb-3">
+        <i data-lucide="bar-chart-2" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        <span class="font-semibold">평가 현황</span>
+      </div>
+      <div class="status-stats">
+        <span>평가 완료: 4/4명 (100%)</span>
+        <span style="color: hsl(var(--warning))">이상치 감지: 1건 ⚠️</span>
+      </div>
+      <div class="status-period">평가 기간: 2025-11-20 ~ 2025-11-27</div>
+    </div>
+
+    <!-- Team Results -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="clipboard-list" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          팀원별 종합 결과
+        </h2>
+      </div>
+      <div class="card-content">
+        <table class="result-table">
+          <thead>
+            <tr>
+              <th>팀원</th>
+              <th>기여도</th>
+              <th>협업</th>
+              <th>문제해결</th>
+              <th>평균</th>
+              <th>조정점수</th>
+              <th>비고</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>김민수</td>
+              <td>4.0</td>
+              <td>3.3</td>
+              <td>4.0</td>
+              <td>3.77</td>
+              <td>95</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>이영희</td>
+              <td>4.3</td>
+              <td>4.7</td>
+              <td>4.3</td>
+              <td>4.43</td>
+              <td>100</td>
+              <td><span class="best-badge"><i data-lucide="star" class="icon-xs"></i> 최고</span></td>
+            </tr>
+            <tr>
+              <td>박지원</td>
+              <td>3.0</td>
+              <td>3.0</td>
+              <td>2.7</td>
+              <td>2.90</td>
+              <td>85</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>나 (본인)</td>
+              <td>3.7</td>
+              <td>4.0</td>
+              <td>3.7</td>
+              <td>3.80</td>
+              <td>96</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="anomaly-note">
+          <i data-lucide="alert-triangle" class="icon-sm"></i>
+          이상치 알림: 박지원 평가에서 1건의 극단적 저평가가 감지됨 (김민수 → 박지원: 전 항목 1점) - 해당 평가 제외 후 재계산됨
+        </div>
+      </div>
+    </div>
+
+    <!-- Evaluation Matrix -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="grid-3x3" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          상세 평가 매트릭스
+        </h2>
+      </div>
+      <div class="card-content">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>평가자 → / 피평가자 ↓</th>
+              <th>김민수</th>
+              <th>이영희</th>
+              <th>박지원</th>
+              <th>나(본인)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>김민수</strong></td>
+              <td>-</td>
+              <td>3.7</td>
+              <td>4.0</td>
+              <td>3.7</td>
+            </tr>
+            <tr>
+              <td><strong>이영희</strong></td>
+              <td>4.3</td>
+              <td>-</td>
+              <td>4.7</td>
+              <td>4.3</td>
+            </tr>
+            <tr>
+              <td><strong>박지원</strong></td>
+              <td class="anomaly">1.0⚠️</td>
+              <td>3.3</td>
+              <td>-</td>
+              <td>3.0</td>
+            </tr>
+            <tr>
+              <td><strong>나 (본인)</strong></td>
+              <td>4.0</td>
+              <td>3.7</td>
+              <td>3.7</td>
+              <td>-</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="matrix-note">⚠️ = 이상치로 판단되어 계산에서 제외됨</p>
+      </div>
+    </div>
+
+    <!-- Anonymous Comments -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="message-circle" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          익명 코멘트 요약
+        </h2>
+      </div>
+      <div class="card-content">
+        <div class="comments-section">
+          <div class="comment-group">
+            <div class="comment-name">
+              <i data-lucide="user" class="icon-sm"></i>
+              이영희
+            </div>
+            <div class="comment-item">"팀장으로서 일정 관리를 잘 해주었습니다"</div>
+            <div class="comment-item">"기술적인 문제가 생겼을 때 항상 도움을 주었습니다"</div>
+            <div class="comment-item">"회의 진행이 효율적이었습니다"</div>
+          </div>
+          <div class="comment-group">
+            <div class="comment-name">
+              <i data-lucide="user" class="icon-sm"></i>
+              박지원
+            </div>
+            <div class="comment-item">"중간에 연락이 안 되는 경우가 있었습니다"</div>
+            <div class="comment-item">"마감 직전에 작업을 제출해서 통합이 어려웠습니다"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scoring Options -->
+    <div class="options-card">
+      <div class="options-header">
+        <i data-lucide="settings" class="icon-md" style="color: hsl(var(--muted-foreground))"></i>
+        점수 조정 옵션
+      </div>
+      <div class="option-row">
+        <label>점수 산출 방식:</label>
+        <select>
+          <option>평균 기반</option>
+          <option>중앙값 기반</option>
+          <option>가중 평균</option>
+        </select>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="outlier" checked>
+        <label for="outlier">이상치 자동 제거 (평균 대비 ±2 표준편차 초과)</label>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="self" checked>
+        <label for="self">자기 평가 제외</label>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="relative">
+        <label for="relative">상대 평가 적용 (팀 내 순위 기반)</label>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-outline">점수 재계산</button>
+      <button class="btn btn-primary">결과 확정</button>
+      <button class="btn btn-outline">
+        <i data-lucide="download" class="icon-sm"></i>
+        리포트 다운로드
+      </button>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

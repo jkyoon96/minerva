@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALERT-002: 개입 기록 및 추적 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .student-info-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .student-info-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-4);
+      font-size: var(--text-sm);
+    }
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .info-label {
+      color: hsl(var(--muted-foreground));
+    }
+    .status-badge-danger {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      padding: var(--spacing-1) var(--spacing-2);
+      background: hsl(var(--destructive) / 0.1);
+      color: hsl(var(--destructive));
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+    }
+    .risk-trend-chart {
+      height: 200px;
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--spacing-3);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .trend-insight {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) var(--spacing-3);
+      background: hsl(var(--warning) / 0.1);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      color: hsl(var(--warning));
+    }
+    .timeline {
+      position: relative;
+      padding-left: var(--spacing-6);
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: hsl(var(--border));
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: var(--spacing-4);
+    }
+    .timeline-dot {
+      position: absolute;
+      left: -30px;
+      top: 4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: hsl(var(--muted));
+      border: 2px solid hsl(var(--background));
+    }
+    .timeline-dot.danger {
+      background: hsl(var(--destructive));
+    }
+    .timeline-dot.warning {
+      background: hsl(var(--warning));
+    }
+    .timeline-dot.info {
+      background: hsl(var(--brand-primary));
+    }
+    .timeline-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+    }
+    .timeline-date {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-2);
+    }
+    .timeline-title {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-2);
+    }
+    .timeline-title.danger {
+      color: hsl(var(--destructive));
+    }
+    .timeline-title.warning {
+      color: hsl(var(--warning));
+    }
+    .timeline-title.info {
+      color: hsl(var(--brand-primary));
+    }
+    .timeline-content {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .timeline-status {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      margin-top: var(--spacing-2);
+      font-size: var(--text-xs);
+      padding: var(--spacing-1) var(--spacing-2);
+      background: hsl(var(--warning) / 0.1);
+      color: hsl(var(--warning));
+      border-radius: var(--radius-sm);
+    }
+    .add-record-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-top: var(--spacing-4);
+    }
+    .form-group {
+      margin-bottom: var(--spacing-3);
+    }
+    .form-label {
+      display: block;
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-2);
+    }
+    .form-select {
+      width: 100%;
+      padding: var(--spacing-2) var(--spacing-3);
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      background: hsl(var(--background));
+    }
+    .form-textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: var(--spacing-2) var(--spacing-3);
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      resize: vertical;
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <a href="alert-001-dashboard.html" class="btn btn-ghost btn-icon">
+      <i data-lucide="arrow-left" class="icon-md"></i>
+    </a>
+    <h1 class="font-semibold">권태희 - 개입 기록</h1>
+  </header>
+
+  <main class="container py-6">
+    <!-- Student Info -->
+    <div class="student-info-card">
+      <div class="flex items-center gap-2 mb-3">
+        <i data-lucide="user" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        <span class="font-semibold">학생 정보</span>
+      </div>
+      <div class="student-info-row">
+        <div class="info-item">
+          <span class="info-label">이름:</span>
+          <strong>권태희</strong>
+        </div>
+        <div class="info-item">
+          <span class="info-label">학번:</span>
+          <span>2023-12345</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">이메일:</span>
+          <span>kt@university.edu</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">현재 상태:</span>
+          <span class="status-badge-danger">
+            <span>🔴</span> 위험 (상)
+          </span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">담당 TA:</span>
+          <span>김민수</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Risk Trend Chart -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="trending-up" class="icon-md" style="color: hsl(var(--destructive))"></i>
+          위험 지표 추이
+        </h2>
+      </div>
+      <div class="card-content">
+        <div class="risk-trend-chart">
+          [위험 점수 상승 라인 차트 - W5~W12]
+        </div>
+        <div class="trend-insight">
+          <i data-lucide="alert-triangle" class="icon-sm"></i>
+          <div>
+            <div>Week 8부터 지속적인 위험 지표 상승</div>
+            <div class="mt-1">Week 10에 위험 등급(상)으로 전환</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Intervention Timeline -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="clipboard-list" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          개입 기록 타임라인
+        </h2>
+      </div>
+      <div class="card-content">
+        <div class="timeline">
+          <!-- Today -->
+          <div class="timeline-item">
+            <div class="timeline-dot danger"></div>
+            <div class="timeline-card">
+              <div class="timeline-date">
+                <i data-lucide="calendar" class="icon-xs"></i>
+                2025-11-27 (오늘)
+              </div>
+              <div class="timeline-title danger">
+                <span>🔴</span> 위험 등급 상향: 중 → 상
+              </div>
+              <div class="timeline-content">
+                연속 결석 3회로 인해 위험 등급이 상향되었습니다.
+              </div>
+            </div>
+          </div>
+
+          <!-- Nov 20 -->
+          <div class="timeline-item">
+            <div class="timeline-dot info"></div>
+            <div class="timeline-card">
+              <div class="timeline-date">
+                <i data-lucide="calendar" class="icon-xs"></i>
+                2025-11-20
+              </div>
+              <div class="timeline-title info">
+                <i data-lucide="mail" class="icon-sm"></i>
+                이메일 발송 (교수)
+              </div>
+              <div class="timeline-content">
+                "학업 상담 요청" 제목으로 면담 요청 이메일 발송
+              </div>
+              <div class="timeline-status">
+                <i data-lucide="alert-circle" class="icon-xs"></i>
+                회신 없음
+              </div>
+            </div>
+          </div>
+
+          <!-- Nov 15 -->
+          <div class="timeline-item">
+            <div class="timeline-dot info"></div>
+            <div class="timeline-card">
+              <div class="timeline-date">
+                <i data-lucide="calendar" class="icon-xs"></i>
+                2025-11-15
+              </div>
+              <div class="timeline-title info">
+                <i data-lucide="file-text" class="icon-sm"></i>
+                메모 추가 (TA 김민수)
+              </div>
+              <div class="timeline-content">
+                "학생 연락 시도. 개인 사정으로 수업 참여 어려운 상황이라고 답변. 추가 지원 방안 논의 필요."
+              </div>
+            </div>
+          </div>
+
+          <!-- Nov 10 -->
+          <div class="timeline-item">
+            <div class="timeline-dot warning"></div>
+            <div class="timeline-card">
+              <div class="timeline-date">
+                <i data-lucide="calendar" class="icon-xs"></i>
+                2025-11-10
+              </div>
+              <div class="timeline-title warning">
+                <i data-lucide="alert-triangle" class="icon-sm"></i>
+                경보 발생: 참여도 급락
+              </div>
+              <div class="timeline-content">
+                참여도 85점 → 52점 (-39%) 감소
+              </div>
+            </div>
+          </div>
+
+          <!-- Nov 3 -->
+          <div class="timeline-item">
+            <div class="timeline-dot warning"></div>
+            <div class="timeline-card">
+              <div class="timeline-date">
+                <i data-lucide="calendar" class="icon-xs"></i>
+                2025-11-03
+              </div>
+              <div class="timeline-title warning">
+                <i data-lucide="alert-triangle" class="icon-sm"></i>
+                경보 발생: 연속 결석
+              </div>
+              <div class="timeline-content">
+                Week 10 세션 결석 (연속 2회째)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add New Record -->
+    <div class="add-record-card">
+      <div class="flex items-center gap-2 mb-4">
+        <i data-lucide="plus-circle" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        <span class="font-semibold">새 개입 기록 추가</span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">개입 유형</label>
+        <select class="form-select">
+          <option>이메일 발송</option>
+          <option>면담 기록</option>
+          <option>전화 연락</option>
+          <option>메모 추가</option>
+          <option>학과 사무실 공유</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">내용</label>
+        <textarea class="form-textarea" placeholder="개입 내용을 입력하세요..."></textarea>
+      </div>
+
+      <div class="flex gap-2">
+        <button class="btn btn-primary">
+          <i data-lucide="plus" class="icon-sm"></i>
+          기록 추가
+        </button>
+        <button class="btn btn-outline">
+          <i data-lucide="mail" class="icon-sm"></i>
+          이메일 작성
+        </button>
+        <button class="btn btn-outline">
+          <i data-lucide="check" class="icon-sm"></i>
+          해결됨 표시
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WB-001: 화이트보드 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    body {
+      overflow: hidden;
+    }
+    .whiteboard-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    .whiteboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-2) var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .toolbar-section {
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+      padding: var(--spacing-2) var(--spacing-4);
+    }
+    .toolbar-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-4);
+    }
+    .tool-group {
+      display: flex;
+      gap: var(--spacing-1);
+    }
+    .tool-btn {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-md);
+      background: hsl(var(--card));
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tool-btn:hover {
+      background: hsl(var(--muted));
+    }
+    .tool-btn.active {
+      background: hsl(var(--brand-primary) / 0.1);
+      border-color: hsl(var(--brand-primary));
+      color: hsl(var(--brand-primary));
+    }
+    .tool-btn .tool-label {
+      display: none;
+    }
+    .color-group {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .color-label {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .color-dots {
+      display: flex;
+      gap: var(--spacing-1);
+    }
+    .color-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+    .color-dot:hover {
+      transform: scale(1.1);
+    }
+    .color-dot.selected {
+      border-color: hsl(var(--foreground));
+    }
+    .stroke-group {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .stroke-label {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .stroke-options {
+      display: flex;
+      gap: var(--spacing-1);
+    }
+    .stroke-btn {
+      padding: var(--spacing-1) var(--spacing-2);
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-sm);
+      background: hsl(var(--card));
+      cursor: pointer;
+    }
+    .stroke-btn:hover {
+      background: hsl(var(--muted));
+    }
+    .stroke-btn.active {
+      background: hsl(var(--brand-primary) / 0.1);
+      border-color: hsl(var(--brand-primary));
+    }
+    .canvas-area {
+      flex: 1;
+      background: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .canvas-content {
+      position: absolute;
+      inset: 0;
+      padding: var(--spacing-8);
+    }
+    .diagram-container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .diagram-title {
+      text-align: center;
+      font-size: var(--text-xl);
+      font-weight: var(--font-bold);
+      padding: var(--spacing-4);
+      border: 2px solid hsl(var(--foreground));
+      border-radius: var(--radius-md);
+      margin-bottom: var(--spacing-4);
+    }
+    .diagram-line {
+      width: 2px;
+      height: 30px;
+      background: hsl(var(--foreground));
+      margin: 0 auto;
+    }
+    .diagram-boxes {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--spacing-3);
+    }
+    .diagram-box {
+      border: 2px solid hsl(var(--foreground));
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+      text-align: center;
+    }
+    .box-title {
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-2);
+    }
+    .box-items {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .cursor-indicator {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      font-size: var(--text-xs);
+      pointer-events: none;
+    }
+    .cursor-indicator i {
+      color: hsl(var(--brand-primary));
+    }
+    .participants-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) var(--spacing-4);
+      background: hsl(var(--muted) / 0.3);
+      border-top: 1px solid hsl(var(--border));
+    }
+    .participant-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      padding: var(--spacing-1) var(--spacing-2);
+      background: hsl(var(--card));
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+    }
+    .participant-item.editing {
+      background: hsl(var(--brand-primary) / 0.1);
+    }
+    .participant-item.viewing {
+      background: hsl(var(--muted));
+    }
+    .actions-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-2) var(--spacing-4);
+      background: hsl(var(--card));
+      border-top: 1px solid hsl(var(--border));
+    }
+  </style>
+</head>
+<body>
+  <div class="whiteboard-container">
+    <div class="whiteboard-header">
+      <div class="header-title">
+        <i data-lucide="edit-3" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        <span class="font-semibold">화이트보드 - 분반 1</span>
+      </div>
+      <button class="btn btn-ghost btn-icon">
+        <i data-lucide="x" class="icon-md"></i>
+      </button>
+    </div>
+
+    <div class="toolbar-section">
+      <div class="toolbar-row">
+        <div class="tool-group">
+          <button class="tool-btn active" title="펜">
+            <i data-lucide="pen-tool" class="icon-sm"></i>
+          </button>
+          <button class="tool-btn" title="선">
+            <i data-lucide="minus" class="icon-sm"></i>
+          </button>
+          <button class="tool-btn" title="사각형">
+            <i data-lucide="square" class="icon-sm"></i>
+          </button>
+          <button class="tool-btn" title="원">
+            <i data-lucide="circle" class="icon-sm"></i>
+          </button>
+          <button class="tool-btn" title="텍스트">
+            <i data-lucide="type" class="icon-sm"></i>
+          </button>
+          <button class="tool-btn" title="이미지">
+            <i data-lucide="image" class="icon-sm"></i>
+          </button>
+        </div>
+
+        <div class="tool-group">
+          <button class="tool-btn" title="확대">
+            <i data-lucide="zoom-in" class="icon-sm"></i>
+          </button>
+          <button class="tool-btn" title="축소">
+            <i data-lucide="zoom-out" class="icon-sm"></i>
+          </button>
+        </div>
+
+        <div class="color-group">
+          <span class="color-label">색상:</span>
+          <div class="color-dots">
+            <span class="color-dot selected" style="background: #000000;"></span>
+            <span class="color-dot" style="background: #ef4444;"></span>
+            <span class="color-dot" style="background: #3b82f6;"></span>
+            <span class="color-dot" style="background: #22c55e;"></span>
+            <span class="color-dot" style="background: #f59e0b;"></span>
+            <span class="color-dot" style="background: transparent; border: 1px dashed hsl(var(--border));"></span>
+          </div>
+        </div>
+
+        <div class="stroke-group">
+          <span class="stroke-label">굵기:</span>
+          <div class="stroke-options">
+            <button class="stroke-btn">─</button>
+            <button class="stroke-btn active">━</button>
+            <button class="stroke-btn">━━</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="canvas-area">
+      <div class="canvas-content">
+        <div class="diagram-container">
+          <div class="diagram-title">마케팅 4P 분석</div>
+          <div class="diagram-line"></div>
+          <div class="diagram-boxes">
+            <div class="diagram-box">
+              <div class="box-title">Product</div>
+              <div class="box-items">
+                - 품질<br>
+                - 기능
+              </div>
+            </div>
+            <div class="diagram-box">
+              <div class="box-title">Price</div>
+              <div class="box-items">
+                - 가격<br>
+                - 할인
+              </div>
+            </div>
+            <div class="diagram-box">
+              <div class="box-title">Place</div>
+              <div class="box-items">
+                - 유통<br>
+                - 채널
+              </div>
+            </div>
+            <div class="diagram-box">
+              <div class="box-title">Promotion</div>
+              <div class="box-items">
+                - 광고<br>
+                - 홍보
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cursor indicators -->
+      <div class="cursor-indicator" style="bottom: 100px; right: 150px;">
+        <i data-lucide="pen-tool" class="icon-xs"></i>
+        <span>김민수</span>
+      </div>
+      <div class="cursor-indicator" style="bottom: 80px; right: 80px;">
+        <i data-lucide="pen-tool" class="icon-xs"></i>
+        <span>이서연</span>
+      </div>
+    </div>
+
+    <div class="participants-bar">
+      <span class="text-xs text-muted">참여자:</span>
+      <span class="participant-item editing">
+        <i data-lucide="pen-tool" class="icon-xs"></i>
+        김민수
+      </span>
+      <span class="participant-item editing">
+        <i data-lucide="pen-tool" class="icon-xs"></i>
+        이서연
+      </span>
+      <span class="participant-item viewing">
+        <i data-lucide="eye" class="icon-xs"></i>
+        박준혁
+      </span>
+      <span class="participant-item viewing">
+        <i data-lucide="eye" class="icon-xs"></i>
+        최유진
+      </span>
+      <span class="participant-item editing">
+        <i data-lucide="pen-tool" class="icon-xs"></i>
+        강하늘
+      </span>
+    </div>
+
+    <div class="actions-bar">
+      <div class="flex gap-2">
+        <button class="btn btn-ghost btn-sm">
+          <i data-lucide="undo" class="icon-sm"></i>
+          실행취소
+        </button>
+        <button class="btn btn-ghost btn-sm">
+          <i data-lucide="redo" class="icon-sm"></i>
+          다시실행
+        </button>
+        <button class="btn btn-ghost btn-sm">
+          <i data-lucide="trash-2" class="icon-sm"></i>
+          지우기
+        </button>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-outline btn-sm">
+          <i data-lucide="save" class="icon-sm"></i>
+          저장
+        </button>
+        <button class="btn btn-outline btn-sm">
+          <i data-lucide="download" class="icon-sm"></i>
+          PNG 내보내기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

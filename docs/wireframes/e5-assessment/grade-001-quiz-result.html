@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRADE-001: 객관식 퀴즈 결과 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .result-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .score-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-6);
+      text-align: center;
+      margin-bottom: var(--spacing-6);
+    }
+    .score-display {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 160px;
+      height: 160px;
+      background: hsl(var(--brand-primary) / 0.1);
+      border-radius: var(--radius-full);
+      margin-bottom: var(--spacing-4);
+    }
+    .score-value {
+      font-size: var(--text-3xl);
+      font-weight: var(--font-bold);
+      color: hsl(var(--brand-primary));
+    }
+    .score-label {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .score-summary {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-6);
+      color: hsl(var(--muted-foreground));
+      font-size: var(--text-sm);
+    }
+    .question-item {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-3);
+    }
+    .question-item.correct {
+      border-left: 4px solid hsl(var(--success));
+    }
+    .question-item.incorrect {
+      border-left: 4px solid hsl(var(--destructive));
+    }
+    .question-item.partial {
+      border-left: 4px solid hsl(var(--warning));
+    }
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-3);
+    }
+    .question-text {
+      font-weight: var(--font-medium);
+      flex: 1;
+    }
+    .result-badge {
+      padding: var(--spacing-1) var(--spacing-2);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+    }
+    .result-badge.correct {
+      background: hsl(var(--success) / 0.1);
+      color: hsl(var(--success));
+    }
+    .result-badge.incorrect {
+      background: hsl(var(--destructive) / 0.1);
+      color: hsl(var(--destructive));
+    }
+    .result-badge.partial {
+      background: hsl(var(--warning) / 0.1);
+      color: hsl(var(--warning));
+    }
+    .options-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-3);
+      margin-bottom: var(--spacing-3);
+    }
+    .option-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) var(--spacing-3);
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+    }
+    .option-item.selected {
+      background: hsl(var(--brand-primary) / 0.1);
+      border: 1px solid hsl(var(--brand-primary));
+    }
+    .option-item.correct-answer {
+      background: hsl(var(--success) / 0.1);
+      border: 1px solid hsl(var(--success));
+    }
+    .answer-comparison {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-3);
+    }
+    .explanation-box {
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+      margin-top: var(--spacing-3);
+    }
+    .explanation-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-2);
+    }
+    .explanation-text {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .recommended-materials {
+      margin-top: var(--spacing-3);
+      padding-top: var(--spacing-3);
+      border-top: 1px dashed hsl(var(--border));
+    }
+    .recommended-title {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-2);
+    }
+    .material-item {
+      font-size: var(--text-sm);
+      color: hsl(var(--brand-primary));
+      padding: var(--spacing-1) 0;
+    }
+    .action-buttons {
+      display: flex;
+      gap: var(--spacing-3);
+      margin-top: var(--spacing-6);
+    }
+  </style>
+</head>
+<body>
+  <header class="result-header">
+    <a href="index.html" class="btn btn-ghost btn-icon">
+      <i data-lucide="arrow-left" class="icon-md"></i>
+    </a>
+    <h1 class="font-semibold">퀴즈 결과</h1>
+  </header>
+
+  <main class="container py-6">
+    <!-- Score Card -->
+    <div class="score-card">
+      <div class="flex items-center justify-center gap-2 mb-4">
+        <i data-lucide="bar-chart-2" class="icon-lg" style="color: hsl(var(--brand-primary))"></i>
+        <span class="text-lg font-semibold">최종 점수</span>
+      </div>
+      <div class="score-display">
+        <span class="score-value">80 / 100</span>
+        <span class="score-label">점</span>
+      </div>
+      <div class="score-summary">
+        <span>정답: 8문제</span>
+        <span>오답: 2문제</span>
+        <span>소요시간: 12분 34초</span>
+      </div>
+    </div>
+
+    <!-- Questions Section -->
+    <div class="card mb-6">
+      <div class="card-header">
+        <h2 class="card-title">문항별 결과</h2>
+      </div>
+      <div class="card-content">
+        <!-- Q1 - Correct -->
+        <div class="question-item correct">
+          <div class="question-header">
+            <div class="question-text">Q1. 다음 중 객체지향 프로그래밍의 특징이 아닌 것은?</div>
+            <span class="result-badge correct">
+              <i data-lucide="check" class="icon-xs"></i>
+              정답
+            </span>
+          </div>
+          <div class="options-list">
+            <span class="option-item">캡슐화</span>
+            <span class="option-item">상속</span>
+            <span class="option-item selected correct-answer">컴파일</span>
+            <span class="option-item">다형성</span>
+          </div>
+          <div class="explanation-box">
+            <div class="explanation-header">
+              <i data-lucide="lightbulb" class="icon-sm" style="color: hsl(var(--warning))"></i>
+              해설
+            </div>
+            <p class="explanation-text">
+              컴파일은 객체지향의 특징이 아닙니다. 객체지향의 4대 특징은 캡슐화, 상속, 다형성, 추상화입니다.
+            </p>
+          </div>
+        </div>
+
+        <!-- Q2 - Incorrect -->
+        <div class="question-item incorrect">
+          <div class="question-header">
+            <div class="question-text">Q2. HTTP 상태 코드 404의 의미는?</div>
+            <span class="result-badge incorrect">
+              <i data-lucide="x" class="icon-xs"></i>
+              오답
+            </span>
+          </div>
+          <div class="options-list">
+            <span class="option-item selected">서버 오류</span>
+            <span class="option-item correct-answer">리소스 없음</span>
+            <span class="option-item">권한 없음</span>
+          </div>
+          <div class="answer-comparison">
+            <strong>내 답변:</strong> 서버 오류 &nbsp;&nbsp; <strong>정답:</strong> 리소스 없음
+          </div>
+          <div class="explanation-box">
+            <div class="explanation-header">
+              <i data-lucide="lightbulb" class="icon-sm" style="color: hsl(var(--warning))"></i>
+              해설
+            </div>
+            <p class="explanation-text">
+              404는 Not Found로 요청한 리소스를 찾을 수 없음을 의미합니다. 서버 오류는 5xx 계열 상태 코드입니다.
+            </p>
+            <div class="recommended-materials">
+              <div class="recommended-title">
+                <i data-lucide="book-open" class="icon-sm" style="color: hsl(var(--brand-primary))"></i>
+                추천 학습 자료
+              </div>
+              <div class="material-item">• HTTP 상태 코드 완벽 가이드 (PDF)</div>
+              <div class="material-item">• Week 3 강의 슬라이드 p.24-30</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q3 - Partial -->
+        <div class="question-item partial">
+          <div class="question-header">
+            <div class="question-text">Q3. RESTful API의 특징으로 옳은 것을 모두 고르시오.</div>
+            <span class="result-badge partial">부분 정답 (5/10)</span>
+          </div>
+          <div class="options-list">
+            <span class="option-item selected correct-answer">Stateless</span>
+            <span class="option-item correct-answer">URI로 리소스 식별</span>
+            <span class="option-item">SOAP 기반</span>
+          </div>
+          <div class="answer-comparison">
+            <strong>내 답변:</strong> Stateless만 선택
+          </div>
+          <div class="explanation-box">
+            <div class="explanation-header">
+              <i data-lucide="lightbulb" class="icon-sm" style="color: hsl(var(--warning))"></i>
+              해설
+            </div>
+            <p class="explanation-text">
+              REST의 주요 특징은 Stateless와 URI 리소스 식별입니다. SOAP는 별도의 프로토콜로 REST와는 다릅니다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-outline flex-1">
+        <i data-lucide="bar-chart-2" class="icon-sm"></i>
+        성적 분석 보기
+      </button>
+      <button class="btn btn-outline flex-1">
+        <i data-lucide="refresh-cw" class="icon-sm"></i>
+        오답 노트 저장
+      </button>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

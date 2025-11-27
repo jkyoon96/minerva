@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CODE-001: 코딩 문제 제출 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-3) var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .time-remaining {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-1) var(--spacing-3);
+      background: hsl(var(--warning) / 0.1);
+      color: hsl(var(--warning));
+      border-radius: var(--radius-md);
+      font-weight: var(--font-medium);
+    }
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: hsl(var(--border));
+      height: calc(100vh - 60px);
+    }
+    .problem-panel {
+      background: hsl(var(--card));
+      padding: var(--spacing-4);
+      overflow-y: auto;
+    }
+    .editor-panel {
+      background: hsl(var(--card));
+      display: flex;
+      flex-direction: column;
+    }
+    .problem-title {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-4);
+    }
+    .problem-section {
+      margin-bottom: var(--spacing-4);
+    }
+    .problem-section-title {
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-2);
+    }
+    .problem-text {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      line-height: 1.6;
+    }
+    .condition-list {
+      list-style: disc;
+      padding-left: var(--spacing-4);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .example-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+      margin-top: var(--spacing-2);
+    }
+    .example-table th,
+    .example-table td {
+      padding: var(--spacing-2);
+      border: 1px solid hsl(var(--border));
+      text-align: center;
+    }
+    .example-table th {
+      background: hsl(var(--muted) / 0.3);
+    }
+    .editor-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-2) var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .language-select {
+      padding: var(--spacing-1) var(--spacing-2);
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+    }
+    .code-editor {
+      flex: 1;
+      background: hsl(var(--background));
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow: auto;
+    }
+    .code-line {
+      display: flex;
+      padding: 0 var(--spacing-2);
+    }
+    .line-number {
+      width: 40px;
+      text-align: right;
+      padding-right: var(--spacing-2);
+      color: hsl(var(--muted-foreground));
+      user-select: none;
+      border-right: 1px solid hsl(var(--border));
+      margin-right: var(--spacing-2);
+    }
+    .line-content {
+      flex: 1;
+      white-space: pre;
+    }
+    .keyword { color: hsl(280, 80%, 60%); }
+    .function { color: hsl(200, 80%, 60%); }
+    .string { color: hsl(100, 60%, 50%); }
+    .number { color: hsl(30, 80%, 60%); }
+    .comment { color: hsl(var(--muted-foreground)); }
+    .editor-actions {
+      display: flex;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      border-top: 1px solid hsl(var(--border));
+    }
+    .test-results {
+      background: hsl(var(--card));
+      border-top: 1px solid hsl(var(--border));
+      padding: var(--spacing-4);
+      max-height: 250px;
+      overflow-y: auto;
+    }
+    .test-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-3);
+    }
+    .test-section-title {
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-2);
+    }
+    .test-case {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2);
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--spacing-1);
+      font-size: var(--text-sm);
+    }
+    .test-case.pass {
+      background: hsl(var(--success) / 0.1);
+    }
+    .test-case.pass .test-icon {
+      color: hsl(var(--success));
+    }
+    .test-case.locked {
+      background: hsl(var(--muted) / 0.3);
+      color: hsl(var(--muted-foreground));
+    }
+    .test-icon {
+      width: 20px;
+    }
+    .test-info {
+      flex: 1;
+    }
+    .test-time {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .test-result-badge {
+      padding: var(--spacing-1) var(--spacing-2);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+    }
+    .test-result-badge.pass {
+      background: hsl(var(--success) / 0.1);
+      color: hsl(var(--success));
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <div class="header-left">
+      <a href="index.html" class="btn btn-ghost btn-icon">
+        <i data-lucide="arrow-left" class="icon-md"></i>
+      </a>
+      <h1 class="font-semibold">[HW3] 피보나치 수열 구현</h1>
+    </div>
+    <div class="time-remaining">
+      <i data-lucide="clock" class="icon-sm"></i>
+      남은 시간: 45분
+    </div>
+  </header>
+
+  <div class="main-layout">
+    <!-- Problem Description -->
+    <div class="problem-panel">
+      <div class="problem-title">
+        <i data-lucide="clipboard-list" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        문제 설명
+      </div>
+
+      <div class="problem-section">
+        <p class="problem-text">
+          피보나치 수열의 n번째 값을 반환하는 함수를 작성하시오.
+        </p>
+      </div>
+
+      <div class="problem-section">
+        <div class="problem-section-title">조건</div>
+        <ul class="condition-list">
+          <li>n은 1 이상의 정수</li>
+          <li>시간 복잡도: O(n) 이하</li>
+          <li>메모리 제한: 256MB</li>
+        </ul>
+      </div>
+
+      <div class="problem-section">
+        <div class="problem-section-title">입출력 예시</div>
+        <table class="example-table">
+          <thead>
+            <tr>
+              <th>입력</th>
+              <th>출력</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>1</td></tr>
+            <tr><td>5</td><td>5</td></tr>
+            <tr><td>10</td><td>55</td></tr>
+            <tr><td>20</td><td>6765</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="problem-section">
+        <div class="problem-section-title">참고</div>
+        <p class="problem-text">
+          피보나치 수열: 1, 1, 2, 3, 5, 8, 13, 21...
+        </p>
+      </div>
+    </div>
+
+    <!-- Code Editor -->
+    <div class="editor-panel">
+      <div class="editor-header">
+        <div class="flex items-center gap-2">
+          <i data-lucide="code" class="icon-sm" style="color: hsl(var(--brand-primary))"></i>
+          <span class="font-medium">코드 에디터</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-sm text-muted">언어:</span>
+          <select class="language-select">
+            <option>Python</option>
+            <option>Java</option>
+            <option>C++</option>
+            <option>JavaScript</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="code-editor">
+        <div class="code-line"><span class="line-number">1</span><span class="line-content"><span class="keyword">def</span> <span class="function">fibonacci</span>(n):</span></div>
+        <div class="code-line"><span class="line-number">2</span><span class="line-content">    <span class="keyword">if</span> n <= <span class="number">0</span>:</span></div>
+        <div class="code-line"><span class="line-number">3</span><span class="line-content">        <span class="keyword">return</span> <span class="number">0</span></span></div>
+        <div class="code-line"><span class="line-number">4</span><span class="line-content">    <span class="keyword">elif</span> n == <span class="number">1</span>:</span></div>
+        <div class="code-line"><span class="line-number">5</span><span class="line-content">        <span class="keyword">return</span> <span class="number">1</span></span></div>
+        <div class="code-line"><span class="line-number">6</span><span class="line-content">    <span class="keyword">else</span>:</span></div>
+        <div class="code-line"><span class="line-number">7</span><span class="line-content">        a, b = <span class="number">0</span>, <span class="number">1</span></span></div>
+        <div class="code-line"><span class="line-number">8</span><span class="line-content">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="function">range</span>(<span class="number">2</span>, n+<span class="number">1</span>):</span></div>
+        <div class="code-line"><span class="line-number">9</span><span class="line-content">            a, b = b, a+b</span></div>
+        <div class="code-line"><span class="line-number">10</span><span class="line-content">        <span class="keyword">return</span> b</span></div>
+        <div class="code-line"><span class="line-number">11</span><span class="line-content"></span></div>
+        <div class="code-line"><span class="line-number">12</span><span class="line-content"></span></div>
+        <div class="code-line"><span class="line-number">13</span><span class="line-content"></span></div>
+        <div class="code-line"><span class="line-number">14</span><span class="line-content"></span></div>
+        <div class="code-line"><span class="line-number">15</span><span class="line-content"></span></div>
+      </div>
+
+      <div class="editor-actions">
+        <button class="btn btn-outline">
+          <i data-lucide="play" class="icon-sm"></i>
+          실행
+        </button>
+        <button class="btn btn-primary">
+          <i data-lucide="upload" class="icon-sm"></i>
+          제출
+        </button>
+      </div>
+
+      <!-- Test Results -->
+      <div class="test-results">
+        <div class="test-header">
+          <i data-lucide="flask-conical" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          테스트 결과
+        </div>
+
+        <div class="test-section-title">공개 테스트 케이스 (4/4 통과)</div>
+        <div class="test-case pass">
+          <span class="test-icon"><i data-lucide="check" class="icon-sm"></i></span>
+          <span class="test-info">테스트 1: n=1 → 예상: 1, 결과: 1</span>
+          <span class="test-time">0.01ms</span>
+          <span class="test-result-badge pass">PASS</span>
+        </div>
+        <div class="test-case pass">
+          <span class="test-icon"><i data-lucide="check" class="icon-sm"></i></span>
+          <span class="test-info">테스트 2: n=5 → 예상: 5, 결과: 5</span>
+          <span class="test-time">0.01ms</span>
+          <span class="test-result-badge pass">PASS</span>
+        </div>
+        <div class="test-case pass">
+          <span class="test-icon"><i data-lucide="check" class="icon-sm"></i></span>
+          <span class="test-info">테스트 3: n=10 → 예상: 55, 결과: 55</span>
+          <span class="test-time">0.02ms</span>
+          <span class="test-result-badge pass">PASS</span>
+        </div>
+        <div class="test-case pass">
+          <span class="test-icon"><i data-lucide="check" class="icon-sm"></i></span>
+          <span class="test-info">테스트 4: n=20 → 예상: 6765, 결과: 6765</span>
+          <span class="test-time">0.03ms</span>
+          <span class="test-result-badge pass">PASS</span>
+        </div>
+
+        <div class="test-section-title" style="margin-top: var(--spacing-3);">히든 테스트 케이스 (제출 후 확인 가능)</div>
+        <div class="test-case locked">
+          <span class="test-icon"><i data-lucide="lock" class="icon-sm"></i></span>
+          <span class="test-info">테스트 5-10: 제출 후 결과 확인 가능</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

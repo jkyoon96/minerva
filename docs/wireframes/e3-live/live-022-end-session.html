@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIVE-022: 세션 종료 확인 (교수자) - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal-content {
+      background: hsl(var(--card));
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 450px;
+      overflow: hidden;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .modal-body {
+      padding: var(--spacing-4);
+    }
+    .summary-card {
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-4);
+      margin: var(--spacing-4) 0;
+    }
+    .summary-title {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-3);
+    }
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--spacing-2) 0;
+      font-size: var(--text-sm);
+      border-bottom: 1px solid hsl(var(--border) / 0.5);
+    }
+    .summary-item:last-child {
+      border-bottom: none;
+    }
+    .summary-label {
+      color: hsl(var(--muted-foreground));
+    }
+    .recording-status {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3);
+      background: hsl(var(--success) / 0.1);
+      border-radius: var(--radius-md);
+      margin-top: var(--spacing-3);
+    }
+    .recording-status i {
+      color: hsl(var(--success));
+    }
+    .modal-footer {
+      padding: var(--spacing-4);
+      border-top: 1px solid hsl(var(--border));
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--spacing-2);
+    }
+  </style>
+</head>
+<body>
+  <!-- Modal Overlay -->
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="font-semibold">세션 종료</h2>
+        <button class="btn btn-ghost btn-icon btn-sm">
+          <i data-lucide="x" class="icon-sm"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p class="text-muted">정말 세션을 종료하시겠습니까?</p>
+
+        <div class="summary-card">
+          <div class="summary-title">
+            <i data-lucide="bar-chart-2" class="icon-sm" style="color: hsl(var(--brand-primary))"></i>
+            세션 요약
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">진행 시간</span>
+            <span>1시간 30분</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">참가자</span>
+            <span>26명</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">투표</span>
+            <span>2회 진행</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">채팅 메시지</span>
+            <span>45개</span>
+          </div>
+
+          <div class="recording-status">
+            <i data-lucide="check-circle" class="icon-sm"></i>
+            <div>
+              <div class="text-sm font-medium">녹화 완료</div>
+              <div class="text-xs text-muted">파일 크기: 약 800MB</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline">취소</button>
+        <button class="btn btn-destructive">세션 종료</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

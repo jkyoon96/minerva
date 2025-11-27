@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIVE-004: 대기실 관리 (교수자) - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal-content {
+      background: hsl(var(--card));
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 400px;
+      max-height: 80vh;
+      overflow: hidden;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .modal-body {
+      padding: var(--spacing-4);
+      overflow-y: auto;
+      max-height: 400px;
+    }
+    .modal-footer {
+      padding: var(--spacing-4);
+      border-top: 1px solid hsl(var(--border));
+    }
+    .waiting-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-3);
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-md);
+      margin-bottom: var(--spacing-2);
+    }
+    .waiting-time {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+  </style>
+</head>
+<body>
+  <!-- Modal Overlay -->
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="flex items-center gap-2">
+          <i data-lucide="users" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          <h2 class="font-semibold">대기실 (5명 대기 중)</h2>
+        </div>
+        <button class="btn btn-ghost btn-icon btn-sm">
+          <i data-lucide="x" class="icon-sm"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Select All -->
+        <div class="flex items-center justify-between mb-4">
+          <label class="flex items-center gap-2">
+            <input type="checkbox" class="checkbox">
+            <span class="text-sm">전체 선택</span>
+          </label>
+          <button class="btn btn-primary btn-sm">
+            <i data-lucide="check" class="icon-xs"></i>
+            모두 입장
+          </button>
+        </div>
+
+        <!-- Waiting List -->
+        <div class="waiting-item">
+          <div class="flex items-center gap-3">
+            <input type="checkbox" class="checkbox">
+            <div class="avatar avatar-sm">
+              <i data-lucide="user" class="icon-sm"></i>
+            </div>
+            <div>
+              <div class="font-medium text-sm">이민준</div>
+              <div class="waiting-time">대기 2분</div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm">입장</button>
+        </div>
+
+        <div class="waiting-item">
+          <div class="flex items-center gap-3">
+            <input type="checkbox" class="checkbox">
+            <div class="avatar avatar-sm">
+              <i data-lucide="user" class="icon-sm"></i>
+            </div>
+            <div>
+              <div class="font-medium text-sm">박서연</div>
+              <div class="waiting-time">대기 1분</div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm">입장</button>
+        </div>
+
+        <div class="waiting-item">
+          <div class="flex items-center gap-3">
+            <input type="checkbox" class="checkbox">
+            <div class="avatar avatar-sm">
+              <i data-lucide="user" class="icon-sm"></i>
+            </div>
+            <div>
+              <div class="font-medium text-sm">정도윤</div>
+              <div class="waiting-time">대기 1분</div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm">입장</button>
+        </div>
+
+        <div class="waiting-item">
+          <div class="flex items-center gap-3">
+            <input type="checkbox" class="checkbox">
+            <div class="avatar avatar-sm">
+              <i data-lucide="user" class="icon-sm"></i>
+            </div>
+            <div>
+              <div class="font-medium text-sm">강수아</div>
+              <div class="waiting-time">대기 30초</div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm">입장</button>
+        </div>
+
+        <div class="waiting-item">
+          <div class="flex items-center gap-3">
+            <input type="checkbox" class="checkbox">
+            <div class="avatar avatar-sm">
+              <i data-lucide="user" class="icon-sm"></i>
+            </div>
+            <div>
+              <div class="font-medium text-sm">김예준</div>
+              <div class="waiting-time">대기 10초</div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm">입장</button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="text-sm text-muted mb-3">선택된 학생: 0명</div>
+        <div class="flex gap-2">
+          <button class="btn btn-outline flex-1">선택 거부</button>
+          <button class="btn btn-primary flex-1">선택 입장</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

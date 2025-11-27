@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CNT-002: 파일 업로드 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .main-content {
+      margin-left: 280px;
+      padding: var(--spacing-6);
+    }
+    .upload-zone {
+      border: 2px dashed hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-8);
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .upload-zone:hover {
+      border-color: hsl(var(--brand-primary));
+      background-color: hsl(var(--brand-primary) / 0.05);
+    }
+    .upload-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-3);
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-md);
+      margin-bottom: var(--spacing-2);
+    }
+    .upload-progress {
+      height: 4px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-full);
+      margin-top: var(--spacing-2);
+      overflow: hidden;
+    }
+    .upload-progress-bar {
+      height: 100%;
+      background: hsl(var(--brand-primary));
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="#" class="nav-link">대시보드</a>
+        <a href="crs-001-course-list.html" class="nav-link active">내 코스</a>
+        <a href="#" class="nav-link">분석</a>
+        <a href="#" class="nav-link">설정</a>
+      </div>
+      <div class="navbar-actions">
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">김교수</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" style="top: 57px; height: calc(100vh - 57px);">
+    <div class="sidebar-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">코스 메뉴</div>
+        <a href="crs-003-course-detail.html" class="sidebar-link">
+          <i data-lucide="home" class="icon-md"></i>
+          개요
+        </a>
+        <a href="ses-001-session-list.html" class="sidebar-link">
+          <i data-lucide="video" class="icon-md"></i>
+          세션
+        </a>
+        <a href="crs-004-students.html" class="sidebar-link">
+          <i data-lucide="users" class="icon-md"></i>
+          수강생
+        </a>
+        <a href="cnt-001-content-library.html" class="sidebar-link active">
+          <i data-lucide="folder" class="icon-md"></i>
+          콘텐츠
+        </a>
+        <a href="asg-001-assignment-list.html" class="sidebar-link">
+          <i data-lucide="file-text" class="icon-md"></i>
+          과제
+        </a>
+        <a href="grd-001-grade-dashboard.html" class="sidebar-link">
+          <i data-lucide="bar-chart-3" class="icon-md"></i>
+          성적
+        </a>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="trending-up" class="icon-md"></i>
+          분석
+        </a>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="settings" class="icon-md"></i>
+          설정
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-sm text-muted mb-4">
+      <a href="crs-003-course-detail.html">경영학개론</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <a href="cnt-001-content-library.html">콘텐츠</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <span class="font-medium" style="color: hsl(var(--foreground))">업로드</span>
+    </div>
+
+    <div class="card" style="max-width: 600px;">
+      <div class="card-header">
+        <h1 class="card-title flex items-center gap-2">
+          <i data-lucide="upload" class="icon-lg" style="color: hsl(var(--brand-primary))"></i>
+          파일 업로드
+        </h1>
+      </div>
+      <div class="card-content">
+        <!-- Upload Zone -->
+        <div class="upload-zone mb-6">
+          <i data-lucide="upload-cloud" class="icon-2xl text-muted mb-3"></i>
+          <p class="font-medium mb-1">파일을 드래그 앤 드롭</p>
+          <p class="text-sm text-muted mb-2">또는 클릭하여 선택</p>
+          <p class="text-xs text-muted">지원 형식: PDF, PPT, DOC, MP4, PNG, JPG (최대 100MB)</p>
+        </div>
+
+        <!-- Upload Queue -->
+        <h3 class="font-semibold mb-3">업로드 대기 중 (3개)</h3>
+        <div class="separator mb-4"></div>
+
+        <div class="upload-item">
+          <div class="flex items-center gap-3">
+            <i data-lucide="file-text" class="icon-md" style="color: hsl(var(--destructive))"></i>
+            <div>
+              <div class="font-medium text-sm">강의노트.pdf</div>
+              <div class="text-xs text-muted">2.5MB</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <i data-lucide="check-circle" class="icon-md" style="color: hsl(var(--success))"></i>
+            <button class="btn btn-ghost btn-icon btn-sm">
+              <i data-lucide="x" class="icon-sm"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="upload-item">
+          <div class="flex items-center gap-3 flex-1">
+            <i data-lucide="presentation" class="icon-md" style="color: hsl(var(--warning))"></i>
+            <div class="flex-1">
+              <div class="font-medium text-sm">슬라이드.pptx</div>
+              <div class="text-xs text-muted">15MB</div>
+              <div class="upload-progress">
+                <div class="upload-progress-bar" style="width: 75%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-muted">75%</span>
+            <button class="btn btn-ghost btn-icon btn-sm">
+              <i data-lucide="x" class="icon-sm"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="upload-item">
+          <div class="flex items-center gap-3 flex-1">
+            <i data-lucide="video" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            <div class="flex-1">
+              <div class="font-medium text-sm">수업녹화.mp4</div>
+              <div class="text-xs text-muted">150MB</div>
+              <div class="upload-progress">
+                <div class="upload-progress-bar" style="width: 45%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-muted">45%</span>
+            <button class="btn btn-ghost btn-icon btn-sm">
+              <i data-lucide="x" class="icon-sm"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="separator my-4"></div>
+
+        <!-- Settings -->
+        <div class="form-group mb-4">
+          <label class="form-label">저장 위치</label>
+          <select class="select">
+            <option>강의자료 / 1주차</option>
+            <option>강의자료 / 2주차</option>
+            <option>강의자료 / 3주차</option>
+            <option>과제 참고자료</option>
+            <option>보충 자료</option>
+          </select>
+        </div>
+
+        <div class="form-group mb-6">
+          <label class="form-label">공개 설정</label>
+          <div class="flex flex-col gap-2">
+            <label class="radio-wrapper">
+              <input type="radio" name="visibility" class="radio" checked>
+              <span class="radio-label">수강생에게 공개</span>
+            </label>
+            <label class="radio-wrapper">
+              <input type="radio" name="visibility" class="radio">
+              <span class="radio-label">비공개 (교수자만 열람 가능)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="separator mb-4"></div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-between">
+          <a href="cnt-001-content-library.html" class="btn btn-secondary">취소</a>
+          <button class="btn btn-primary">
+            <i data-lucide="upload" class="icon-sm"></i>
+            업로드
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

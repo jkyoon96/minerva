@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AUTH-006: 계정 잠금 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <div class="auth-layout">
+    <div class="auth-container">
+      <!-- Logo -->
+      <div class="auth-logo mb-6">
+        <i data-lucide="graduation-cap" class="icon-xl" style="color: hsl(var(--brand-primary))"></i>
+        <span class="text-2xl font-bold" style="color: hsl(var(--brand-primary))">EduForum</span>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-header">
+          <h1 class="auth-title">로그인</h1>
+        </div>
+
+        <!-- Account Locked Alert -->
+        <div class="alert alert-warning mb-4" style="flex-direction: column; text-align: center;">
+          <i data-lucide="lock" class="icon-xl mb-3" style="color: hsl(var(--warning))"></i>
+          <div class="alert-title text-lg mb-2">계정이 일시적으로 잠겼습니다</div>
+          <div class="alert-description mb-4">
+            <p>5회 연속 로그인 실패로 인해</p>
+            <p>계정이 15분간 잠겼습니다.</p>
+          </div>
+          <div class="flex items-center justify-center gap-2 text-lg font-semibold" style="color: hsl(var(--foreground))">
+            <i data-lucide="clock" class="icon-md"></i>
+            남은 시간: <span id="timer">13:24</span>
+          </div>
+          <a href="auth-012-forgot-password.html" class="btn btn-link mt-4">비밀번호 재설정하기</a>
+        </div>
+
+        <form class="auth-form">
+          <!-- 이메일 (Disabled) -->
+          <div class="form-group">
+            <label class="form-label">이메일</label>
+            <div class="input-group">
+              <span class="input-icon">
+                <i data-lucide="mail" class="icon-sm"></i>
+              </span>
+              <input type="email" class="input" style="padding-left: 2.5rem" value="example@university.edu" disabled>
+            </div>
+          </div>
+
+          <!-- 비밀번호 (Disabled) -->
+          <div class="form-group">
+            <label class="form-label">비밀번호</label>
+            <div class="input-group">
+              <span class="input-icon">
+                <i data-lucide="lock" class="icon-sm"></i>
+              </span>
+              <input type="password" class="input" style="padding-left: 2.5rem" placeholder="비밀번호를 입력하세요" disabled>
+            </div>
+          </div>
+
+          <!-- 로그인 버튼 (Disabled) -->
+          <button type="submit" class="btn btn-primary w-full btn-lg" disabled>
+            <i data-lucide="lock" class="icon-sm"></i>
+            로그인 (비활성화)
+          </button>
+        </form>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+          계정이 없으신가요? <a href="auth-001-register.html">회원가입</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // Timer simulation
+    let time = 804; // 13:24 in seconds
+    const timerEl = document.getElementById('timer');
+
+    setInterval(() => {
+      if (time > 0) {
+        time--;
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+        timerEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+      }
+    }, 1000);
+  </script>
+</body>
+</html>

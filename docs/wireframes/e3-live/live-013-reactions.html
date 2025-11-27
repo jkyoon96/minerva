@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIVE-013: 빠른 반응 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .reaction-panel {
+      width: 400px;
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin: var(--spacing-6) auto;
+      box-shadow: var(--shadow-lg);
+    }
+    .panel-title {
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-4);
+    }
+    .reaction-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--spacing-3);
+    }
+    .reaction-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--spacing-3);
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.2s;
+      background: transparent;
+    }
+    .reaction-btn:hover {
+      background: hsl(var(--muted) / 0.5);
+      transform: scale(1.05);
+    }
+    .reaction-btn:active {
+      transform: scale(0.95);
+    }
+    .reaction-emoji {
+      font-size: 1.5rem;
+      margin-bottom: var(--spacing-1);
+    }
+    .reaction-label {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+  </style>
+</head>
+<body style="background: hsl(var(--muted) / 0.3);">
+  <div class="reaction-panel">
+    <div class="panel-title">반응</div>
+
+    <!-- First Row -->
+    <div class="reaction-grid mb-3">
+      <button class="reaction-btn">
+        <span class="reaction-emoji">👍</span>
+        <span class="reaction-label">좋아요</span>
+      </button>
+      <button class="reaction-btn">
+        <span class="reaction-emoji">👏</span>
+        <span class="reaction-label">박수</span>
+      </button>
+      <button class="reaction-btn">
+        <span class="reaction-emoji">❓</span>
+        <span class="reaction-label">질문</span>
+      </button>
+      <button class="reaction-btn">
+        <span class="reaction-emoji">🎉</span>
+        <span class="reaction-label">축하</span>
+      </button>
+      <button class="reaction-btn">
+        <span class="reaction-emoji">💡</span>
+        <span class="reaction-label">아이디어</span>
+      </button>
+    </div>
+
+    <!-- Second Row -->
+    <div class="reaction-grid">
+      <button class="reaction-btn">
+        <span class="reaction-emoji">😊</span>
+        <span class="reaction-label">웃음</span>
+      </button>
+      <button class="reaction-btn">
+        <span class="reaction-emoji">😢</span>
+        <span class="reaction-label">슬픔</span>
+      </button>
+      <button class="reaction-btn">
+        <span class="reaction-emoji">😮</span>
+        <span class="reaction-label">놀람</span>
+      </button>
+      <button class="reaction-btn">
+        <span class="reaction-emoji">🤔</span>
+        <span class="reaction-label">생각</span>
+      </button>
+      <button class="reaction-btn">
+        <span class="reaction-emoji">❤️</span>
+        <span class="reaction-label">좋아</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

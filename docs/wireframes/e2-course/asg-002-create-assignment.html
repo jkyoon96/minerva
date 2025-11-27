@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASG-002: 새 과제 만들기 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .main-content {
+      margin-left: 280px;
+      padding: var(--spacing-6);
+    }
+    .type-card {
+      border: 2px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .type-card:hover {
+      border-color: hsl(var(--brand-primary));
+    }
+    .type-card.selected {
+      border-color: hsl(var(--brand-primary));
+      background: hsl(var(--brand-primary) / 0.05);
+    }
+    .rich-editor {
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .rich-editor-toolbar {
+      background: hsl(var(--muted));
+      padding: var(--spacing-2);
+      display: flex;
+      gap: var(--spacing-1);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .rich-editor-content {
+      min-height: 120px;
+      padding: var(--spacing-3);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="#" class="nav-link">대시보드</a>
+        <a href="crs-001-course-list.html" class="nav-link active">내 코스</a>
+        <a href="#" class="nav-link">분석</a>
+        <a href="#" class="nav-link">설정</a>
+      </div>
+      <div class="navbar-actions">
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">김교수</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" style="top: 57px; height: calc(100vh - 57px);">
+    <div class="sidebar-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">코스 메뉴</div>
+        <a href="crs-003-course-detail.html" class="sidebar-link">
+          <i data-lucide="home" class="icon-md"></i>
+          개요
+        </a>
+        <a href="ses-001-session-list.html" class="sidebar-link">
+          <i data-lucide="video" class="icon-md"></i>
+          세션
+        </a>
+        <a href="crs-004-students.html" class="sidebar-link">
+          <i data-lucide="users" class="icon-md"></i>
+          수강생
+        </a>
+        <a href="cnt-001-content-library.html" class="sidebar-link">
+          <i data-lucide="folder" class="icon-md"></i>
+          콘텐츠
+        </a>
+        <a href="asg-001-assignment-list.html" class="sidebar-link active">
+          <i data-lucide="file-text" class="icon-md"></i>
+          과제
+        </a>
+        <a href="grd-001-grade-dashboard.html" class="sidebar-link">
+          <i data-lucide="bar-chart-3" class="icon-md"></i>
+          성적
+        </a>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="trending-up" class="icon-md"></i>
+          분석
+        </a>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="settings" class="icon-md"></i>
+          설정
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-sm text-muted mb-4">
+      <a href="crs-003-course-detail.html">경영학개론</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <a href="asg-001-assignment-list.html">과제</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <span class="font-medium" style="color: hsl(var(--foreground))">새 과제</span>
+    </div>
+
+    <h1 class="text-2xl font-bold mb-6">새 과제 만들기</h1>
+
+    <div class="card" style="max-width: 800px;">
+      <div class="card-content">
+        <form>
+          <!-- 기본 정보 -->
+          <h2 class="font-semibold mb-4">기본 정보</h2>
+          <div class="separator mb-4"></div>
+
+          <!-- 과제 유형 -->
+          <div class="form-group mb-6">
+            <label class="form-label">과제 유형</label>
+            <div class="grid grid-cols-4 gap-4">
+              <div class="type-card selected">
+                <i data-lucide="file-text" class="icon-lg mb-2" style="color: hsl(var(--brand-primary))"></i>
+                <div class="text-sm font-medium">과제</div>
+              </div>
+              <div class="type-card">
+                <i data-lucide="help-circle" class="icon-lg mb-2 text-muted"></i>
+                <div class="text-sm font-medium">퀴즈</div>
+              </div>
+              <div class="type-card">
+                <i data-lucide="code" class="icon-lg mb-2 text-muted"></i>
+                <div class="text-sm font-medium">코딩</div>
+              </div>
+              <div class="type-card">
+                <i data-lucide="clipboard-list" class="icon-lg mb-2 text-muted"></i>
+                <div class="text-sm font-medium">설문</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group mb-4">
+            <label class="form-label form-label-required">과제 제목</label>
+            <input type="text" class="input" placeholder="예: 과제 1: 연결 리스트 구현" value="과제 1: 연결 리스트 구현">
+          </div>
+
+          <div class="form-group mb-4">
+            <label class="form-label">과제 설명</label>
+            <div class="rich-editor">
+              <div class="rich-editor-toolbar">
+                <button type="button" class="btn btn-ghost btn-icon btn-sm"><b>B</b></button>
+                <button type="button" class="btn btn-ghost btn-icon btn-sm"><i>I</i></button>
+                <button type="button" class="btn btn-ghost btn-icon btn-sm"><u>U</u></button>
+                <button type="button" class="btn btn-ghost btn-icon btn-sm">
+                  <i data-lucide="link" class="icon-sm"></i>
+                </button>
+                <button type="button" class="btn btn-ghost btn-icon btn-sm">
+                  <i data-lucide="code" class="icon-sm"></i>
+                </button>
+                <button type="button" class="btn btn-ghost btn-icon btn-sm">
+                  <i data-lucide="list" class="icon-sm"></i>
+                </button>
+              </div>
+              <div class="rich-editor-content" contenteditable="true">
+                단일 연결 리스트와 이중 연결 리스트를 구현하고 기본 연산(삽입, 삭제, 검색)을 테스트하세요.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group mb-6">
+            <label class="form-label">첨부 파일</label>
+            <div class="flex items-center gap-2 p-3 border rounded-lg mb-2">
+              <i data-lucide="paperclip" class="icon-sm text-muted"></i>
+              <span class="flex-1 text-sm">과제요구사항.pdf</span>
+              <button type="button" class="btn btn-ghost btn-icon btn-sm">
+                <i data-lucide="x" class="icon-sm"></i>
+              </button>
+            </div>
+            <button type="button" class="btn btn-outline btn-sm">
+              <i data-lucide="plus" class="icon-sm"></i>
+              파일 추가
+            </button>
+          </div>
+
+          <!-- 제출 설정 -->
+          <h2 class="font-semibold mb-4">제출 설정</h2>
+          <div class="separator mb-4"></div>
+
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="form-group">
+              <label class="form-label form-label-required">마감일</label>
+              <input type="date" class="input" value="2024-11-30">
+            </div>
+            <div class="form-group">
+              <label class="form-label">마감 시간</label>
+              <select class="select">
+                <option value="23:59" selected>23:59</option>
+                <option value="12:00">12:00</option>
+                <option value="18:00">18:00</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="form-group">
+              <label class="form-label">배점</label>
+              <div class="flex items-center gap-2">
+                <input type="number" class="input" value="100" style="width: 100px;">
+                <span class="text-sm">점</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">늦은 제출</label>
+              <label class="checkbox-wrapper">
+                <input type="checkbox" class="checkbox" checked>
+                <span class="checkbox-label">허용 (하루당 -10%)</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group mb-6">
+            <label class="form-label">재제출 허용</label>
+            <div class="flex items-center gap-3">
+              <label class="checkbox-wrapper">
+                <input type="checkbox" class="checkbox" checked>
+                <span class="checkbox-label">재제출 허용</span>
+              </label>
+              <span class="text-sm text-muted">최대</span>
+              <input type="number" class="input" value="3" style="width: 60px;">
+              <span class="text-sm text-muted">회</span>
+            </div>
+          </div>
+
+          <div class="separator mb-4"></div>
+
+          <!-- Actions -->
+          <div class="flex items-center justify-between">
+            <a href="asg-001-assignment-list.html" class="btn btn-secondary">취소</a>
+            <div class="flex gap-3">
+              <button type="button" class="btn btn-outline">임시 저장</button>
+              <button type="submit" class="btn btn-primary">
+                <i data-lucide="send" class="icon-sm"></i>
+                과제 게시
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

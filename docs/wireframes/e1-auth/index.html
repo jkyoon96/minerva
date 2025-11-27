@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E1. 사용자 인증 및 관리 - EduForum Wireframes</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar">
+      <a href="../index.html" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum Wireframes
+      </a>
+    </nav>
+  </header>
+
+  <main class="container py-8">
+    <div class="flex items-center gap-2 text-sm text-muted mb-4">
+      <a href="../index.html">홈</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <span class="font-medium" style="color: hsl(var(--foreground))">E1. 사용자 인증 및 관리</span>
+    </div>
+
+    <h1 class="text-3xl font-bold mb-2">E1. 사용자 인증 및 관리</h1>
+    <p class="text-muted mb-8">사용자 계정 생성, 인증, 권한 관리 시스템</p>
+
+    <div class="grid gap-6">
+      <!-- S1: 회원가입 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="user-plus" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E1-S1: 회원가입
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-3 gap-4">
+            <a href="auth-001-register.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">AUTH-001</div>
+              <div class="text-xs text-muted">회원가입</div>
+            </a>
+            <a href="auth-002-email-verify.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">AUTH-002</div>
+              <div class="text-xs text-muted">이메일 인증</div>
+            </a>
+            <a href="auth-003-email-complete.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">AUTH-003</div>
+              <div class="text-xs text-muted">이메일 인증 완료</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S2: 로그인 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="log-in" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E1-S2: 로그인
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-3 gap-4">
+            <a href="auth-004-login.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">AUTH-004</div>
+              <div class="text-xs text-muted">로그인</div>
+            </a>
+            <a href="auth-005-login-error.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">AUTH-005</div>
+              <div class="text-xs text-muted">로그인 오류</div>
+            </a>
+            <a href="auth-006-account-locked.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">AUTH-006</div>
+              <div class="text-xs text-muted">계정 잠금</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S3: OAuth 소셜 로그인 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="link" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E1-S3: OAuth 소셜 로그인
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-3 gap-4">
+            <a href="auth-007-oauth-link.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">AUTH-007</div>
+              <div class="text-xs text-muted">소셜 계정 연동</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S4: 2단계 인증 (2FA) -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="shield-check" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E1-S4: 2단계 인증 (2FA)
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="auth-008-2fa-setup.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">AUTH-008</div>
+              <div class="text-xs text-muted">2FA 설정</div>
+            </a>
+            <a href="auth-009-2fa-qr.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">AUTH-009</div>
+              <div class="text-xs text-muted">QR 코드 스캔</div>
+            </a>
+            <a href="auth-010-2fa-backup.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">AUTH-010</div>
+              <div class="text-xs text-muted">백업 코드</div>
+            </a>
+            <a href="auth-011-2fa-verify.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">AUTH-011</div>
+              <div class="text-xs text-muted">2FA 인증 입력</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S5: 비밀번호 재설정 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="key" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E1-S5: 비밀번호 재설정
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-3 gap-4">
+            <a href="auth-012-forgot-password.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">AUTH-012</div>
+              <div class="text-xs text-muted">비밀번호 찾기</div>
+            </a>
+            <a href="auth-013-password-sent.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">AUTH-013</div>
+              <div class="text-xs text-muted">이메일 발송 완료</div>
+            </a>
+            <a href="auth-014-reset-password.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">AUTH-014</div>
+              <div class="text-xs text-muted">새 비밀번호 설정</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S6: 역할 기반 접근 제어 (RBAC) -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="users" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E1-S6: 역할 기반 접근 제어 (RBAC)
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-3 gap-4">
+            <a href="admin-001-role-management.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">ADMIN-001</div>
+              <div class="text-xs text-muted">역할 관리</div>
+            </a>
+            <a href="admin-002-role-modal.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">ADMIN-002</div>
+              <div class="text-xs text-muted">역할 변경 모달</div>
+            </a>
+            <a href="error-001-forbidden.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">ERROR-001</div>
+              <div class="text-xs text-muted">권한 없음</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S7: 사용자 프로필 관리 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="user-cog" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E1-S7: 사용자 프로필 관리
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-3 gap-4">
+            <a href="profile-001-settings.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">PROFILE-001</div>
+              <div class="text-xs text-muted">프로필 설정</div>
+            </a>
+            <a href="profile-002-photo-modal.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">PROFILE-002</div>
+              <div class="text-xs text-muted">프로필 사진 변경</div>
+            </a>
+            <a href="profile-003-change-password.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">PROFILE-003</div>
+              <div class="text-xs text-muted">비밀번호 변경</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer mt-8">
+    <div class="footer-content text-center">
+      <p class="footer-text">EduForum CSS Wireframes - shadcn/ui & Lucide Icons</p>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

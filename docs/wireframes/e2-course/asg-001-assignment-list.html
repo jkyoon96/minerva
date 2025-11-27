@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASG-001: 과제 목록 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .main-content {
+      margin-left: 280px;
+      padding: var(--spacing-6);
+    }
+    .assignment-card {
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .assignment-card:hover {
+      box-shadow: var(--shadow-sm);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="#" class="nav-link">대시보드</a>
+        <a href="crs-001-course-list.html" class="nav-link active">내 코스</a>
+        <a href="#" class="nav-link">분석</a>
+        <a href="#" class="nav-link">설정</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-icon">
+          <i data-lucide="bell" class="icon-md"></i>
+        </button>
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">김교수</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" style="top: 57px; height: calc(100vh - 57px);">
+    <div class="sidebar-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">코스 메뉴</div>
+        <a href="crs-003-course-detail.html" class="sidebar-link">
+          <i data-lucide="home" class="icon-md"></i>
+          개요
+        </a>
+        <a href="ses-001-session-list.html" class="sidebar-link">
+          <i data-lucide="video" class="icon-md"></i>
+          세션
+        </a>
+        <a href="crs-004-students.html" class="sidebar-link">
+          <i data-lucide="users" class="icon-md"></i>
+          수강생
+        </a>
+        <a href="cnt-001-content-library.html" class="sidebar-link">
+          <i data-lucide="folder" class="icon-md"></i>
+          콘텐츠
+        </a>
+        <a href="#" class="sidebar-link active">
+          <i data-lucide="file-text" class="icon-md"></i>
+          과제
+        </a>
+        <a href="grd-001-grade-dashboard.html" class="sidebar-link">
+          <i data-lucide="bar-chart-3" class="icon-md"></i>
+          성적
+        </a>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="trending-up" class="icon-md"></i>
+          분석
+        </a>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="settings" class="icon-md"></i>
+          설정
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-sm text-muted mb-4">
+      <a href="crs-003-course-detail.html">경영학개론</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <span class="font-medium" style="color: hsl(var(--foreground))">과제</span>
+    </div>
+
+    <h1 class="text-2xl font-bold mb-6">과제 관리</h1>
+
+    <!-- Search and Actions -->
+    <div class="card mb-6">
+      <div class="card-content">
+        <div class="flex items-center gap-4">
+          <div class="input-group flex-1">
+            <span class="input-icon">
+              <i data-lucide="search" class="icon-sm"></i>
+            </span>
+            <input type="text" class="input" style="padding-left: 2.5rem" placeholder="과제 검색...">
+          </div>
+          <select class="select" style="width: 120px;">
+            <option>상태</option>
+            <option>진행중</option>
+            <option>완료</option>
+          </select>
+          <a href="asg-002-create-assignment.html" class="btn btn-primary">
+            <i data-lucide="plus" class="icon-sm"></i>
+            새 과제
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- In Progress -->
+    <h2 class="text-lg font-semibold mb-4">진행 중</h2>
+    <div class="separator mb-4"></div>
+
+    <div class="assignment-card">
+      <div class="flex items-start justify-between">
+        <div class="flex items-start gap-4">
+          <span class="badge badge-warning">마감임박</span>
+          <div>
+            <h3 class="font-semibold mb-1">과제 1: 연결 리스트 구현</h3>
+            <p class="text-sm text-muted mb-2">마감: 2024-11-30 23:59</p>
+            <div class="flex items-center gap-4 text-sm">
+              <span>제출: 38/45 (84%)</span>
+              <span class="text-muted">배점: 100점</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <a href="asg-003-submissions.html" class="btn btn-outline btn-sm">제출물 보기</a>
+          <button class="btn btn-outline btn-sm">수정</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Completed -->
+    <h2 class="text-lg font-semibold mb-4 mt-8">완료</h2>
+    <div class="separator mb-4"></div>
+
+    <div class="assignment-card">
+      <div class="flex items-start justify-between">
+        <div class="flex items-start gap-4">
+          <span class="badge badge-success">채점완료</span>
+          <div>
+            <h3 class="font-semibold mb-1">퀴즈 #5: 마케팅 전략</h3>
+            <p class="text-sm text-muted mb-2">마감: 2024-11-20 (완료)</p>
+            <div class="flex items-center gap-4 text-sm">
+              <span>제출: 45/45 (100%)</span>
+              <span class="text-muted">평균: 82점</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-outline btn-sm">결과 보기</button>
+          <button class="btn btn-outline btn-sm">통계</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="assignment-card">
+      <div class="flex items-start justify-between">
+        <div class="flex items-start gap-4">
+          <span class="badge badge-success">완료</span>
+          <div>
+            <h3 class="font-semibold mb-1">과제 0: 자기소개서</h3>
+            <p class="text-sm text-muted mb-2">마감: 2024-09-10 (완료)</p>
+            <div class="flex items-center gap-4 text-sm">
+              <span>제출: 45/45 (100%)</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-outline btn-sm">제출물 보기</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

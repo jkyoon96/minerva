@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E4. 능동적 학습 도구 - EduForum Wireframes</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar">
+      <a href="../index.html" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum Wireframes
+      </a>
+    </nav>
+  </header>
+
+  <main class="container py-8">
+    <div class="flex items-center gap-2 text-sm text-muted mb-4">
+      <a href="../index.html">홈</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <span class="font-medium" style="color: hsl(var(--foreground))">E4. 능동적 학습 도구</span>
+    </div>
+
+    <h1 class="text-3xl font-bold mb-2">E4. 능동적 학습 도구</h1>
+    <p class="text-muted mb-8">투표, 퀴즈, 분반, 화이트보드 등 능동적 학습 도구</p>
+
+    <div class="grid gap-6">
+      <!-- S1: 실시간 투표 생성 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="bar-chart-2" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E4-S1: 실시간 투표 생성
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="poll-001-create-poll.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">POLL-001</div>
+              <div class="text-xs text-muted">투표 만들기 (교수자)</div>
+            </a>
+            <a href="poll-002-templates.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">POLL-002</div>
+              <div class="text-xs text-muted">투표 템플릿 목록</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S2: 투표 참여 및 결과 확인 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="vote" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E4-S2: 투표 참여 및 결과 확인
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="poll-003-participate.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">POLL-003</div>
+              <div class="text-xs text-muted">투표 참여 (학생)</div>
+            </a>
+            <a href="poll-004-results.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">POLL-004</div>
+              <div class="text-xs text-muted">투표 결과 (실시간)</div>
+            </a>
+            <a href="poll-005-wordcloud.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">POLL-005</div>
+              <div class="text-xs text-muted">주관식 결과 (워드클라우드)</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S3: 퀴즈 문제 관리 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="help-circle" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E4-S3: 퀴즈 문제 관리
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="quiz-001-question-bank.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">QUIZ-001</div>
+              <div class="text-xs text-muted">문제 은행</div>
+            </a>
+            <a href="quiz-002-edit-question.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">QUIZ-002</div>
+              <div class="text-xs text-muted">문제 추가/편집</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S4: 퀴즈 진행 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="file-text" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E4-S4: 퀴즈 진행
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="quiz-003-taking.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">QUIZ-003</div>
+              <div class="text-xs text-muted">퀴즈 진행 (학생)</div>
+            </a>
+            <a href="quiz-004-results.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">QUIZ-004</div>
+              <div class="text-xs text-muted">퀴즈 결과</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S5: 분반 생성 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="users" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E4-S5: 분반 (Breakout Rooms) 생성
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="brk-001-setup.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">BRK-001</div>
+              <div class="text-xs text-muted">분반 설정</div>
+            </a>
+            <a href="brk-002-manual-assign.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">BRK-002</div>
+              <div class="text-xs text-muted">수동 분반 배정</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S6: 분반 모니터링 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="monitor" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E4-S6: 분반 모니터링 및 이동
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="brk-003-monitor.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">BRK-003</div>
+              <div class="text-xs text-muted">분반 모니터링 대시보드</div>
+            </a>
+            <a href="brk-004-student-view.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">BRK-004</div>
+              <div class="text-xs text-muted">분반 내 화면 (학생)</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S7: 화이트보드 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="edit-3" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E4-S7: 화이트보드
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="wb-001-whiteboard.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">WB-001</div>
+              <div class="text-xs text-muted">화이트보드</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S8: 소크라틱 토론 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="message-circle" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E4-S8: 소크라틱 토론 도구
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="soc-001-discussion.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">SOC-001</div>
+              <div class="text-xs text-muted">소크라틱 토론 모드</div>
+            </a>
+            <a href="soc-002-nominate.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">SOC-002</div>
+              <div class="text-xs text-muted">발언자 지목 (교수자)</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer mt-8">
+    <div class="footer-content text-center">
+      <p class="footer-text">EduForum CSS Wireframes - shadcn/ui & Lucide Icons</p>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

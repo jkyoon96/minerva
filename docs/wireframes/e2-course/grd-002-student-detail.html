@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRD-002: 학생별 성적 상세 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .main-content {
+      padding: var(--spacing-6);
+    }
+    .stat-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      text-align: center;
+    }
+    .stat-value {
+      font-size: var(--text-2xl);
+      font-weight: var(--font-bold);
+      color: hsl(var(--brand-primary));
+    }
+    .progress-bar {
+      height: 8px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: hsl(var(--brand-primary));
+    }
+    .score-section {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .chart-line {
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-4);
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="#" class="nav-link">대시보드</a>
+        <a href="crs-001-course-list.html" class="nav-link active">내 코스</a>
+        <a href="#" class="nav-link">분석</a>
+        <a href="#" class="nav-link">설정</a>
+      </div>
+      <div class="navbar-actions">
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">김교수</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-sm text-muted mb-4">
+      <a href="crs-003-course-detail.html">경영학개론</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <a href="grd-001-grade-dashboard.html">성적</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <span class="font-medium" style="color: hsl(var(--foreground))">김민수</span>
+    </div>
+
+    <h1 class="text-2xl font-bold mb-6">김민수 성적 상세</h1>
+
+    <!-- Student Info Card -->
+    <div class="card mb-6">
+      <div class="card-content">
+        <div class="flex items-center gap-6">
+          <div class="avatar avatar-lg">
+            <i data-lucide="user" class="icon-lg"></i>
+          </div>
+          <div>
+            <h2 class="text-xl font-semibold">김민수</h2>
+            <p class="text-muted">학번: 20211234</p>
+            <p class="text-muted">이메일: kim@uni.edu</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-4 gap-4 mt-6">
+          <div class="stat-card">
+            <div class="stat-value">93</div>
+            <div class="text-sm text-muted">총점</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">A</div>
+            <div class="text-sm text-muted">등급</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">2/45</div>
+            <div class="text-sm text-muted">석차</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">96%</div>
+            <div class="text-sm text-muted">출석률</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grade Breakdown -->
+    <h2 class="text-lg font-semibold mb-4">성적 구성</h2>
+    <div class="separator mb-4"></div>
+
+    <div class="score-section">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <i data-lucide="bar-chart-2" class="icon-md text-muted"></i>
+          <span class="font-semibold">참여도 (30%)</span>
+        </div>
+        <span class="font-bold">28/30</span>
+      </div>
+      <div class="progress-bar mb-4">
+        <div class="progress-bar-fill" style="width: 93%"></div>
+      </div>
+      <div class="text-sm text-muted">
+        <ul style="list-style: disc; padding-left: var(--spacing-4);">
+          <li>세션 출석: 12/12 (100%)</li>
+          <li>발언 참여: 85%</li>
+          <li>투표/퀴즈 참여: 92%</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="score-section">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <i data-lucide="file-question" class="icon-md text-muted"></i>
+          <span class="font-semibold">퀴즈 (30%)</span>
+        </div>
+        <span class="font-bold">27/30</span>
+      </div>
+      <div class="progress-bar mb-4">
+        <div class="progress-bar-fill" style="width: 90%"></div>
+      </div>
+      <div class="text-sm text-muted">
+        <ul style="list-style: disc; padding-left: var(--spacing-4);">
+          <li>퀴즈 1: 92점</li>
+          <li>퀴즈 2: 88점</li>
+          <li>퀴즈 3: 95점</li>
+          <li>퀴즈 4: 78점</li>
+          <li>퀴즈 5: 90점</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="score-section">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <i data-lucide="folder" class="icon-md text-muted"></i>
+          <span class="font-semibold">과제 (40%)</span>
+        </div>
+        <span class="font-bold">38/40</span>
+      </div>
+      <div class="progress-bar mb-4">
+        <div class="progress-bar-fill" style="width: 95%"></div>
+      </div>
+      <div class="text-sm text-muted">
+        <ul style="list-style: disc; padding-left: var(--spacing-4);">
+          <li>과제 0: 100점 (자기소개서)</li>
+          <li>과제 1: 95점 (연결 리스트)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Performance Trend -->
+    <h2 class="text-lg font-semibold mb-4">성적 추이</h2>
+    <div class="separator mb-4"></div>
+
+    <div class="card mb-6">
+      <div class="card-content">
+        <div class="chart-line">
+          <svg width="400" height="100" viewBox="0 0 400 100">
+            <polyline
+              fill="none"
+              stroke="hsl(221 83% 53%)"
+              stroke-width="3"
+              points="20,60 80,40 140,30 200,45 260,35 320,40 380,50"
+            />
+            <circle cx="20" cy="60" r="5" fill="hsl(221 83% 53%)"/>
+            <circle cx="80" cy="40" r="5" fill="hsl(221 83% 53%)"/>
+            <circle cx="140" cy="30" r="5" fill="hsl(221 83% 53%)"/>
+            <circle cx="200" cy="45" r="5" fill="hsl(221 83% 53%)"/>
+            <circle cx="260" cy="35" r="5" fill="hsl(221 83% 53%)"/>
+            <circle cx="320" cy="40" r="5" fill="hsl(221 83% 53%)"/>
+            <circle cx="380" cy="50" r="5" fill="hsl(221 83% 53%)"/>
+          </svg>
+        </div>
+        <div class="flex justify-between text-sm text-muted mt-2 px-4">
+          <span>9월</span>
+          <span>10월</span>
+          <span>11월</span>
+          <span>12월</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex gap-3">
+      <a href="grd-001-grade-dashboard.html" class="btn btn-secondary">
+        <i data-lucide="arrow-left" class="icon-sm"></i>
+        목록으로
+      </a>
+      <button class="btn btn-outline">
+        <i data-lucide="upload" class="icon-sm"></i>
+        내보내기
+      </button>
+      <button class="btn btn-outline">
+        <i data-lucide="mail" class="icon-sm"></i>
+        학생에게 메일
+      </button>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

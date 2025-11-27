@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIVE-012: 손들기 큐 (교수자) - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .hand-panel {
+      width: 320px;
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      margin: var(--spacing-6) auto;
+      box-shadow: var(--shadow-lg);
+    }
+    .panel-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .hand-icon {
+      color: hsl(var(--warning));
+    }
+    .panel-content {
+      padding: var(--spacing-3);
+    }
+    .hand-item {
+      background: hsl(var(--muted) / 0.3);
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+      margin-bottom: var(--spacing-2);
+    }
+    .hand-item:last-child {
+      margin-bottom: 0;
+    }
+    .hand-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-2);
+    }
+    .hand-user {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .hand-time {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .hand-actions {
+      display: flex;
+      gap: var(--spacing-2);
+    }
+    .panel-footer {
+      padding: var(--spacing-3);
+      border-top: 1px solid hsl(var(--border));
+    }
+  </style>
+</head>
+<body style="background: hsl(var(--muted) / 0.3);">
+  <div class="hand-panel">
+    <div class="panel-header">
+      <i data-lucide="hand" class="icon-md hand-icon"></i>
+      <span class="font-semibold">손들기 (3명)</span>
+    </div>
+
+    <div class="panel-content">
+      <!-- Hand Item 1 -->
+      <div class="hand-item">
+        <div class="hand-info">
+          <div class="hand-user">
+            <div class="avatar avatar-sm">
+              <i data-lucide="user" class="icon-sm"></i>
+            </div>
+            <span class="font-medium text-sm">이민준</span>
+          </div>
+          <span class="hand-time">2분 전</span>
+        </div>
+        <div class="hand-actions">
+          <button class="btn btn-primary btn-sm flex-1">
+            <i data-lucide="mic" class="icon-xs"></i>
+            발언
+          </button>
+          <button class="btn btn-outline btn-sm flex-1">무시</button>
+        </div>
+      </div>
+
+      <!-- Hand Item 2 -->
+      <div class="hand-item">
+        <div class="hand-info">
+          <div class="hand-user">
+            <div class="avatar avatar-sm">
+              <i data-lucide="user" class="icon-sm"></i>
+            </div>
+            <span class="font-medium text-sm">박서연</span>
+          </div>
+          <span class="hand-time">1분 전</span>
+        </div>
+        <div class="hand-actions">
+          <button class="btn btn-primary btn-sm flex-1">
+            <i data-lucide="mic" class="icon-xs"></i>
+            발언
+          </button>
+          <button class="btn btn-outline btn-sm flex-1">무시</button>
+        </div>
+      </div>
+
+      <!-- Hand Item 3 -->
+      <div class="hand-item">
+        <div class="hand-info">
+          <div class="hand-user">
+            <div class="avatar avatar-sm">
+              <i data-lucide="user" class="icon-sm"></i>
+            </div>
+            <span class="font-medium text-sm">강수아</span>
+          </div>
+          <span class="hand-time">30초 전</span>
+        </div>
+        <div class="hand-actions">
+          <button class="btn btn-primary btn-sm flex-1">
+            <i data-lucide="mic" class="icon-xs"></i>
+            발언
+          </button>
+          <button class="btn btn-outline btn-sm flex-1">무시</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-footer">
+      <button class="btn btn-outline btn-sm w-full">
+        <i data-lucide="hand" class="icon-xs"></i>
+        모두 내리기
+      </button>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

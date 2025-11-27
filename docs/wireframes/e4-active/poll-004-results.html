@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POLL-004: 투표 결과 (실시간) - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal-content {
+      background: hsl(var(--card));
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 520px;
+      overflow: hidden;
+    }
+    .result-header {
+      padding: var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .result-body {
+      padding: var(--spacing-4);
+    }
+    .result-question {
+      font-size: var(--text-lg);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-3);
+    }
+    .response-count {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-size: var(--text-sm);
+      color: hsl(var(--success));
+      margin-bottom: var(--spacing-4);
+    }
+    .result-option {
+      margin-bottom: var(--spacing-3);
+    }
+    .option-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-1);
+    }
+    .option-text {
+      font-size: var(--text-sm);
+    }
+    .option-text.correct {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      color: hsl(var(--success));
+      font-weight: var(--font-medium);
+    }
+    .option-percent {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .result-bar {
+      height: 24px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .result-fill {
+      height: 100%;
+      background: hsl(var(--muted-foreground) / 0.3);
+      transition: width 0.5s ease;
+    }
+    .result-fill.correct {
+      background: hsl(var(--success) / 0.3);
+    }
+    .result-fill.highest {
+      background: hsl(var(--brand-primary) / 0.5);
+    }
+    .correct-rate {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3);
+      background: hsl(var(--success) / 0.1);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--spacing-4);
+    }
+    .correct-rate i {
+      color: hsl(var(--success));
+    }
+    .explanation-box {
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-4);
+    }
+    .explanation-title {
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-2);
+    }
+    .explanation-text {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      line-height: 1.6;
+    }
+    .result-footer {
+      padding: var(--spacing-4);
+      border-top: 1px solid hsl(var(--border));
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <!-- Modal Overlay -->
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="result-header">
+        <div class="flex items-center gap-2">
+          <i data-lucide="bar-chart-2" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          <span class="font-semibold">투표 결과</span>
+        </div>
+      </div>
+
+      <div class="result-body">
+        <div class="result-question">
+          다음 중 마케팅 믹스 4P에 해당하지 않는 것은?
+        </div>
+
+        <div class="response-count">
+          <i data-lucide="check-circle" class="icon-sm"></i>
+          응답: 26/26명 (100%)
+        </div>
+
+        <div class="result-option">
+          <div class="option-header">
+            <span class="option-text">A. Product (제품)</span>
+            <span class="option-percent">8% (2명)</span>
+          </div>
+          <div class="result-bar">
+            <div class="result-fill" style="width: 8%"></div>
+          </div>
+        </div>
+
+        <div class="result-option">
+          <div class="option-header">
+            <span class="option-text">B. Price (가격)</span>
+            <span class="option-percent">15% (4명)</span>
+          </div>
+          <div class="result-bar">
+            <div class="result-fill" style="width: 15%"></div>
+          </div>
+        </div>
+
+        <div class="result-option">
+          <div class="option-header">
+            <span class="option-text correct">
+              <i data-lucide="check-circle" class="icon-xs"></i>
+              C. Profit (수익) - 정답
+            </span>
+            <span class="option-percent">69% (18명)</span>
+          </div>
+          <div class="result-bar">
+            <div class="result-fill correct highest" style="width: 69%"></div>
+          </div>
+        </div>
+
+        <div class="result-option">
+          <div class="option-header">
+            <span class="option-text">D. Promotion (촉진)</span>
+            <span class="option-percent">8% (2명)</span>
+          </div>
+          <div class="result-bar">
+            <div class="result-fill" style="width: 8%"></div>
+          </div>
+        </div>
+
+        <div class="separator my-4"></div>
+
+        <div class="correct-rate">
+          <i data-lucide="trophy" class="icon-md"></i>
+          <div>
+            <div class="font-semibold">정답률: 69%</div>
+            <div class="text-xs text-muted">18명이 정답을 맞췄습니다</div>
+          </div>
+        </div>
+
+        <div class="explanation-box">
+          <div class="explanation-title">해설</div>
+          <p class="explanation-text">
+            마케팅 믹스 4P는 Product, Price, Place, Promotion입니다. Profit(수익)은 4P에 포함되지 않습니다.
+          </p>
+        </div>
+      </div>
+
+      <div class="result-footer">
+        <button class="btn btn-ghost">결과 닫기</button>
+        <button class="btn btn-outline">
+          <i data-lucide="share-2" class="icon-sm"></i>
+          결과 공유
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AUTH-005: 로그인 오류 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <div class="auth-layout">
+    <div class="auth-container">
+      <!-- Logo -->
+      <div class="auth-logo mb-6">
+        <i data-lucide="graduation-cap" class="icon-xl" style="color: hsl(var(--brand-primary))"></i>
+        <span class="text-2xl font-bold" style="color: hsl(var(--brand-primary))">EduForum</span>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-header">
+          <h1 class="auth-title">로그인</h1>
+        </div>
+
+        <!-- Error Alert -->
+        <div class="alert alert-destructive mb-4">
+          <i data-lucide="alert-triangle" class="icon-md flex-shrink-0"></i>
+          <div>
+            <div class="alert-title">이메일 또는 비밀번호가 올바르지 않습니다.</div>
+            <div class="alert-description">3/5회 시도</div>
+          </div>
+        </div>
+
+        <form class="auth-form">
+          <!-- 이메일 (Error State) -->
+          <div class="form-group">
+            <label class="form-label">이메일</label>
+            <div class="input-group">
+              <span class="input-icon">
+                <i data-lucide="mail" class="icon-sm"></i>
+              </span>
+              <input type="email" class="input input-error" style="padding-left: 2.5rem" value="example@university.edu">
+              <span class="input-addon">
+                <i data-lucide="alert-circle" class="icon-sm" style="color: hsl(var(--destructive))"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- 비밀번호 (Error State) -->
+          <div class="form-group">
+            <label class="form-label">비밀번호</label>
+            <div class="input-group">
+              <span class="input-icon">
+                <i data-lucide="lock" class="icon-sm"></i>
+              </span>
+              <input type="password" class="input input-error" style="padding-left: 2.5rem" value="wrongpassword">
+              <span class="input-addon flex gap-1">
+                <button type="button" class="btn-ghost btn-icon-sm">
+                  <i data-lucide="eye" class="icon-sm"></i>
+                </button>
+                <i data-lucide="alert-circle" class="icon-sm" style="color: hsl(var(--destructive))"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- 로그인 유지 & 비밀번호 찾기 -->
+          <div class="flex items-center justify-between">
+            <label class="checkbox-wrapper">
+              <input type="checkbox" class="checkbox">
+              <span class="checkbox-label text-sm">로그인 상태 유지</span>
+            </label>
+            <a href="auth-012-forgot-password.html" class="text-sm">비밀번호 찾기</a>
+          </div>
+
+          <!-- 로그인 버튼 -->
+          <button type="submit" class="btn btn-primary w-full btn-lg">
+            로그인
+          </button>
+        </form>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+          계정이 없으신가요? <a href="auth-001-register.html">회원가입</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

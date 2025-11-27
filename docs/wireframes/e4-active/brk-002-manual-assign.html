@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BRK-002: 수동 분반 배정 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal-content {
+      background: hsl(var(--card));
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 700px;
+      max-height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .modal-body {
+      padding: var(--spacing-4);
+      overflow-y: auto;
+      flex: 1;
+    }
+    .modal-footer {
+      padding: var(--spacing-4);
+      border-top: 1px solid hsl(var(--border));
+      display: flex;
+      justify-content: space-between;
+    }
+    .assignment-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--spacing-4);
+    }
+    .unassigned-panel {
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+    }
+    .panel-header {
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-2);
+      font-size: var(--text-sm);
+    }
+    .student-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-1);
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .student-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2);
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      cursor: grab;
+    }
+    .student-item:hover {
+      background: hsl(var(--brand-primary) / 0.05);
+      border-color: hsl(var(--brand-primary));
+    }
+    .student-item:active {
+      cursor: grabbing;
+    }
+    .rooms-panel {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-3);
+    }
+    .room-box {
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+      border: 2px dashed hsl(var(--border));
+    }
+    .room-box.drop-target {
+      border-color: hsl(var(--brand-primary));
+      background: hsl(var(--brand-primary) / 0.05);
+    }
+    .room-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-2);
+    }
+    .room-title {
+      font-weight: var(--font-semibold);
+      font-size: var(--text-sm);
+      color: hsl(var(--brand-primary));
+    }
+    .room-count {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .room-members {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-2);
+      min-height: 36px;
+    }
+    .room-member {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      padding: var(--spacing-1) var(--spacing-2);
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+    }
+    .room-member .remove {
+      cursor: pointer;
+      opacity: 0.5;
+    }
+    .room-member .remove:hover {
+      opacity: 1;
+    }
+    .empty-slot {
+      padding: var(--spacing-2);
+      border: 1px dashed hsl(var(--border));
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+      text-align: center;
+    }
+    .add-room-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-1);
+      padding: var(--spacing-3);
+      border: 2px dashed hsl(var(--border));
+      border-radius: var(--radius-md);
+      color: hsl(var(--muted-foreground));
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .add-room-btn:hover {
+      border-color: hsl(var(--brand-primary));
+      color: hsl(var(--brand-primary));
+    }
+    .drag-hint {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2);
+      background: hsl(var(--brand-primary) / 0.1);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+      color: hsl(var(--brand-primary));
+      margin-bottom: var(--spacing-3);
+    }
+  </style>
+</head>
+<body>
+  <!-- Modal Overlay -->
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="flex items-center gap-2">
+          <i data-lucide="users" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          <h2 class="font-semibold">수동 분반 배정</h2>
+        </div>
+        <button class="btn btn-ghost btn-icon btn-sm">
+          <i data-lucide="x" class="icon-sm"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="drag-hint">
+          <i data-lucide="move" class="icon-sm"></i>
+          <span>학생을 드래그하여 분반에 배정하세요</span>
+        </div>
+
+        <div class="assignment-layout">
+          <div class="unassigned-panel">
+            <div class="panel-header">미배정 학생</div>
+            <div class="input-group mb-2">
+              <i data-lucide="search" class="icon-xs text-muted"></i>
+              <input type="text" class="input" placeholder="검색..." style="font-size: var(--text-xs);">
+            </div>
+            <div class="student-list">
+              <div class="student-item">
+                <i data-lucide="user" class="icon-xs"></i>
+                정다운
+              </div>
+              <div class="student-item">
+                <i data-lucide="user" class="icon-xs"></i>
+                한지민
+              </div>
+              <div class="student-item">
+                <i data-lucide="user" class="icon-xs"></i>
+                윤아름
+              </div>
+              <div class="student-item">
+                <i data-lucide="user" class="icon-xs"></i>
+                신동현
+              </div>
+              <div class="student-item">
+                <i data-lucide="user" class="icon-xs"></i>
+                유지원
+              </div>
+            </div>
+            <div class="text-xs text-muted mt-2">남은 학생: 16명</div>
+          </div>
+
+          <div class="rooms-panel">
+            <div class="room-box">
+              <div class="room-header">
+                <span class="room-title">분반 1</span>
+                <span class="room-count">5/5명</span>
+              </div>
+              <div class="room-members">
+                <span class="room-member">
+                  <i data-lucide="user" class="icon-xs"></i>
+                  김민수
+                  <span class="remove"><i data-lucide="x" class="icon-xs"></i></span>
+                </span>
+                <span class="room-member">
+                  <i data-lucide="user" class="icon-xs"></i>
+                  이서연
+                  <span class="remove"><i data-lucide="x" class="icon-xs"></i></span>
+                </span>
+                <span class="room-member">
+                  <i data-lucide="user" class="icon-xs"></i>
+                  박준혁
+                  <span class="remove"><i data-lucide="x" class="icon-xs"></i></span>
+                </span>
+                <span class="room-member">
+                  <i data-lucide="user" class="icon-xs"></i>
+                  최유진
+                  <span class="remove"><i data-lucide="x" class="icon-xs"></i></span>
+                </span>
+                <span class="room-member">
+                  <i data-lucide="user" class="icon-xs"></i>
+                  강하늘
+                  <span class="remove"><i data-lucide="x" class="icon-xs"></i></span>
+                </span>
+              </div>
+            </div>
+
+            <div class="room-box">
+              <div class="room-header">
+                <span class="room-title">분반 2</span>
+                <span class="room-count">3/5명</span>
+              </div>
+              <div class="room-members">
+                <span class="room-member">
+                  <i data-lucide="user" class="icon-xs"></i>
+                  오세훈
+                  <span class="remove"><i data-lucide="x" class="icon-xs"></i></span>
+                </span>
+                <span class="room-member">
+                  <i data-lucide="user" class="icon-xs"></i>
+                  임수빈
+                  <span class="remove"><i data-lucide="x" class="icon-xs"></i></span>
+                </span>
+                <span class="room-member">
+                  <i data-lucide="user" class="icon-xs"></i>
+                  장민호
+                  <span class="remove"><i data-lucide="x" class="icon-xs"></i></span>
+                </span>
+                <span class="empty-slot">(빈 자리)</span>
+                <span class="empty-slot">(빈 자리)</span>
+              </div>
+            </div>
+
+            <div class="add-room-btn">
+              <i data-lucide="plus" class="icon-sm"></i>
+              분반 추가
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-ghost">전체 초기화</button>
+        <div class="flex gap-2">
+          <button class="btn btn-outline">
+            <i data-lucide="shuffle" class="icon-sm"></i>
+            자동 배정
+          </button>
+          <button class="btn btn-primary">완료</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

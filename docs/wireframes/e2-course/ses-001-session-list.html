@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SES-001: 세션 관리 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .main-content {
+      margin-left: 280px;
+      padding: var(--spacing-6);
+    }
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      background: hsl(var(--border));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .calendar-header {
+      background: hsl(var(--muted));
+      padding: var(--spacing-2);
+      text-align: center;
+      font-weight: var(--font-semibold);
+      font-size: var(--text-sm);
+    }
+    .calendar-day {
+      background: hsl(var(--card));
+      min-height: 80px;
+      padding: var(--spacing-2);
+      font-size: var(--text-sm);
+    }
+    .calendar-day.other-month {
+      background: hsl(var(--muted) / 0.5);
+      color: hsl(var(--muted-foreground));
+    }
+    .calendar-event {
+      font-size: var(--text-xs);
+      padding: 2px 4px;
+      border-radius: var(--radius-sm);
+      margin-top: 2px;
+      cursor: pointer;
+    }
+    .calendar-event.live {
+      background: hsl(var(--destructive));
+      color: white;
+    }
+    .calendar-event.completed {
+      background: hsl(var(--brand-primary));
+      color: white;
+    }
+    .calendar-event.scheduled {
+      background: hsl(var(--muted));
+      color: hsl(var(--foreground));
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="#" class="nav-link">대시보드</a>
+        <a href="crs-001-course-list.html" class="nav-link active">내 코스</a>
+        <a href="#" class="nav-link">분석</a>
+        <a href="#" class="nav-link">설정</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-icon">
+          <i data-lucide="bell" class="icon-md"></i>
+        </button>
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">김교수</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" style="top: 57px; height: calc(100vh - 57px);">
+    <div class="sidebar-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">코스 메뉴</div>
+        <a href="crs-003-course-detail.html" class="sidebar-link">
+          <i data-lucide="home" class="icon-md"></i>
+          개요
+        </a>
+        <a href="#" class="sidebar-link active">
+          <i data-lucide="video" class="icon-md"></i>
+          세션
+        </a>
+        <a href="crs-004-students.html" class="sidebar-link">
+          <i data-lucide="users" class="icon-md"></i>
+          수강생
+        </a>
+        <a href="cnt-001-content-library.html" class="sidebar-link">
+          <i data-lucide="folder" class="icon-md"></i>
+          콘텐츠
+        </a>
+        <a href="asg-001-assignment-list.html" class="sidebar-link">
+          <i data-lucide="file-text" class="icon-md"></i>
+          과제
+        </a>
+        <a href="grd-001-grade-dashboard.html" class="sidebar-link">
+          <i data-lucide="bar-chart-3" class="icon-md"></i>
+          성적
+        </a>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="trending-up" class="icon-md"></i>
+          분석
+        </a>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="settings" class="icon-md"></i>
+          설정
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-sm text-muted mb-4">
+      <a href="crs-003-course-detail.html">경영학개론</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <span class="font-medium" style="color: hsl(var(--foreground))">세션</span>
+    </div>
+
+    <h1 class="text-2xl font-bold mb-6">세션 관리</h1>
+
+    <!-- View Toggle and Actions -->
+    <div class="card mb-6">
+      <div class="card-content">
+        <div class="flex items-center justify-between">
+          <div class="tabs">
+            <button class="tab">
+              <i data-lucide="list" class="icon-sm"></i>
+              목록
+            </button>
+            <button class="tab tab-active">
+              <i data-lucide="calendar" class="icon-sm"></i>
+              캘린더
+            </button>
+          </div>
+          <div class="flex gap-2">
+            <a href="ses-002-create-session.html" class="btn btn-primary">
+              <i data-lucide="plus" class="icon-sm"></i>
+              새 세션
+            </a>
+            <button class="btn btn-outline">
+              <i data-lucide="download" class="icon-sm"></i>
+              iCal
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar Navigation -->
+    <div class="flex items-center justify-center gap-4 mb-6">
+      <button class="btn btn-ghost btn-icon">
+        <i data-lucide="chevron-left" class="icon-md"></i>
+      </button>
+      <h2 class="text-xl font-semibold">2024년 11월</h2>
+      <button class="btn btn-ghost btn-icon">
+        <i data-lucide="chevron-right" class="icon-md"></i>
+      </button>
+    </div>
+
+    <!-- Calendar -->
+    <div class="calendar mb-6">
+      <!-- Header -->
+      <div class="calendar-header">일</div>
+      <div class="calendar-header">월</div>
+      <div class="calendar-header">화</div>
+      <div class="calendar-header">수</div>
+      <div class="calendar-header">목</div>
+      <div class="calendar-header">금</div>
+      <div class="calendar-header">토</div>
+
+      <!-- Week 1 -->
+      <div class="calendar-day other-month">27</div>
+      <div class="calendar-day other-month">28</div>
+      <div class="calendar-day other-month">29</div>
+      <div class="calendar-day other-month">30</div>
+      <div class="calendar-day other-month">31</div>
+      <div class="calendar-day">1</div>
+      <div class="calendar-day">2</div>
+
+      <!-- Week 2 -->
+      <div class="calendar-day">3</div>
+      <div class="calendar-day">4</div>
+      <div class="calendar-day">
+        5
+        <div class="calendar-event completed">#10</div>
+      </div>
+      <div class="calendar-day">6</div>
+      <div class="calendar-day">7</div>
+      <div class="calendar-day">8</div>
+      <div class="calendar-day">9</div>
+
+      <!-- Week 3 -->
+      <div class="calendar-day">10</div>
+      <div class="calendar-day">11</div>
+      <div class="calendar-day">
+        12
+        <div class="calendar-event completed">#11</div>
+      </div>
+      <div class="calendar-day">13</div>
+      <div class="calendar-day">14</div>
+      <div class="calendar-day">15</div>
+      <div class="calendar-day">16</div>
+
+      <!-- Week 4 -->
+      <div class="calendar-day">17</div>
+      <div class="calendar-day">18</div>
+      <div class="calendar-day">
+        19
+        <div class="calendar-event live">#12 LIVE</div>
+      </div>
+      <div class="calendar-day">20</div>
+      <div class="calendar-day">21</div>
+      <div class="calendar-day">22</div>
+      <div class="calendar-day">23</div>
+
+      <!-- Week 5 -->
+      <div class="calendar-day">24</div>
+      <div class="calendar-day">25</div>
+      <div class="calendar-day">
+        26
+        <div class="calendar-event scheduled">#13 예정</div>
+      </div>
+      <div class="calendar-day">27</div>
+      <div class="calendar-day">28</div>
+      <div class="calendar-day">29</div>
+      <div class="calendar-day">30</div>
+    </div>
+
+    <!-- Legend -->
+    <div class="flex items-center justify-center gap-6 text-sm">
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full" style="background: hsl(var(--destructive))"></span>
+        LIVE
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full" style="background: hsl(var(--brand-primary))"></span>
+        완료
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full" style="background: hsl(var(--muted))"></span>
+        예정
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full" style="background: hsl(var(--foreground))"></span>
+        취소
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

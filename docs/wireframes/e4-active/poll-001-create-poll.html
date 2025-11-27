@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POLL-001: 투표 만들기 (교수자) - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal-content {
+      background: hsl(var(--card));
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+      position: sticky;
+      top: 0;
+      background: hsl(var(--card));
+    }
+    .modal-body {
+      padding: var(--spacing-4);
+    }
+    .modal-footer {
+      padding: var(--spacing-4);
+      border-top: 1px solid hsl(var(--border));
+      display: flex;
+      justify-content: space-between;
+      position: sticky;
+      bottom: 0;
+      background: hsl(var(--card));
+    }
+    .poll-type-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-4);
+    }
+    .poll-type-option {
+      padding: var(--spacing-3);
+      border: 2px solid hsl(var(--border));
+      border-radius: var(--radius-md);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .poll-type-option:hover {
+      border-color: hsl(var(--brand-primary));
+    }
+    .poll-type-option.selected {
+      border-color: hsl(var(--brand-primary));
+      background: hsl(var(--brand-primary) / 0.1);
+    }
+    .poll-type-option .type-icon {
+      font-size: var(--text-lg);
+      margin-bottom: var(--spacing-1);
+    }
+    .poll-type-option .type-label {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .option-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-2);
+    }
+    .option-label {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+    }
+    .option-input {
+      flex: 1;
+    }
+    .option-correct {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .option-correct input:checked + span {
+      color: hsl(var(--success));
+    }
+    .settings-group {
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+    }
+    .setting-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) 0;
+    }
+    .setting-row:not(:last-child) {
+      border-bottom: 1px solid hsl(var(--border) / 0.5);
+    }
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-2);
+      margin-top: var(--spacing-3);
+    }
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-size: var(--text-sm);
+    }
+  </style>
+</head>
+<body>
+  <!-- Modal Overlay -->
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="flex items-center gap-2">
+          <i data-lucide="bar-chart-2" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          <h2 class="font-semibold">투표 만들기</h2>
+        </div>
+        <button class="btn btn-ghost btn-icon btn-sm">
+          <i data-lucide="x" class="icon-sm"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="mb-4">
+          <label class="text-sm font-medium mb-2 block">투표 유형</label>
+          <div class="poll-type-grid">
+            <div class="poll-type-option selected">
+              <div class="type-icon">
+                <i data-lucide="circle-dot" class="icon-md"></i>
+              </div>
+              <div class="type-label">객관식</div>
+            </div>
+            <div class="poll-type-option">
+              <div class="type-icon">
+                <i data-lucide="list-checks" class="icon-md"></i>
+              </div>
+              <div class="type-label">다중선택</div>
+            </div>
+            <div class="poll-type-option">
+              <div class="type-icon">
+                <i data-lucide="check-circle" class="icon-md"></i>
+              </div>
+              <div class="type-label">O/X</div>
+            </div>
+            <div class="poll-type-option">
+              <div class="type-icon">
+                <i data-lucide="message-square" class="icon-md"></i>
+              </div>
+              <div class="type-label">주관식</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="text-sm font-medium mb-2 block">질문 *</label>
+          <textarea class="input" rows="2" placeholder="질문을 입력하세요">다음 중 마케팅 믹스 4P에 해당하지 않는 것은?</textarea>
+        </div>
+
+        <div class="mb-4">
+          <label class="text-sm font-medium mb-2 block">선택지</label>
+
+          <div class="option-item">
+            <span class="option-label">A</span>
+            <input type="text" class="input option-input" value="Product (제품)">
+            <label class="option-correct">
+              <input type="radio" name="correct">
+              <span>정답</span>
+            </label>
+            <button class="btn btn-ghost btn-icon btn-sm">
+              <i data-lucide="x" class="icon-sm"></i>
+            </button>
+          </div>
+
+          <div class="option-item">
+            <span class="option-label">B</span>
+            <input type="text" class="input option-input" value="Price (가격)">
+            <label class="option-correct">
+              <input type="radio" name="correct">
+              <span>정답</span>
+            </label>
+            <button class="btn btn-ghost btn-icon btn-sm">
+              <i data-lucide="x" class="icon-sm"></i>
+            </button>
+          </div>
+
+          <div class="option-item">
+            <span class="option-label">C</span>
+            <input type="text" class="input option-input" value="Profit (수익)">
+            <label class="option-correct">
+              <input type="radio" name="correct" checked>
+              <span style="color: hsl(var(--success))">정답</span>
+            </label>
+            <button class="btn btn-ghost btn-icon btn-sm">
+              <i data-lucide="x" class="icon-sm"></i>
+            </button>
+          </div>
+
+          <div class="option-item">
+            <span class="option-label">D</span>
+            <input type="text" class="input option-input" value="Promotion (촉진)">
+            <label class="option-correct">
+              <input type="radio" name="correct">
+              <span>정답</span>
+            </label>
+            <button class="btn btn-ghost btn-icon btn-sm">
+              <i data-lucide="x" class="icon-sm"></i>
+            </button>
+          </div>
+
+          <button class="btn btn-ghost btn-sm mt-2">
+            <i data-lucide="plus" class="icon-sm"></i>
+            선택지 추가
+          </button>
+        </div>
+
+        <div class="separator my-4"></div>
+
+        <div class="mb-4">
+          <label class="text-sm font-medium mb-2 block">설정</label>
+          <div class="settings-group">
+            <div class="setting-row">
+              <i data-lucide="clock" class="icon-sm text-muted"></i>
+              <span class="text-sm flex-1">제한 시간</span>
+              <select class="input" style="width: auto;">
+                <option>30초</option>
+                <option selected>1분</option>
+                <option>2분</option>
+                <option>5분</option>
+                <option>제한 없음</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="checkbox-group">
+            <label class="checkbox-item">
+              <input type="checkbox" checked>
+              <span>익명 투표</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox">
+              <span>결과 즉시 공개</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" checked>
+              <span>정답 표시</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline">
+          <i data-lucide="bookmark" class="icon-sm"></i>
+          템플릿 저장
+        </button>
+        <div class="flex gap-2">
+          <button class="btn btn-ghost">취소</button>
+          <button class="btn btn-primary">
+            <i data-lucide="send" class="icon-sm"></i>
+            투표 시작
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

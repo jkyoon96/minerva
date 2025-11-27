@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REPORT-001: 개인별 학습 리포트 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-3) var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--spacing-4);
+      padding: var(--spacing-4);
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--spacing-4);
+    }
+    .overview-item {
+      text-align: center;
+    }
+    .overview-value {
+      font-size: var(--text-2xl);
+      font-weight: var(--font-bold);
+      color: hsl(var(--brand-primary));
+    }
+    .overview-label {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .overview-rank {
+      font-size: var(--text-xs);
+      color: hsl(var(--success));
+    }
+    .chart-placeholder {
+      height: 160px;
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--spacing-3);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .total-grade {
+      text-align: center;
+      padding: var(--spacing-3);
+      background: hsl(var(--brand-primary) / 0.1);
+      border-radius: var(--radius-md);
+    }
+    .two-col-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-4);
+    }
+    .strength-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-size: var(--text-sm);
+      margin-bottom: var(--spacing-2);
+    }
+    .strength-item.good {
+      color: hsl(var(--success));
+    }
+    .strength-item.weak {
+      color: hsl(var(--destructive));
+    }
+    .suggestion-box {
+      background: hsl(var(--warning) / 0.1);
+      border: 1px solid hsl(var(--warning) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+      margin-top: var(--spacing-3);
+    }
+    .suggestion-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-2);
+    }
+    .suggestion-text {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-2);
+    }
+    .suggestion-links {
+      font-size: var(--text-sm);
+    }
+    .suggestion-link {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      color: hsl(var(--brand-primary));
+      margin-bottom: var(--spacing-1);
+    }
+    .distribution-chart {
+      height: 140px;
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+      margin-bottom: var(--spacing-3);
+    }
+    .position-indicator {
+      text-align: center;
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .position-indicator strong {
+      color: hsl(var(--brand-primary));
+    }
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-4);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <div class="header-left">
+      <a href="index.html" class="btn btn-ghost btn-icon">
+        <i data-lucide="arrow-left" class="icon-md"></i>
+      </a>
+      <h1 class="font-semibold">나의 학습 리포트</h1>
+    </div>
+    <button class="btn btn-outline">
+      <i data-lucide="download" class="icon-sm"></i>
+      PDF 다운로드
+    </button>
+  </header>
+
+  <main class="container py-6">
+    <!-- Semester Overview -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="bar-chart-2" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          학기 종합 분석
+        </h2>
+      </div>
+      <div class="card-content">
+        <div class="overview-grid">
+          <div class="overview-item">
+            <div class="overview-value">95%</div>
+            <div class="overview-label">출석률</div>
+            <div class="overview-rank">상위 15%</div>
+          </div>
+          <div class="overview-item">
+            <div class="overview-value">82점</div>
+            <div class="overview-label">참여도</div>
+            <div class="overview-rank">상위 30%</div>
+          </div>
+          <div class="overview-item">
+            <div class="overview-value">78점</div>
+            <div class="overview-label">퀴즈 평균</div>
+            <div class="overview-rank">상위 40%</div>
+          </div>
+          <div class="overview-item">
+            <div class="overview-value">85점</div>
+            <div class="overview-label">과제 평균</div>
+            <div class="overview-rank">상위 25%</div>
+          </div>
+        </div>
+        <div class="total-grade">
+          <span class="text-lg">종합 학업 성취도: </span>
+          <strong class="text-xl" style="color: hsl(var(--brand-primary));">B+ (상위 28%)</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly Trend -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="trending-up" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          주차별 성과 추이
+        </h2>
+      </div>
+      <div class="card-content">
+        <div class="chart-placeholder">
+          [주차별 참여도/퀴즈점수 라인 차트 - W1~W12]
+        </div>
+        <div class="text-sm text-muted">
+          <i data-lucide="file-text" class="icon-xs"></i>
+          분석: Week 5-6에 참여도 하락이 있었으나 이후 회복세
+        </div>
+      </div>
+    </div>
+
+    <!-- Strengths & Weaknesses -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h2 class="card-title">강점 및 개선 영역</h2>
+      </div>
+      <div class="card-content">
+        <div class="two-col-grid">
+          <div>
+            <h3 class="text-sm font-semibold mb-3 flex items-center gap-2">
+              <i data-lucide="check-circle" class="icon-sm" style="color: hsl(var(--success))"></i>
+              강점 영역
+            </h3>
+            <div class="strength-item good">✓ 객체지향 프로그래밍 (92%)</div>
+            <div class="strength-item good">✓ 알고리즘 기초 (88%)</div>
+            <div class="strength-item good">✓ 웹 프론트엔드 (85%)</div>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold mb-3 flex items-center gap-2">
+              <i data-lucide="alert-triangle" class="icon-sm" style="color: hsl(var(--destructive))"></i>
+              개선 필요 영역
+            </h3>
+            <div class="strength-item weak">✗ 데이터베이스 설계 (65%)</div>
+            <div class="strength-item weak">✗ 네트워크 프로토콜 (62%)</div>
+            <div class="strength-item weak">✗ 보안 개념 (58%)</div>
+          </div>
+        </div>
+
+        <div class="suggestion-box">
+          <div class="suggestion-header">
+            <i data-lucide="lightbulb" class="icon-sm" style="color: hsl(var(--warning))"></i>
+            맞춤형 학습 제안
+          </div>
+          <p class="suggestion-text">
+            데이터베이스 설계 영역의 점수가 클래스 평균(72%) 대비 낮습니다. 다음 자료들을 복습해보세요:
+          </p>
+          <div class="suggestion-links">
+            <a href="#" class="suggestion-link">
+              <i data-lucide="play" class="icon-xs"></i>
+              Week 7 강의: 정규화와 ERD 설계 [▶ 바로가기]
+            </a>
+            <a href="#" class="suggestion-link">
+              <i data-lucide="file-text" class="icon-xs"></i>
+              보충 자료: DB 설계 실습 문제 [▶ 바로가기]
+            </a>
+            <a href="#" class="suggestion-link">
+              <i data-lucide="help-circle" class="icon-xs"></i>
+              관련 퀴즈: DB 기초 복습 퀴즈 [▶ 풀어보기]
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Class Position -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="users" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          클래스 내 위치
+        </h2>
+      </div>
+      <div class="card-content">
+        <div class="text-sm text-muted mb-2">종합 점수 분포 (총 48명)</div>
+        <div class="distribution-chart">
+          [점수 분포 히스토그램 - 나의 위치(78점) 표시]
+        </div>
+        <div class="position-indicator">
+          나의 점수: <strong>78점</strong>
+        </div>
+        <div class="stats-row mt-3">
+          <span>상위 28%</span>
+          <span>|</span>
+          <span>중앙값: 74점</span>
+          <span>|</span>
+          <span>평균: 72점</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

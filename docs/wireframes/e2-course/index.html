@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E2. 코스 관리 - EduForum Wireframes</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar">
+      <a href="../index.html" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum Wireframes
+      </a>
+    </nav>
+  </header>
+
+  <main class="container py-8">
+    <div class="flex items-center gap-2 text-sm text-muted mb-4">
+      <a href="../index.html">홈</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <span class="font-medium" style="color: hsl(var(--foreground))">E2. 코스 관리</span>
+    </div>
+
+    <h1 class="text-3xl font-bold mb-2">E2. 코스 관리</h1>
+    <p class="text-muted mb-8">코스 생성, 학생 등록, 세션 스케줄링, 콘텐츠 관리</p>
+
+    <div class="grid gap-6">
+      <!-- S1: 코스 생성 및 설정 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="book-open" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E2-S1: 코스 생성 및 설정
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-3 gap-4">
+            <a href="crs-001-course-list.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">CRS-001</div>
+              <div class="text-xs text-muted">내 코스 목록</div>
+            </a>
+            <a href="crs-002-create-course.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">CRS-002</div>
+              <div class="text-xs text-muted">새 코스 만들기</div>
+            </a>
+            <a href="crs-003-course-detail.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">CRS-003</div>
+              <div class="text-xs text-muted">코스 상세 (교수자)</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S2: 학생 일괄 등록 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="users" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E2-S2: 학생 일괄 등록
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-3 gap-4">
+            <a href="crs-004-students.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">CRS-004</div>
+              <div class="text-xs text-muted">수강생 관리</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S3: 초대 링크로 학생 등록 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="link" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E2-S3: 초대 링크로 학생 등록
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-3 gap-4">
+            <a href="crs-008-invite-accept.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">CRS-008</div>
+              <div class="text-xs text-muted">초대 수락 (학생용)</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S4: 세션 스케줄링 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="calendar" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E2-S4: 세션 스케줄링
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-3 gap-4">
+            <a href="ses-001-session-list.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">SES-001</div>
+              <div class="text-xs text-muted">세션 목록 (캘린더 뷰)</div>
+            </a>
+            <a href="ses-002-create-session.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">SES-002</div>
+              <div class="text-xs text-muted">새 세션 만들기</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S5: 콘텐츠 라이브러리 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="folder" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E2-S5: 콘텐츠 라이브러리
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-3 gap-4">
+            <a href="cnt-001-content-library.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">CNT-001</div>
+              <div class="text-xs text-muted">콘텐츠 라이브러리</div>
+            </a>
+            <a href="cnt-002-upload.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">CNT-002</div>
+              <div class="text-xs text-muted">파일 업로드</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S6: 과제 관리 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="file-text" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E2-S6: 과제 관리
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="asg-001-assignment-list.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">ASG-001</div>
+              <div class="text-xs text-muted">과제 목록</div>
+            </a>
+            <a href="asg-002-create-assignment.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">ASG-002</div>
+              <div class="text-xs text-muted">새 과제 만들기</div>
+            </a>
+            <a href="asg-003-submissions.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">ASG-003</div>
+              <div class="text-xs text-muted">제출물 관리</div>
+            </a>
+            <a href="asg-004-grading.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">ASG-004</div>
+              <div class="text-xs text-muted">개별 채점</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S7: 성적 관리 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="bar-chart-3" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E2-S7: 성적 관리
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-3 gap-4">
+            <a href="grd-001-grade-dashboard.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">GRD-001</div>
+              <div class="text-xs text-muted">성적 관리 대시보드</div>
+            </a>
+            <a href="grd-002-student-detail.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">GRD-002</div>
+              <div class="text-xs text-muted">학생별 성적 상세</div>
+            </a>
+            <a href="grd-003-student-view.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">GRD-003</div>
+              <div class="text-xs text-muted">학생용 성적 확인</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer mt-8">
+    <div class="footer-content text-center">
+      <p class="footer-text">EduForum CSS Wireframes - shadcn/ui & Lucide Icons</p>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

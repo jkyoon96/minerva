@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIVE-010: 1:1 메시지 (DM) - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .dm-panel {
+      width: 320px;
+      height: 500px;
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      margin: var(--spacing-6) auto;
+      box-shadow: var(--shadow-lg);
+    }
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-3) var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .dm-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--spacing-3);
+    }
+    .dm-input-area {
+      padding: var(--spacing-3);
+      border-top: 1px solid hsl(var(--border));
+    }
+    .dm-message {
+      margin-bottom: var(--spacing-3);
+    }
+    .dm-message .header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-1);
+    }
+    .dm-message .sender {
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+    }
+    .dm-message .time {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .dm-bubble {
+      background: hsl(var(--muted));
+      padding: var(--spacing-2) var(--spacing-3);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      display: inline-block;
+      max-width: 90%;
+    }
+    .dm-message.mine {
+      text-align: right;
+    }
+    .dm-message.mine .dm-bubble {
+      background: hsl(var(--brand-primary));
+      color: white;
+      text-align: left;
+    }
+    .input-actions {
+      display: flex;
+      gap: var(--spacing-1);
+      margin-top: var(--spacing-2);
+    }
+    .dm-badge {
+      background: hsl(var(--brand-primary) / 0.1);
+      color: hsl(var(--brand-primary));
+      padding: var(--spacing-1) var(--spacing-2);
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+    }
+  </style>
+</head>
+<body style="background: hsl(var(--muted) / 0.3);">
+  <div class="dm-panel">
+    <div class="panel-header">
+      <div class="flex items-center gap-2">
+        <div class="avatar avatar-sm">
+          <i data-lucide="user" class="icon-sm"></i>
+        </div>
+        <div>
+          <span class="font-semibold text-sm">박서연</span>
+          <span class="dm-badge ml-2">1:1</span>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-icon btn-sm">
+        <i data-lucide="x" class="icon-sm"></i>
+      </button>
+    </div>
+
+    <div class="dm-content">
+      <!-- My Message -->
+      <div class="dm-message mine">
+        <div class="header">
+          <span class="time">10:08</span>
+          <span class="sender">나</span>
+        </div>
+        <div class="dm-bubble">
+          안녕! 오늘 수업 끝나고 같이 도서관 갈래?
+        </div>
+      </div>
+
+      <!-- Other's Message -->
+      <div class="dm-message">
+        <div class="header">
+          <span class="sender">박서연</span>
+          <span class="time">10:10</span>
+        </div>
+        <div class="dm-bubble">
+          좋아! 👍
+        </div>
+      </div>
+
+      <!-- My Message -->
+      <div class="dm-message mine">
+        <div class="header">
+          <span class="time">10:11</span>
+          <span class="sender">나</span>
+        </div>
+        <div class="dm-bubble">
+          그럼 끝나고 로비에서 만나
+        </div>
+      </div>
+    </div>
+
+    <div class="dm-input-area">
+      <input type="text" class="input" placeholder="메시지를 입력하세요...">
+      <div class="input-actions">
+        <button class="btn btn-ghost btn-icon btn-sm">
+          <i data-lucide="paperclip" class="icon-sm"></i>
+        </button>
+        <button class="btn btn-ghost btn-icon btn-sm">
+          <i data-lucide="smile" class="icon-sm"></i>
+        </button>
+        <button class="btn btn-primary btn-icon btn-sm ml-auto">
+          <i data-lucide="send" class="icon-sm"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

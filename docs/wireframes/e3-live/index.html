@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E3. 실시간 세션 - EduForum Wireframes</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar">
+      <a href="../index.html" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum Wireframes
+      </a>
+    </nav>
+  </header>
+
+  <main class="container py-8">
+    <div class="flex items-center gap-2 text-sm text-muted mb-4">
+      <a href="../index.html">홈</a>
+      <i data-lucide="chevron-right" class="icon-xs"></i>
+      <span class="font-medium" style="color: hsl(var(--foreground))">E3. 실시간 세션</span>
+    </div>
+
+    <h1 class="text-3xl font-bold mb-2">E3. 실시간 세션</h1>
+    <p class="text-muted mb-8">WebRTC 기반 화상 회의, 화면 공유, 채팅, 녹화 기능</p>
+
+    <div class="grid gap-6">
+      <!-- S1: 세미나 룸 생성 및 입장 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="door-open" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E3-S1: 세미나 룸 생성 및 입장
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="live-001-session-prep.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-001</div>
+              <div class="text-xs text-muted">세션 시작 준비 (교수자)</div>
+            </a>
+            <a href="live-002-student-join.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-002</div>
+              <div class="text-xs text-muted">세션 입장 (학생)</div>
+            </a>
+            <a href="live-003-waiting-room.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-003</div>
+              <div class="text-xs text-muted">대기실</div>
+            </a>
+            <a href="live-004-waiting-manage.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-004</div>
+              <div class="text-xs text-muted">대기실 관리 (교수자)</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S2: 비디오/오디오 참여 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="video" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E3-S2: 비디오/오디오 참여
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="live-005-professor-view.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-005</div>
+              <div class="text-xs text-muted">라이브 세션 - 교수자 화면</div>
+            </a>
+            <a href="live-006-student-view.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-006</div>
+              <div class="text-xs text-muted">라이브 세션 - 학생 화면</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S3: 화면 공유 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="monitor" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E3-S3: 화면 공유
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="live-007-screen-share-select.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-007</div>
+              <div class="text-xs text-muted">화면 공유 선택</div>
+            </a>
+            <a href="live-008-screen-sharing.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-008</div>
+              <div class="text-xs text-muted">화면 공유 중 레이아웃</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S4: 실시간 채팅 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="message-square" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E3-S4: 실시간 채팅
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="live-009-chat-panel.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-009</div>
+              <div class="text-xs text-muted">채팅 패널</div>
+            </a>
+            <a href="live-010-direct-message.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-010</div>
+              <div class="text-xs text-muted">1:1 메시지 (DM)</div>
+            </a>
+            <a href="live-011-file-share.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-011</div>
+              <div class="text-xs text-muted">파일 공유</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S5: 손들기 및 반응 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="hand" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E3-S5: 손들기 및 반응
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="live-012-hand-queue.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-012</div>
+              <div class="text-xs text-muted">손들기 큐 (교수자)</div>
+            </a>
+            <a href="live-013-reactions.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-013</div>
+              <div class="text-xs text-muted">빠른 반응</div>
+            </a>
+            <a href="live-014-reaction-display.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-014</div>
+              <div class="text-xs text-muted">반응 표시</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S6: 세션 녹화 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="circle" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E3-S6: 세션 녹화
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="live-015-recording-control.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-015</div>
+              <div class="text-xs text-muted">녹화 컨트롤</div>
+            </a>
+            <a href="live-016-recording-playback.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-016</div>
+              <div class="text-xs text-muted">녹화본 다시보기</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- S7: 레이아웃 모드 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="layout-grid" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            E3-S7: 레이아웃 모드
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="live-017-grid-view.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-017</div>
+              <div class="text-xs text-muted">그리드 뷰</div>
+            </a>
+            <a href="live-018-speaker-view.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-018</div>
+              <div class="text-xs text-muted">발표자 뷰</div>
+            </a>
+            <a href="live-019-layout-dropdown.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-019</div>
+              <div class="text-xs text-muted">레이아웃 선택 드롭다운</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 네트워크 상태 및 세션 종료 -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="wifi" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            네트워크 상태 및 세션 종료
+          </h2>
+        </div>
+        <div class="card-content">
+          <div class="grid grid-cols-4 gap-4">
+            <a href="live-020-connection-quality.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-020</div>
+              <div class="text-xs text-muted">연결 품질 표시</div>
+            </a>
+            <a href="live-021-network-warning.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-021</div>
+              <div class="text-xs text-muted">네트워크 문제 알림</div>
+            </a>
+            <a href="live-022-end-session.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-022</div>
+              <div class="text-xs text-muted">세션 종료 확인 (교수자)</div>
+            </a>
+            <a href="live-023-session-ended.html" class="card p-4 hover:shadow-md transition">
+              <div class="text-sm font-medium mb-1">LIVE-023</div>
+              <div class="text-xs text-muted">세션 종료 알림 (학생)</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer mt-8">
+    <div class="footer-content text-center">
+      <p class="footer-text">EduForum CSS Wireframes - shadcn/ui & Lucide Icons</p>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

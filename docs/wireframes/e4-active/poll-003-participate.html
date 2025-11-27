@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POLL-003: 투표 참여 (학생) - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal-content {
+      background: hsl(var(--card));
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 480px;
+      overflow: hidden;
+    }
+    .poll-header {
+      padding: var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .timer-section {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-3);
+    }
+    .timer-value {
+      font-size: var(--text-lg);
+      font-weight: var(--font-semibold);
+      color: hsl(var(--warning));
+    }
+    .progress-bar {
+      height: 6px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: hsl(var(--brand-primary));
+      width: 75%;
+      transition: width 0.3s;
+    }
+    .poll-body {
+      padding: var(--spacing-4);
+    }
+    .poll-question {
+      font-size: var(--text-lg);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-4);
+    }
+    .poll-option {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+      padding: var(--spacing-3) var(--spacing-4);
+      border: 2px solid hsl(var(--border));
+      border-radius: var(--radius-md);
+      margin-bottom: var(--spacing-2);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .poll-option:hover {
+      border-color: hsl(var(--brand-primary));
+      background: hsl(var(--brand-primary) / 0.05);
+    }
+    .poll-option.selected {
+      border-color: hsl(var(--brand-primary));
+      background: hsl(var(--brand-primary) / 0.1);
+    }
+    .option-radio {
+      width: 20px;
+      height: 20px;
+      border: 2px solid hsl(var(--border));
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .poll-option.selected .option-radio {
+      border-color: hsl(var(--brand-primary));
+      background: hsl(var(--brand-primary));
+    }
+    .option-radio::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: var(--radius-full);
+      opacity: 0;
+    }
+    .poll-option.selected .option-radio::after {
+      opacity: 1;
+    }
+    .option-label {
+      flex: 1;
+    }
+    .selected-badge {
+      font-size: var(--text-xs);
+      color: hsl(var(--brand-primary));
+      font-weight: var(--font-medium);
+    }
+    .poll-footer {
+      padding: var(--spacing-4);
+      border-top: 1px solid hsl(var(--border));
+    }
+    .response-status {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-3);
+    }
+  </style>
+</head>
+<body>
+  <!-- Modal Overlay -->
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="poll-header">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <i data-lucide="bar-chart-2" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            <span class="font-semibold">투표</span>
+          </div>
+        </div>
+
+        <div class="timer-section">
+          <i data-lucide="clock" class="icon-sm" style="color: hsl(var(--warning))"></i>
+          <span class="text-sm">남은 시간:</span>
+          <span class="timer-value">0:45</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="poll-body">
+        <div class="poll-question">
+          다음 중 마케팅 믹스 4P에 해당하지 않는 것은?
+        </div>
+
+        <div class="poll-option">
+          <div class="option-radio"></div>
+          <span class="option-label">A. Product (제품)</span>
+        </div>
+
+        <div class="poll-option">
+          <div class="option-radio"></div>
+          <span class="option-label">B. Price (가격)</span>
+        </div>
+
+        <div class="poll-option selected">
+          <div class="option-radio"></div>
+          <span class="option-label">C. Profit (수익)</span>
+          <span class="selected-badge">선택됨</span>
+        </div>
+
+        <div class="poll-option">
+          <div class="option-radio"></div>
+          <span class="option-label">D. Promotion (촉진)</span>
+        </div>
+      </div>
+
+      <div class="poll-footer">
+        <div class="response-status">
+          <i data-lucide="users" class="icon-sm"></i>
+          <span>응답 현황: 18/26명 (69%)</span>
+        </div>
+        <button class="btn btn-primary w-full">
+          <i data-lucide="check" class="icon-sm"></i>
+          제출하기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

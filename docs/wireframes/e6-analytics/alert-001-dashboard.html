@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALERT-001: 조기 경보 시스템 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .status-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .status-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      text-align: center;
+    }
+    .status-card.danger {
+      border-color: hsl(var(--destructive) / 0.3);
+      background: hsl(var(--destructive) / 0.05);
+    }
+    .status-card.warning {
+      border-color: hsl(var(--warning) / 0.3);
+      background: hsl(var(--warning) / 0.05);
+    }
+    .status-card.success {
+      border-color: hsl(var(--success) / 0.3);
+      background: hsl(var(--success) / 0.05);
+    }
+    .status-icon {
+      font-size: var(--text-2xl);
+      margin-bottom: var(--spacing-2);
+    }
+    .status-count {
+      font-size: var(--text-3xl);
+      font-weight: var(--font-bold);
+    }
+    .status-count.danger { color: hsl(var(--destructive)); }
+    .status-count.warning { color: hsl(var(--warning)); }
+    .status-count.success { color: hsl(var(--success)); }
+    .status-label {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .alert-summary {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-4);
+    }
+    .student-alert-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-left: 4px solid hsl(var(--destructive));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-3);
+    }
+    .alert-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-3);
+    }
+    .student-name {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-semibold);
+    }
+    .risk-badge {
+      padding: var(--spacing-1) var(--spacing-2);
+      background: hsl(var(--destructive) / 0.1);
+      color: hsl(var(--destructive));
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+    }
+    .alert-factors {
+      margin-bottom: var(--spacing-3);
+    }
+    .factor-title {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      font-size: var(--text-sm);
+      color: hsl(var(--warning));
+      margin-bottom: var(--spacing-2);
+    }
+    .factor-list {
+      list-style: disc;
+      padding-left: var(--spacing-4);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .risk-score {
+      margin-bottom: var(--spacing-3);
+    }
+    .risk-score-label {
+      font-size: var(--text-sm);
+      margin-bottom: var(--spacing-1);
+    }
+    .risk-bar {
+      height: 12px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+    .risk-fill {
+      height: 100%;
+      background: hsl(var(--destructive));
+    }
+    .last-activity {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-3);
+    }
+    .recommended-actions {
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+      margin-bottom: var(--spacing-3);
+    }
+    .actions-title {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-2);
+    }
+    .action-list {
+      list-style: decimal;
+      padding-left: var(--spacing-4);
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .alert-actions {
+      display: flex;
+      gap: var(--spacing-2);
+    }
+    .settings-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-top: var(--spacing-4);
+    }
+    .settings-title {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-4);
+    }
+    .setting-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-3);
+      font-size: var(--text-sm);
+    }
+    .setting-row label {
+      flex: 1;
+    }
+    .setting-row input[type="number"] {
+      width: 60px;
+      padding: var(--spacing-1) var(--spacing-2);
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-sm);
+      text-align: center;
+    }
+    .setting-row .unit {
+      width: 140px;
+      color: hsl(var(--muted-foreground));
+    }
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-size: var(--text-sm);
+      margin-bottom: var(--spacing-2);
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <a href="index.html" class="btn btn-ghost btn-icon">
+      <i data-lucide="arrow-left" class="icon-md"></i>
+    </a>
+    <h1 class="font-semibold">조기 경보 시스템</h1>
+  </header>
+
+  <main class="container py-6">
+    <!-- Status Overview -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="alert-triangle" class="icon-md" style="color: hsl(var(--warning))"></i>
+          경보 현황
+        </h2>
+      </div>
+      <div class="card-content">
+        <div class="status-cards">
+          <div class="status-card danger">
+            <div class="status-icon">🔴</div>
+            <div class="status-count danger">4 명</div>
+            <div class="status-label">위험 (상)</div>
+            <div class="text-xs text-muted mt-1">즉시 개입 필요</div>
+          </div>
+          <div class="status-card warning">
+            <div class="status-icon">🟡</div>
+            <div class="status-count warning">7 명</div>
+            <div class="status-label">주의 (중)</div>
+            <div class="text-xs text-muted mt-1">모니터링 필요</div>
+          </div>
+          <div class="status-card success">
+            <div class="status-icon">🟢</div>
+            <div class="status-count success">37 명</div>
+            <div class="status-label">정상</div>
+            <div class="text-xs text-muted mt-1">양호</div>
+          </div>
+        </div>
+        <div class="alert-summary">
+          최근 경보: <strong>2건</strong> (오늘) &nbsp;&nbsp; 해결됨: <strong>5건</strong> (이번 주)
+        </div>
+      </div>
+    </div>
+
+    <!-- Risk Students List -->
+    <div class="card">
+      <div class="card-header">
+        <div class="flex items-center justify-between w-full">
+          <h2 class="card-title flex items-center gap-2">
+            <i data-lucide="alert-circle" class="icon-md" style="color: hsl(var(--destructive))"></i>
+            위험 학생 목록
+          </h2>
+          <span class="text-sm text-muted">위험도순 ▼</span>
+        </div>
+      </div>
+      <div class="card-content">
+        <!-- Student 1 -->
+        <div class="student-alert-card">
+          <div class="alert-header">
+            <div class="student-name">
+              <span style="color: hsl(var(--destructive));">🔴</span>
+              권태희
+            </div>
+            <span class="risk-badge">위험도: 높음</span>
+          </div>
+
+          <div class="alert-factors">
+            <div class="factor-title">
+              <i data-lucide="alert-triangle" class="icon-xs"></i>
+              경보 요인:
+            </div>
+            <ul class="factor-list">
+              <li>연속 결석: 3회 (Week 10, 11, 12)</li>
+              <li>참여도 급락: 85점 → 32점 (-62%)</li>
+              <li>최근 퀴즈 미응시: 2회 연속</li>
+            </ul>
+          </div>
+
+          <div class="risk-score">
+            <div class="risk-score-label">
+              <i data-lucide="bar-chart-2" class="icon-xs"></i>
+              위험 지표 점수: <strong>87/100</strong> (매우 위험)
+            </div>
+            <div class="risk-bar">
+              <div class="risk-fill" style="width: 87%;"></div>
+            </div>
+          </div>
+
+          <div class="last-activity">
+            <i data-lucide="calendar" class="icon-xs"></i>
+            최근 활동: 2주 전 (Week 9 세션 참여)
+          </div>
+
+          <div class="recommended-actions">
+            <div class="actions-title">
+              <i data-lucide="lightbulb" class="icon-xs"></i>
+              권장 조치:
+            </div>
+            <ol class="action-list">
+              <li>1:1 면담 요청 이메일 발송</li>
+              <li>학과 조교에게 상황 공유</li>
+              <li>개인 학습 계획 수립 지원</li>
+            </ol>
+          </div>
+
+          <div class="alert-actions">
+            <button class="btn btn-outline btn-sm">
+              <i data-lucide="mail" class="icon-xs"></i>
+              이메일 발송
+            </button>
+            <button class="btn btn-outline btn-sm">
+              <i data-lucide="file-text" class="icon-xs"></i>
+              메모 추가
+            </button>
+            <button class="btn btn-outline btn-sm">
+              <i data-lucide="check" class="icon-xs"></i>
+              해결됨 표시
+            </button>
+          </div>
+        </div>
+
+        <!-- Student 2 -->
+        <div class="student-alert-card">
+          <div class="alert-header">
+            <div class="student-name">
+              <span style="color: hsl(var(--destructive));">🔴</span>
+              오지훈
+            </div>
+            <span class="risk-badge">위험도: 높음</span>
+          </div>
+
+          <div class="alert-factors">
+            <div class="factor-title">
+              <i data-lucide="alert-triangle" class="icon-xs"></i>
+              경보 요인:
+            </div>
+            <ul class="factor-list">
+              <li>성적 급락: 82점 → 58점 (-29%)</li>
+              <li>과제 미제출: 2건</li>
+              <li>참여도 저하: 평균 대비 -35%</li>
+            </ul>
+          </div>
+
+          <div class="risk-score">
+            <div class="risk-score-label">
+              <i data-lucide="bar-chart-2" class="icon-xs"></i>
+              위험 지표 점수: <strong>75/100</strong> (위험)
+            </div>
+            <div class="risk-bar">
+              <div class="risk-fill" style="width: 75%;"></div>
+            </div>
+          </div>
+
+          <div class="alert-actions">
+            <button class="btn btn-outline btn-sm">
+              <i data-lucide="mail" class="icon-xs"></i>
+              이메일 발송
+            </button>
+            <button class="btn btn-outline btn-sm">
+              <i data-lucide="file-text" class="icon-xs"></i>
+              메모 추가
+            </button>
+            <button class="btn btn-outline btn-sm">
+              <i data-lucide="check" class="icon-xs"></i>
+              해결됨 표시
+            </button>
+          </div>
+        </div>
+
+        <button class="btn btn-ghost btn-sm text-muted">
+          + 2명 더 보기...
+        </button>
+      </div>
+    </div>
+
+    <!-- Alert Settings -->
+    <div class="settings-card">
+      <div class="settings-title">
+        <i data-lucide="settings" class="icon-md"></i>
+        경보 설정
+      </div>
+
+      <div class="text-sm font-medium mb-3">경보 기준 (임계값):</div>
+      <div class="setting-row">
+        <label>연속 결석:</label>
+        <input type="number" value="2">
+        <span class="unit">회 이상 → 경고 발생</span>
+      </div>
+      <div class="setting-row">
+        <label>참여도 하락:</label>
+        <input type="number" value="30">
+        <span class="unit">% 이상 → 경고 발생</span>
+      </div>
+      <div class="setting-row">
+        <label>성적 하락:</label>
+        <input type="number" value="20">
+        <span class="unit">% 이상 → 경고 발생</span>
+      </div>
+      <div class="setting-row">
+        <label>과제 미제출:</label>
+        <input type="number" value="2">
+        <span class="unit">건 이상 → 경고 발생</span>
+      </div>
+
+      <div class="text-sm font-medium mb-3 mt-4">알림 설정:</div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="email-alert" checked>
+        <label for="email-alert">이메일 알림 (새 위험 학생 발생 시)</label>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="dashboard-alert" checked>
+        <label for="dashboard-alert">대시보드 알림</label>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="office-share">
+        <label for="office-share">학과 사무실 자동 공유</label>
+      </div>
+
+      <button class="btn btn-primary mt-4">설정 저장</button>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

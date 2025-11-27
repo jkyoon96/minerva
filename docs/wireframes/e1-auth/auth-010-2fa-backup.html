@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AUTH-010: 백업 코드 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <div class="auth-layout">
+    <div class="auth-container">
+      <!-- Logo -->
+      <div class="auth-logo mb-6">
+        <i data-lucide="graduation-cap" class="icon-xl" style="color: hsl(var(--brand-primary))"></i>
+        <span class="text-2xl font-bold" style="color: hsl(var(--brand-primary))">EduForum</span>
+      </div>
+
+      <div class="auth-card">
+        <!-- Success Icon -->
+        <div class="verification-icon verification-icon-success mx-auto">
+          <i data-lucide="shield-check" class="icon-xl"></i>
+        </div>
+
+        <h1 class="text-2xl font-bold text-center mb-2">2FA 설정 완료!</h1>
+
+        <div class="separator my-6"></div>
+
+        <!-- Warning -->
+        <div class="alert alert-warning mb-6">
+          <i data-lucide="alert-triangle" class="icon-md flex-shrink-0"></i>
+          <div>
+            <div class="alert-title">백업 코드를 안전한 곳에 저장하세요</div>
+            <div class="alert-description">
+              인증 앱에 접근할 수 없을 때 아래 백업 코드로 로그인할 수 있습니다.
+              각 코드는 한 번만 사용할 수 있습니다.
+            </div>
+          </div>
+        </div>
+
+        <!-- Backup Codes -->
+        <div class="card bg-muted mb-6">
+          <div class="card-content">
+            <div class="grid grid-cols-2 gap-3" style="font-family: monospace; font-size: var(--text-sm);">
+              <div class="p-2 bg-background rounded text-center">ABCDE-12345</div>
+              <div class="p-2 bg-background rounded text-center">FGHIJ-67890</div>
+              <div class="p-2 bg-background rounded text-center">KLMNO-11223</div>
+              <div class="p-2 bg-background rounded text-center">PQRST-44556</div>
+              <div class="p-2 bg-background rounded text-center">UVWXY-77889</div>
+              <div class="p-2 bg-background rounded text-center">ZABCD-99001</div>
+              <div class="p-2 bg-background rounded text-center">EFGHI-22334</div>
+              <div class="p-2 bg-background rounded text-center">JKLMN-55667</div>
+              <div class="p-2 bg-background rounded text-center">OPQRS-88990</div>
+              <div class="p-2 bg-background rounded text-center">TUVWX-11234</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-3 mb-6">
+          <button class="btn btn-outline flex-1">
+            <i data-lucide="copy" class="icon-sm"></i>
+            복사
+          </button>
+          <button class="btn btn-outline flex-1">
+            <i data-lucide="download" class="icon-sm"></i>
+            다운로드
+          </button>
+        </div>
+
+        <!-- Confirmation Checkbox -->
+        <label class="checkbox-wrapper mb-6">
+          <input type="checkbox" class="checkbox" id="confirm-saved">
+          <span class="checkbox-label">백업 코드를 안전하게 저장했습니다</span>
+        </label>
+
+        <!-- Complete Button -->
+        <button class="btn btn-primary w-full btn-lg" id="complete-btn" disabled>
+          완료
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // Enable button when checkbox is checked
+    const checkbox = document.getElementById('confirm-saved');
+    const button = document.getElementById('complete-btn');
+
+    checkbox.addEventListener('change', () => {
+      button.disabled = !checkbox.checked;
+    });
+  </script>
+</body>
+</html>

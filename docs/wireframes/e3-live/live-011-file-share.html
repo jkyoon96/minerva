@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIVE-011: 파일 공유 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .chat-panel {
+      width: 320px;
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin: var(--spacing-6) auto;
+    }
+    .file-message {
+      margin-bottom: var(--spacing-3);
+    }
+    .file-message .header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-2);
+    }
+    .file-message .sender {
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      color: hsl(var(--brand-primary));
+    }
+    .file-message .time {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .file-bubble {
+      background: hsl(var(--muted));
+      padding: var(--spacing-3);
+      border-radius: var(--radius-md);
+    }
+    .file-bubble .text {
+      font-size: var(--text-sm);
+      margin-bottom: var(--spacing-3);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .file-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+    }
+    .file-info {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+    }
+    .file-icon {
+      width: 48px;
+      height: 48px;
+      background: hsl(var(--destructive) / 0.1);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .file-icon i {
+      color: hsl(var(--destructive));
+    }
+    .file-details {
+      flex: 1;
+    }
+    .file-name {
+      font-weight: var(--font-medium);
+      font-size: var(--text-sm);
+      margin-bottom: var(--spacing-1);
+    }
+    .file-size {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+  </style>
+</head>
+<body style="background: hsl(var(--muted) / 0.3);">
+  <div class="chat-panel">
+    <!-- File Share Message -->
+    <div class="file-message">
+      <div class="header">
+        <span class="sender">김철수 (교수)</span>
+        <span class="time">10:20</span>
+      </div>
+      <div class="file-bubble">
+        <div class="text">
+          <i data-lucide="paperclip" class="icon-sm text-muted"></i>
+          <span>참고자료를 공유합니다</span>
+        </div>
+        <div class="file-card">
+          <div class="file-info">
+            <div class="file-icon">
+              <i data-lucide="file-text" class="icon-md"></i>
+            </div>
+            <div class="file-details">
+              <div class="file-name">마케팅4P_자료.pdf</div>
+              <div class="file-size">2.5MB</div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm w-full mt-3">
+            <i data-lucide="download" class="icon-sm"></i>
+            다운로드
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Another File Share -->
+    <div class="file-message">
+      <div class="header">
+        <span class="sender">김철수 (교수)</span>
+        <span class="time">10:35</span>
+      </div>
+      <div class="file-bubble">
+        <div class="text">
+          <i data-lucide="paperclip" class="icon-sm text-muted"></i>
+          <span>실습용 엑셀 파일입니다</span>
+        </div>
+        <div class="file-card">
+          <div class="file-info">
+            <div class="file-icon" style="background: hsl(var(--success) / 0.1);">
+              <i data-lucide="file-spreadsheet" class="icon-md" style="color: hsl(var(--success))"></i>
+            </div>
+            <div class="file-details">
+              <div class="file-name">마케팅_실습.xlsx</div>
+              <div class="file-size">1.2MB</div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm w-full mt-3">
+            <i data-lucide="download" class="icon-sm"></i>
+            다운로드
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image Share -->
+    <div class="file-message">
+      <div class="header">
+        <span class="sender">김철수 (교수)</span>
+        <span class="time">10:45</span>
+      </div>
+      <div class="file-bubble">
+        <div class="text">
+          <i data-lucide="image" class="icon-sm text-muted"></i>
+          <span>참고 이미지</span>
+        </div>
+        <div class="file-card">
+          <div class="file-info">
+            <div class="file-icon" style="background: hsl(var(--brand-primary) / 0.1);">
+              <i data-lucide="image" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            </div>
+            <div class="file-details">
+              <div class="file-name">4P_diagram.png</div>
+              <div class="file-size">450KB</div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm w-full mt-3">
+            <i data-lucide="download" class="icon-sm"></i>
+            다운로드
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

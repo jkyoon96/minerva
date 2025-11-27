@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BRK-001: 분반 설정 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal-content {
+      background: hsl(var(--card));
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+      position: sticky;
+      top: 0;
+      background: hsl(var(--card));
+    }
+    .modal-body {
+      padding: var(--spacing-4);
+    }
+    .modal-footer {
+      padding: var(--spacing-4);
+      border-top: 1px solid hsl(var(--border));
+      display: flex;
+      justify-content: space-between;
+      position: sticky;
+      bottom: 0;
+      background: hsl(var(--card));
+    }
+    .room-count {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-4);
+    }
+    .room-count input {
+      width: 80px;
+      text-align: center;
+    }
+    .assignment-options {
+      margin-bottom: var(--spacing-4);
+    }
+    .assignment-option {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) 0;
+      font-size: var(--text-sm);
+    }
+    .preview-section {
+      margin-bottom: var(--spacing-4);
+    }
+    .preview-title {
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-2);
+    }
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-2);
+    }
+    .preview-room {
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+    }
+    .room-header {
+      font-weight: var(--font-medium);
+      font-size: var(--text-sm);
+      margin-bottom: var(--spacing-2);
+      color: hsl(var(--brand-primary));
+    }
+    .room-member {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+      padding: var(--spacing-1) 0;
+    }
+    .settings-card {
+      background: hsl(var(--muted) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+      margin-bottom: var(--spacing-4);
+    }
+    .settings-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-2);
+    }
+    .settings-row label {
+      font-size: var(--text-sm);
+    }
+    .checkbox-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-2);
+      margin-top: var(--spacing-2);
+    }
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-size: var(--text-sm);
+    }
+  </style>
+</head>
+<body>
+  <!-- Modal Overlay -->
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="flex items-center gap-2">
+          <i data-lucide="users" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          <h2 class="font-semibold">분반 설정</h2>
+        </div>
+        <button class="btn btn-ghost btn-icon btn-sm">
+          <i data-lucide="x" class="icon-sm"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="room-count">
+          <label class="text-sm font-medium">분반 수:</label>
+          <input type="number" class="input" value="5" min="2" max="10">
+          <span class="text-sm text-muted">개</span>
+        </div>
+
+        <div class="assignment-options">
+          <label class="text-sm font-medium mb-2 block">배정 방식</label>
+          <div class="assignment-option">
+            <input type="radio" name="assignment" checked>
+            <span>자동 (랜덤)</span>
+          </div>
+          <div class="assignment-option">
+            <input type="radio" name="assignment">
+            <span>자동 (균등 분배)</span>
+          </div>
+          <div class="assignment-option">
+            <input type="radio" name="assignment">
+            <span>자동 (성적 기반 혼합)</span>
+          </div>
+          <div class="assignment-option">
+            <input type="radio" name="assignment">
+            <span>수동 배정</span>
+          </div>
+        </div>
+
+        <div class="separator my-4"></div>
+
+        <div class="preview-section">
+          <div class="preview-title">미리보기</div>
+          <div class="preview-grid">
+            <div class="preview-room">
+              <div class="room-header">분반 1 (5명)</div>
+              <div class="room-member">김민수</div>
+              <div class="room-member">박준혁</div>
+              <div class="room-member">정다운</div>
+              <div class="room-member">한지민</div>
+              <div class="room-member">윤아름</div>
+            </div>
+            <div class="preview-room">
+              <div class="room-header">분반 2 (5명)</div>
+              <div class="room-member">이서연</div>
+              <div class="room-member">최유진</div>
+              <div class="room-member">강하늘</div>
+              <div class="room-member">오세훈</div>
+              <div class="room-member">신동현</div>
+            </div>
+            <div class="preview-room">
+              <div class="room-header">분반 3 (5명)</div>
+              <div class="room-member">유지원</div>
+              <div class="room-member">장민호</div>
+              <div class="room-member">...</div>
+            </div>
+            <div class="preview-room">
+              <div class="room-header">분반 4 (5명)</div>
+              <div class="room-member">임수빈</div>
+              <div class="room-member">조현우</div>
+              <div class="room-member">...</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="separator my-4"></div>
+
+        <div class="settings-card">
+          <label class="text-sm font-medium mb-2 block">설정</label>
+          <div class="settings-row">
+            <i data-lucide="clock" class="icon-sm text-muted"></i>
+            <span class="text-sm">토론 시간:</span>
+            <input type="number" class="input" value="10" style="width: 60px;">
+            <span class="text-sm">분</span>
+          </div>
+
+          <div class="checkbox-list">
+            <label class="checkbox-item">
+              <input type="checkbox" checked>
+              <span>타이머 표시</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" checked>
+              <span>1분 전 알림</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox">
+              <span>자동 복귀</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="text-sm font-medium mb-2 block">토론 주제 (선택)</label>
+          <textarea class="input" rows="2" placeholder="토론 주제를 입력하세요">마케팅 전략 사례 분석</textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-ghost">취소</button>
+        <div class="flex gap-2">
+          <button class="btn btn-outline">
+            <i data-lucide="shuffle" class="icon-sm"></i>
+            재배정
+          </button>
+          <button class="btn btn-primary">분반 시작</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

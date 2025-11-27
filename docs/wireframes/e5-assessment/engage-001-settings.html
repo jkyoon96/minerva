@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ENGAGE-001: 참여도 가중치 설정 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .weight-summary {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+      padding: var(--spacing-3);
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--spacing-4);
+      font-size: var(--text-sm);
+    }
+    .weight-total {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .weight-total.valid {
+      color: hsl(var(--success));
+    }
+    .weight-total.invalid {
+      color: hsl(var(--destructive));
+    }
+    .category-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-3);
+    }
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-3);
+    }
+    .category-title {
+      font-weight: var(--font-semibold);
+    }
+    .weight-slider {
+      margin-bottom: var(--spacing-4);
+    }
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+    }
+    .slider-label {
+      font-size: var(--text-sm);
+      width: 60px;
+    }
+    .slider-track {
+      flex: 1;
+      height: 8px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-full);
+      position: relative;
+    }
+    .slider-fill {
+      height: 100%;
+      background: hsl(var(--brand-primary));
+      border-radius: var(--radius-full);
+    }
+    .slider-thumb {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 16px;
+      height: 16px;
+      background: hsl(var(--brand-primary));
+      border: 2px solid white;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+    }
+    .slider-value {
+      width: 50px;
+      text-align: right;
+      font-weight: var(--font-semibold);
+    }
+    .criteria-section {
+      padding-top: var(--spacing-3);
+      border-top: 1px solid hsl(var(--border));
+    }
+    .criteria-title {
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-2);
+    }
+    .criteria-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-2);
+      font-size: var(--text-sm);
+    }
+    .criteria-row label {
+      flex: 1;
+    }
+    .criteria-row input[type="number"] {
+      width: 60px;
+      padding: var(--spacing-1) var(--spacing-2);
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-sm);
+      text-align: center;
+    }
+    .criteria-row .unit {
+      width: 80px;
+      color: hsl(var(--muted-foreground));
+    }
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-size: var(--text-sm);
+      margin-bottom: var(--spacing-2);
+    }
+    .options-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .options-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-3);
+    }
+    .action-buttons {
+      display: flex;
+      gap: var(--spacing-3);
+      margin-top: var(--spacing-4);
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <a href="index.html" class="btn btn-ghost btn-icon">
+      <i data-lucide="arrow-left" class="icon-md"></i>
+    </a>
+    <h1 class="font-semibold">참여도 측정 설정</h1>
+  </header>
+
+  <main class="container py-6">
+    <div class="card mb-4">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="bar-chart-2" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          참여도 측정 항목 및 가중치
+        </h2>
+      </div>
+      <div class="card-content">
+        <div class="weight-summary">
+          <span>총 가중치: 100%</span>
+          <span class="weight-total valid">
+            현재 합계: [100%] ✓
+          </span>
+        </div>
+
+        <!-- Speaking Participation -->
+        <div class="category-card">
+          <div class="category-header">
+            <i data-lucide="mic" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            <span class="category-title">발언 참여</span>
+          </div>
+          <div class="weight-slider">
+            <div class="slider-row">
+              <span class="slider-label">가중치:</span>
+              <div class="slider-track">
+                <div class="slider-fill" style="width: 30%;"></div>
+                <div class="slider-thumb" style="left: 30%;"></div>
+              </div>
+              <span class="slider-value">30%</span>
+            </div>
+          </div>
+          <div class="criteria-section">
+            <div class="criteria-title">측정 기준:</div>
+            <div class="criteria-row">
+              <label>• 세션당 최소 발언 시간:</label>
+              <input type="number" value="3">
+              <span class="unit">분</span>
+            </div>
+            <div class="criteria-row">
+              <label>• 발언 빈도 (회당):</label>
+              <input type="number" value="2">
+              <span class="unit">회 이상</span>
+            </div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="quality" checked>
+              <label for="quality">• 품질 평가: 활성화 (교수 수동 평가)</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Participation -->
+        <div class="category-card">
+          <div class="category-header">
+            <i data-lucide="message-square" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            <span class="category-title">채팅 참여</span>
+          </div>
+          <div class="weight-slider">
+            <div class="slider-row">
+              <span class="slider-label">가중치:</span>
+              <div class="slider-track">
+                <div class="slider-fill" style="width: 15%;"></div>
+                <div class="slider-thumb" style="left: 15%;"></div>
+              </div>
+              <span class="slider-value">15%</span>
+            </div>
+          </div>
+          <div class="criteria-section">
+            <div class="criteria-title">측정 기준:</div>
+            <div class="criteria-row">
+              <label>• 세션당 최소 채팅:</label>
+              <input type="number" value="5">
+              <span class="unit">회</span>
+            </div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="question-bonus" checked>
+              <label for="question-bonus">• 질문 채팅 보너스: 활성화 (+2점/질문)</label>
+            </div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="answer-bonus" checked>
+              <label for="answer-bonus">• 답변 채팅 보너스: 활성화 (+1점/답변)</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Poll/Quiz Participation -->
+        <div class="category-card">
+          <div class="category-header">
+            <i data-lucide="bar-chart-3" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            <span class="category-title">투표/퀴즈 참여</span>
+          </div>
+          <div class="weight-slider">
+            <div class="slider-row">
+              <span class="slider-label">가중치:</span>
+              <div class="slider-track">
+                <div class="slider-fill" style="width: 25%;"></div>
+                <div class="slider-thumb" style="left: 25%;"></div>
+              </div>
+              <span class="slider-value">25%</span>
+            </div>
+          </div>
+          <div class="criteria-section">
+            <div class="criteria-title">측정 기준:</div>
+            <div class="criteria-row">
+              <label>• 투표 참여율 기준:</label>
+              <input type="number" value="90">
+              <span class="unit">% 이상 만점</span>
+            </div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="quiz-rate" checked>
+              <label for="quiz-rate">• 퀴즈 정답률 반영: 활성화 (정답률 * 가중치)</label>
+            </div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="late-penalty" checked>
+              <label for="late-penalty">• 지각 응답 감점: 활성화 (-10% per 30초)</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hand Raise/Reactions -->
+        <div class="category-card">
+          <div class="category-header">
+            <i data-lucide="hand" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            <span class="category-title">손들기/반응</span>
+          </div>
+          <div class="weight-slider">
+            <div class="slider-row">
+              <span class="slider-label">가중치:</span>
+              <div class="slider-track">
+                <div class="slider-fill" style="width: 10%;"></div>
+                <div class="slider-thumb" style="left: 10%;"></div>
+              </div>
+              <span class="slider-value">10%</span>
+            </div>
+          </div>
+          <div class="criteria-section">
+            <div class="criteria-title">측정 기준:</div>
+            <div class="criteria-row">
+              <label>• 세션당 손들기:</label>
+              <input type="number" value="1">
+              <span class="unit">회 이상</span>
+            </div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="emoji">
+              <label for="emoji">• 반응 이모지: 측정 제외</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Breakout Room Contribution -->
+        <div class="category-card">
+          <div class="category-header">
+            <i data-lucide="users" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            <span class="category-title">분반 토론 기여도</span>
+          </div>
+          <div class="weight-slider">
+            <div class="slider-row">
+              <span class="slider-label">가중치:</span>
+              <div class="slider-track">
+                <div class="slider-fill" style="width: 20%;"></div>
+                <div class="slider-thumb" style="left: 20%;"></div>
+              </div>
+              <span class="slider-value">20%</span>
+            </div>
+          </div>
+          <div class="criteria-section">
+            <div class="criteria-title">측정 기준:</div>
+            <div class="criteria-row">
+              <label>• 분반 내 발언 비율:</label>
+              <input type="number" value="20">
+              <span class="unit">% 이상</span>
+            </div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="whiteboard" checked>
+              <label for="whiteboard">• 화이트보드 기여: 측정 (편집 횟수)</label>
+            </div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="peer-eval" checked>
+              <label for="peer-eval">• 동료 평가 반영: 활성화</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scoring Options -->
+    <div class="options-card">
+      <div class="options-header">
+        <i data-lucide="settings" class="icon-md" style="color: hsl(var(--muted-foreground))"></i>
+        점수 산출 옵션
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="attendance" checked>
+        <label for="attendance">출석 여부 기본 반영 (미출석 시 0점)</label>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="relative">
+        <label for="relative">상대평가 적용 (상위 20% 만점)</label>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="minimum" checked>
+        <label for="minimum">최저 점수 보장 (출석 시 최소 30점)</label>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="auto-calc" checked>
+        <label for="auto-calc">주간/학기 참여도 자동 산출</label>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-outline">기본값 복원</button>
+      <button class="btn btn-outline">미리보기 시뮬레이션</button>
+      <button class="btn btn-primary">저장</button>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CODE-002: 코딩 문제 채점 결과 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .score-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-6);
+      text-align: center;
+      margin-bottom: var(--spacing-4);
+    }
+    .score-display {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 140px;
+      height: 140px;
+      background: hsl(var(--brand-primary) / 0.1);
+      border-radius: var(--radius-full);
+      margin-bottom: var(--spacing-4);
+    }
+    .score-value {
+      font-size: var(--text-2xl);
+      font-weight: var(--font-bold);
+      color: hsl(var(--brand-primary));
+    }
+    .score-label {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .score-summary {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-6);
+      color: hsl(var(--muted-foreground));
+      font-size: var(--text-sm);
+    }
+    .test-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+    .test-table th,
+    .test-table td {
+      padding: var(--spacing-2) var(--spacing-3);
+      text-align: left;
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .test-table th {
+      font-weight: var(--font-medium);
+      color: hsl(var(--muted-foreground));
+      font-size: var(--text-xs);
+    }
+    .result-pass {
+      color: hsl(var(--success));
+    }
+    .result-fail {
+      color: hsl(var(--destructive));
+    }
+    .section-title {
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-2);
+      margin-top: var(--spacing-3);
+    }
+    .fail-detail {
+      background: hsl(var(--destructive) / 0.1);
+      border: 1px solid hsl(var(--destructive) / 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3);
+      margin-top: var(--spacing-4);
+    }
+    .fail-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      color: hsl(var(--destructive));
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-2);
+    }
+    .fail-content {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-2);
+    }
+    .hint-box {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2);
+      background: hsl(var(--warning) / 0.1);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      color: hsl(var(--warning));
+    }
+    .quality-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-top: var(--spacing-4);
+    }
+    .quality-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-3);
+      font-size: var(--text-sm);
+    }
+    .quality-item {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--spacing-2);
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-sm);
+    }
+    .quality-check {
+      color: hsl(var(--success));
+    }
+    .quality-no {
+      color: hsl(var(--muted-foreground));
+    }
+    .action-buttons {
+      display: flex;
+      gap: var(--spacing-3);
+      margin-top: var(--spacing-6);
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <a href="index.html" class="btn btn-ghost btn-icon">
+      <i data-lucide="arrow-left" class="icon-md"></i>
+    </a>
+    <h1 class="font-semibold">[HW3] 피보나치 수열 구현 - 채점 결과</h1>
+  </header>
+
+  <main class="container py-6">
+    <!-- Score Card -->
+    <div class="score-card">
+      <div class="flex items-center justify-center gap-2 mb-4">
+        <i data-lucide="bar-chart-2" class="icon-lg" style="color: hsl(var(--brand-primary))"></i>
+        <span class="text-lg font-semibold">채점 결과</span>
+      </div>
+      <div class="score-display">
+        <span class="score-value">90 / 100</span>
+        <span class="score-label">점</span>
+      </div>
+      <div class="score-summary">
+        <span>테스트 통과: 9/10</span>
+        <span>실행 시간: 0.15ms</span>
+        <span>메모리: 2.1MB</span>
+      </div>
+    </div>
+
+    <!-- Test Cases Detail -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="flask-conical" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          테스트 케이스 상세
+        </h2>
+      </div>
+      <div class="card-content">
+        <div class="section-title">공개 테스트 (4/4)</div>
+        <table class="test-table">
+          <thead>
+            <tr>
+              <th>번호</th>
+              <th>테스트</th>
+              <th>결과</th>
+              <th>시간</th>
+              <th>메모리</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>n=1</td>
+              <td class="result-pass"><i data-lucide="check" class="icon-xs"></i> PASS</td>
+              <td>0.01ms</td>
+              <td>1.2MB</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>n=5</td>
+              <td class="result-pass"><i data-lucide="check" class="icon-xs"></i> PASS</td>
+              <td>0.01ms</td>
+              <td>1.2MB</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>n=10</td>
+              <td class="result-pass"><i data-lucide="check" class="icon-xs"></i> PASS</td>
+              <td>0.02ms</td>
+              <td>1.3MB</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>n=20</td>
+              <td class="result-pass"><i data-lucide="check" class="icon-xs"></i> PASS</td>
+              <td>0.03ms</td>
+              <td>1.4MB</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-title">히든 테스트 (5/6)</div>
+        <table class="test-table">
+          <thead>
+            <tr>
+              <th>번호</th>
+              <th>테스트</th>
+              <th>결과</th>
+              <th>시간</th>
+              <th>메모리</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>5</td>
+              <td>경계값 테스트</td>
+              <td class="result-pass"><i data-lucide="check" class="icon-xs"></i> PASS</td>
+              <td>0.01ms</td>
+              <td>1.2MB</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>큰 수 테스트 (n=50)</td>
+              <td class="result-pass"><i data-lucide="check" class="icon-xs"></i> PASS</td>
+              <td>0.05ms</td>
+              <td>1.8MB</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>음수 입력 예외처리</td>
+              <td class="result-pass"><i data-lucide="check" class="icon-xs"></i> PASS</td>
+              <td>0.01ms</td>
+              <td>1.2MB</td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td>매우 큰 수 (n=100)</td>
+              <td class="result-pass"><i data-lucide="check" class="icon-xs"></i> PASS</td>
+              <td>0.10ms</td>
+              <td>2.0MB</td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td>극한값 테스트 (n=1000)</td>
+              <td class="result-fail"><i data-lucide="x" class="icon-xs"></i> FAIL</td>
+              <td>>1000ms</td>
+              <td>--</td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td>0 입력 테스트</td>
+              <td class="result-pass"><i data-lucide="check" class="icon-xs"></i> PASS</td>
+              <td>0.01ms</td>
+              <td>1.2MB</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Fail Detail -->
+        <div class="fail-detail">
+          <div class="fail-header">
+            <i data-lucide="x-circle" class="icon-sm"></i>
+            테스트 9 실패 상세
+          </div>
+          <div class="fail-content">
+            <div><strong>예상 결과:</strong> 43466557686937456435688527675040625802564...</div>
+            <div><strong>실제 결과:</strong> 시간 초과 (Time Limit Exceeded)</div>
+          </div>
+          <div class="hint-box">
+            <i data-lucide="lightbulb" class="icon-sm"></i>
+            <span><strong>힌트:</strong> n이 매우 큰 경우 정수 오버플로우나 연산 효율성을 고려해야 합니다. 큰 수의 연산 최적화를 검토해보세요.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Quality Analysis -->
+    <div class="quality-card">
+      <div class="flex items-center gap-2 mb-4">
+        <i data-lucide="search-code" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        <span class="font-semibold">코드 품질 분석</span>
+      </div>
+      <div class="quality-grid">
+        <div class="quality-item">
+          <span>시간 복잡도:</span>
+          <span class="quality-check">O(n) ✓</span>
+        </div>
+        <div class="quality-item">
+          <span>공간 복잡도:</span>
+          <span class="quality-check">O(1) ✓</span>
+        </div>
+        <div class="quality-item">
+          <span>코드 스타일:</span>
+          <span class="quality-check">PEP8 준수 ✓</span>
+        </div>
+        <div class="quality-item">
+          <span>주석 포함:</span>
+          <span class="quality-no">아니오</span>
+        </div>
+        <div class="quality-item" style="grid-column: span 2;">
+          <span>표절 검사 결과:</span>
+          <span class="quality-check">유사 코드 없음 ✓</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-outline flex-1">
+        <i data-lucide="refresh-cw" class="icon-sm"></i>
+        재제출 (2/3)
+      </button>
+      <button class="btn btn-outline flex-1">
+        <i data-lucide="book-open" class="icon-sm"></i>
+        관련 자료 보기
+      </button>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

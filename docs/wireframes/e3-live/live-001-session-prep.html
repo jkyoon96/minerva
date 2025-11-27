@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIVE-001: 세션 시작 준비 (교수자) - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .prep-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: var(--spacing-6);
+    }
+    .video-preview {
+      background: hsl(var(--muted));
+      border-radius: var(--radius-lg);
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--spacing-4);
+    }
+    .device-select {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-2) 0;
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .device-select:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <span class="nav-link">경영학개론</span>
+      </div>
+      <div class="navbar-actions">
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">김교수</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="prep-container">
+    <div class="text-center mb-6">
+      <h1 class="text-2xl font-bold mb-2">세션 #12 시작 준비</h1>
+    </div>
+
+    <div class="card">
+      <div class="card-content">
+        <!-- Camera Preview -->
+        <div class="video-preview">
+          <div class="text-center text-muted">
+            <div class="avatar avatar-xl mb-2">
+              <i data-lucide="user" class="icon-xl"></i>
+            </div>
+            <div class="font-medium">김철수</div>
+          </div>
+        </div>
+
+        <!-- Device Settings -->
+        <div class="mb-6">
+          <div class="device-select">
+            <div class="flex items-center gap-2">
+              <i data-lucide="camera" class="icon-sm text-muted"></i>
+              <span class="text-sm">HD Webcam C920</span>
+            </div>
+            <button class="btn btn-ghost btn-sm">변경</button>
+          </div>
+          <div class="device-select">
+            <div class="flex items-center gap-2">
+              <i data-lucide="mic" class="icon-sm text-muted"></i>
+              <span class="text-sm">내장 마이크</span>
+            </div>
+            <button class="btn btn-ghost btn-sm">변경</button>
+          </div>
+          <div class="device-select">
+            <div class="flex items-center gap-2">
+              <i data-lucide="volume-2" class="icon-sm text-muted"></i>
+              <span class="text-sm">기본 출력</span>
+            </div>
+            <button class="btn btn-ghost btn-sm">변경</button>
+          </div>
+        </div>
+
+        <div class="separator my-4"></div>
+
+        <!-- Session Info -->
+        <div class="mb-6">
+          <h2 class="text-sm font-semibold mb-3">세션 정보</h2>
+          <div class="space-y-2 text-sm">
+            <div class="flex items-center gap-2">
+              <i data-lucide="book-open" class="icon-sm text-muted"></i>
+              <span>세션 #12: 마케팅 믹스 4P</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i data-lucide="calendar" class="icon-sm text-muted"></i>
+              <span>2024-11-19 (화) 10:00 - 11:30</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i data-lucide="users" class="icon-sm text-muted"></i>
+              <span>예상 참가자: 28명</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Session Settings -->
+        <div class="mb-6">
+          <h2 class="text-sm font-semibold mb-3">세션 설정</h2>
+          <div class="space-y-3">
+            <label class="flex items-center gap-2">
+              <input type="checkbox" class="checkbox" checked>
+              <span class="text-sm">대기실 활성화 (참가자 승인 후 입장)</span>
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" class="checkbox" checked>
+              <span class="text-sm">세션 녹화</span>
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" class="checkbox" checked>
+              <span class="text-sm">학생 카메라 기본 OFF</span>
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" class="checkbox" checked>
+              <span class="text-sm">학생 마이크 기본 OFF</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="separator my-4"></div>
+
+        <!-- Actions -->
+        <div class="space-y-3">
+          <button class="btn btn-primary w-full">
+            <i data-lucide="video" class="icon-sm"></i>
+            세션 시작
+          </button>
+          <button class="btn btn-ghost w-full">취소</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

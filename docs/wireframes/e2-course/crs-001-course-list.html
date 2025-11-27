@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRS-001: 내 코스 목록 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .course-card {
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: all var(--transition-fast);
+    }
+    .course-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .course-card-header {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+    .course-card-body {
+      padding: var(--spacing-4);
+    }
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      background-color: hsl(var(--destructive));
+      color: white;
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+    }
+    .live-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background-color: white;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .main-content {
+      margin-left: 280px;
+      padding: var(--spacing-6);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="#" class="nav-link">대시보드</a>
+        <a href="#" class="nav-link active">내 코스</a>
+        <a href="#" class="nav-link">분석</a>
+        <a href="#" class="nav-link">설정</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-icon">
+          <i data-lucide="bell" class="icon-md"></i>
+        </button>
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">김교수</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" style="top: 57px; height: calc(100vh - 57px);">
+    <div class="sidebar-nav">
+      <div class="sidebar-section">
+        <a href="#" class="sidebar-link">
+          <i data-lucide="layout-dashboard" class="icon-md"></i>
+          대시보드
+        </a>
+        <a href="#" class="sidebar-link active">
+          <i data-lucide="book-open" class="icon-md"></i>
+          내 코스
+        </a>
+        <div style="padding-left: var(--spacing-8);">
+          <a href="#" class="sidebar-link text-sm">진행중</a>
+          <a href="#" class="sidebar-link text-sm">완료</a>
+        </div>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="folder" class="icon-md"></i>
+          콘텐츠
+        </a>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="bar-chart-3" class="icon-md"></i>
+          분석
+        </a>
+        <a href="#" class="sidebar-link">
+          <i data-lucide="settings" class="icon-md"></i>
+          설정
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <h1 class="text-2xl font-bold mb-6">내 코스</h1>
+
+    <!-- Search and Filter -->
+    <div class="flex items-center gap-4 mb-6">
+      <div class="input-group flex-1">
+        <span class="input-icon">
+          <i data-lucide="search" class="icon-sm"></i>
+        </span>
+        <input type="text" class="input" style="padding-left: 2.5rem" placeholder="코스 검색...">
+      </div>
+      <select class="select" style="width: 140px;">
+        <option>학기</option>
+        <option>2024년 2학기</option>
+        <option>2024년 1학기</option>
+      </select>
+      <select class="select" style="width: 120px;">
+        <option>상태</option>
+        <option>진행중</option>
+        <option>완료</option>
+      </select>
+      <a href="crs-002-create-course.html" class="btn btn-primary">
+        <i data-lucide="plus" class="icon-sm"></i>
+        새 코스
+      </a>
+    </div>
+
+    <!-- Active Courses -->
+    <h2 class="text-lg font-semibold mb-4">진행 중 (3)</h2>
+    <div class="separator mb-4"></div>
+
+    <div class="grid grid-cols-3 gap-6 mb-8">
+      <!-- Course Card 1 - LIVE -->
+      <div class="course-card">
+        <div class="course-card-header" style="background-color: hsl(221 83% 95%);">
+          <span>📘</span>
+        </div>
+        <div class="course-card-body">
+          <h3 class="font-semibold mb-1">경영학개론</h3>
+          <p class="text-sm text-muted mb-3">BUSS101</p>
+          <p class="text-sm text-muted mb-2">2024-2학기</p>
+          <div class="flex items-center gap-2 text-sm text-muted mb-3">
+            <i data-lucide="users" class="icon-sm"></i>
+            <span>28명</span>
+          </div>
+          <div class="mb-4">
+            <span class="live-badge">LIVE</span>
+          </div>
+          <div class="flex gap-2">
+            <a href="crs-003-course-detail.html" class="btn btn-primary btn-sm flex-1">입장</a>
+            <a href="#" class="btn btn-outline btn-sm flex-1">관리</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course Card 2 -->
+      <div class="course-card">
+        <div class="course-card-header" style="background-color: hsl(142 76% 95%);">
+          <span>📗</span>
+        </div>
+        <div class="course-card-body">
+          <h3 class="font-semibold mb-1">마케팅원론</h3>
+          <p class="text-sm text-muted mb-3">MKTG201</p>
+          <p class="text-sm text-muted mb-2">2024-2학기</p>
+          <div class="flex items-center gap-2 text-sm text-muted mb-3">
+            <i data-lucide="users" class="icon-sm"></i>
+            <span>35명</span>
+          </div>
+          <div class="text-sm text-muted mb-4">
+            다음: 수 10:00
+          </div>
+          <div class="flex gap-2">
+            <button class="btn btn-primary btn-sm flex-1">시작</button>
+            <button class="btn btn-outline btn-sm flex-1">관리</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course Card 3 -->
+      <div class="course-card">
+        <div class="course-card-header" style="background-color: hsl(38 92% 95%);">
+          <span>📙</span>
+        </div>
+        <div class="course-card-body">
+          <h3 class="font-semibold mb-1">조직행동론</h3>
+          <p class="text-sm text-muted mb-3">ORGB301</p>
+          <p class="text-sm text-muted mb-2">2024-2학기</p>
+          <div class="flex items-center gap-2 text-sm text-muted mb-3">
+            <i data-lucide="users" class="icon-sm"></i>
+            <span>22명</span>
+          </div>
+          <div class="text-sm text-muted mb-4">
+            다음: 목 14:00
+          </div>
+          <div class="flex gap-2">
+            <button class="btn btn-primary btn-sm flex-1">시작</button>
+            <button class="btn btn-outline btn-sm flex-1">관리</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Completed Courses -->
+    <h2 class="text-lg font-semibold mb-4">완료됨 (2)</h2>
+    <div class="separator mb-4"></div>
+
+    <div class="grid grid-cols-3 gap-6">
+      <!-- Completed Course 1 -->
+      <div class="course-card" style="opacity: 0.7;">
+        <div class="course-card-header" style="background-color: hsl(0 84% 95%);">
+          <span>📕</span>
+        </div>
+        <div class="course-card-body">
+          <h3 class="font-semibold mb-1">회계원리</h3>
+          <p class="text-sm text-muted mb-3">ACCT101</p>
+          <p class="text-sm text-muted mb-2">2024-1학기</p>
+          <div class="badge badge-default mb-4">완료</div>
+          <div class="flex gap-2">
+            <button class="btn btn-outline btn-sm flex-1">보기</button>
+            <button class="btn btn-outline btn-sm flex-1">복제</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Completed Course 2 -->
+      <div class="course-card" style="opacity: 0.7;">
+        <div class="course-card-header" style="background-color: hsl(var(--muted));">
+          <span>📓</span>
+        </div>
+        <div class="course-card-body">
+          <h3 class="font-semibold mb-1">재무관리</h3>
+          <p class="text-sm text-muted mb-3">FINC201</p>
+          <p class="text-sm text-muted mb-2">2024-1학기</p>
+          <div class="badge badge-default mb-4">완료</div>
+          <div class="flex gap-2">
+            <button class="btn btn-outline btn-sm flex-1">보기</button>
+            <button class="btn btn-outline btn-sm flex-1">복제</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

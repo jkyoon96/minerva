@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CODE-003: 표절 검사 결과 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .overview-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+      margin-bottom: var(--spacing-4);
+    }
+    .overview-stats {
+      display: flex;
+      gap: var(--spacing-6);
+      margin-bottom: var(--spacing-4);
+      font-size: var(--text-sm);
+    }
+    .distribution-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-2);
+      font-size: var(--text-sm);
+    }
+    .distribution-label {
+      width: 60px;
+    }
+    .distribution-bar {
+      height: 20px;
+      border-radius: var(--radius-sm);
+    }
+    .distribution-bar.normal {
+      background: hsl(var(--success));
+    }
+    .distribution-bar.caution {
+      background: hsl(var(--warning));
+    }
+    .distribution-bar.suspect {
+      background: hsl(var(--destructive));
+    }
+    .distribution-count {
+      flex: 1;
+      text-align: right;
+      color: hsl(var(--muted-foreground));
+    }
+    .suspect-case {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--spacing-4);
+      overflow: hidden;
+    }
+    .case-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .case-header.high {
+      background: hsl(var(--destructive) / 0.1);
+    }
+    .case-header.medium {
+      background: hsl(var(--warning) / 0.1);
+    }
+    .severity-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: var(--radius-full);
+    }
+    .severity-dot.high {
+      background: hsl(var(--destructive));
+    }
+    .severity-dot.medium {
+      background: hsl(var(--warning));
+    }
+    .similarity-badge {
+      margin-left: auto;
+      padding: var(--spacing-1) var(--spacing-2);
+      background: hsl(var(--destructive) / 0.1);
+      color: hsl(var(--destructive));
+      border-radius: var(--radius-sm);
+      font-weight: var(--font-semibold);
+      font-size: var(--text-sm);
+    }
+    .code-comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: hsl(var(--border));
+      margin: var(--spacing-3);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .code-panel {
+      background: hsl(var(--background));
+      padding: var(--spacing-3);
+    }
+    .code-panel-header {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-2);
+      padding-bottom: var(--spacing-2);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .code-content {
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .code-line {
+      display: flex;
+    }
+    .code-line.identical {
+      background: hsl(var(--destructive) / 0.1);
+    }
+    .line-marker {
+      width: 80px;
+      text-align: right;
+      padding-right: var(--spacing-2);
+      color: hsl(var(--destructive));
+      font-size: var(--text-xs);
+    }
+    .case-actions {
+      display: flex;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      border-top: 1px solid hsl(var(--border));
+    }
+    .note-text {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      padding: var(--spacing-3) var(--spacing-4);
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <a href="index.html" class="btn btn-ghost btn-icon">
+      <i data-lucide="arrow-left" class="icon-md"></i>
+    </a>
+    <h1 class="font-semibold">[HW3] 표절 검사 결과</h1>
+  </header>
+
+  <main class="container py-6">
+    <!-- Overview -->
+    <div class="overview-card">
+      <div class="flex items-center gap-2 mb-3">
+        <i data-lucide="bar-chart-2" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        <span class="font-semibold">표절 검사 개요</span>
+      </div>
+      <div class="overview-stats">
+        <span>총 제출: 45건</span>
+        <span>검사 완료: 45건</span>
+        <span style="color: hsl(var(--warning))">의심 사례: 3건 ⚠️</span>
+      </div>
+
+      <div class="text-sm font-medium mb-2">유사도 분포</div>
+      <div class="distribution-row">
+        <span class="distribution-label">0-20%</span>
+        <div class="distribution-bar normal" style="width: 300px;"></div>
+        <span class="distribution-count">38건 (정상)</span>
+      </div>
+      <div class="distribution-row">
+        <span class="distribution-label">20-50%</span>
+        <div class="distribution-bar caution" style="width: 35px;"></div>
+        <span class="distribution-count">4건 (주의)</span>
+      </div>
+      <div class="distribution-row">
+        <span class="distribution-label">50%+</span>
+        <div class="distribution-bar suspect" style="width: 25px;"></div>
+        <span class="distribution-count">3건 (의심) ⚠️</span>
+      </div>
+    </div>
+
+    <!-- Suspect Cases -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h2 class="card-title flex items-center gap-2">
+          <i data-lucide="alert-triangle" class="icon-md" style="color: hsl(var(--warning))"></i>
+          표절 의심 사례 (50% 이상 유사도)
+        </h2>
+      </div>
+    </div>
+
+    <!-- Case 1: High Similarity -->
+    <div class="suspect-case">
+      <div class="case-header high">
+        <span class="severity-dot high"></span>
+        <span class="font-semibold">사례 1: 김철수 ↔ 이영희</span>
+        <span class="similarity-badge">유사도: 87%</span>
+      </div>
+
+      <div class="code-comparison">
+        <div class="code-panel">
+          <div class="code-panel-header">김철수 (제출: 14:23)</div>
+          <div class="code-content">
+            <div class="code-line identical"><span class="line-marker">← 동일</span>def fib(n):</div>
+            <div class="code-line identical"><span class="line-marker">← 동일</span>  if n <= 1:</div>
+            <div class="code-line identical"><span class="line-marker">← 동일</span>    return n</div>
+            <div class="code-line identical"><span class="line-marker">← 동일</span>  prev, curr = 0, 1</div>
+            <div class="code-line identical"><span class="line-marker">← 동일</span>  for i in range(2,</div>
+            <div class="code-line identical"><span class="line-marker">← 동일</span>      n + 1):</div>
+            <div class="code-line identical"><span class="line-marker">← 동일</span>    prev, curr =</div>
+            <div class="code-line identical"><span class="line-marker">← 동일</span>      curr, prev+c</div>
+            <div class="code-line identical"><span class="line-marker">← 동일</span>  return curr</div>
+          </div>
+        </div>
+        <div class="code-panel">
+          <div class="code-panel-header">이영희 (제출: 14:45)</div>
+          <div class="code-content">
+            <div class="code-line identical">def fib(n):</div>
+            <div class="code-line identical">  if n <= 1:</div>
+            <div class="code-line identical">    return n</div>
+            <div class="code-line identical">  prev, curr = 0, 1</div>
+            <div class="code-line identical">  for i in range(2,</div>
+            <div class="code-line identical">      n + 1):</div>
+            <div class="code-line identical">    prev, curr =</div>
+            <div class="code-line identical">      curr, prev+c</div>
+            <div class="code-line identical">  return curr</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="case-actions">
+        <button class="btn btn-outline btn-sm">
+          <i data-lucide="eye" class="icon-xs"></i>
+          상세 비교
+        </button>
+        <button class="btn btn-outline btn-sm">
+          <i data-lucide="mail" class="icon-xs"></i>
+          경고 발송
+        </button>
+        <button class="btn btn-destructive btn-sm">
+          <i data-lucide="x-circle" class="icon-xs"></i>
+          0점 처리 + 통보
+        </button>
+      </div>
+    </div>
+
+    <!-- Case 2: Medium Similarity -->
+    <div class="suspect-case">
+      <div class="case-header medium">
+        <span class="severity-dot medium"></span>
+        <span class="font-semibold">사례 2: 박민수 ↔ 정수진</span>
+        <span class="similarity-badge" style="background: hsl(var(--warning) / 0.1); color: hsl(var(--warning));">유사도: 62%</span>
+      </div>
+
+      <p class="note-text">[일부 함수명과 로직 구조가 유사함]</p>
+
+      <div class="case-actions">
+        <button class="btn btn-outline btn-sm">
+          <i data-lucide="eye" class="icon-xs"></i>
+          상세 비교
+        </button>
+        <button class="btn btn-outline btn-sm">
+          <i data-lucide="mail" class="icon-xs"></i>
+          경고 발송
+        </button>
+        <button class="btn btn-outline btn-sm">
+          <i data-lucide="check" class="icon-xs"></i>
+          정상 처리
+        </button>
+      </div>
+    </div>
+
+    <!-- Download Report -->
+    <div class="mt-6">
+      <button class="btn btn-outline">
+        <i data-lucide="file-text" class="icon-sm"></i>
+        표절 검사 리포트 다운로드
+      </button>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
