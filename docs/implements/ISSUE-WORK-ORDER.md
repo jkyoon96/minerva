@@ -24,7 +24,7 @@
 | 순서 | Issue | 제목 | SP | 병렬 가능 |
 |------|-------|------|-----|----------|
 | 1 | #285 | [BE-001] 프로젝트 초기 설정 (Spring Boot) ✅ | 2 | ✅ |
-| 2 | #288 | [FE-001] 프로젝트 초기 설정 (React) | 2 | ✅ |
+| 2 | #288 | [FE-001] 프로젝트 초기 설정 (Next.js 14) | 2 | ✅ |
 
 > **Note**: #285, #288은 서로 독립적이므로 **병렬 처리 가능**
 
@@ -82,11 +82,12 @@
 - Springdoc OpenAPI (Swagger)
 - 참조: `docs/implements/BE-001-spring-boot-project-setup.md`
 
-#### #288 [FE-001] React 프로젝트 초기 설정
-- React + Vite 프로젝트 생성
+#### #288 [FE-001] Next.js 14 프로젝트 초기 설정
+- Next.js 14 (App Router) 프로젝트 생성
+- TypeScript 설정
 - 폴더 구조 설정
-- 환경 설정
-- 참조: `docs/02-technical-architecture.md`
+- 환경 설정 (dev, staging, prod)
+- 참조: `docs/05-system-architecture.md`
 
 ---
 
@@ -154,7 +155,7 @@
 ```bash
 # 다음 작업 시작
 1. #285 [BE-001] Spring Boot 프로젝트 초기 설정 ✅ 완료
-2. #288 [FE-001] React 프로젝트 초기 설정
+2. #288 [FE-001] Next.js 14 프로젝트 초기 설정
 ```
 
 BE-001이 완료되어 Phase 2 작업을 시작할 수 있습니다.
@@ -167,3 +168,4 @@ BE-001이 완료되어 Phase 2 작업을 시작할 수 있습니다.
 |------|------|----------|
 | 1.0 | 2025-01-28 | 초기 작성 |
 | 1.1 | 2025-01-29 | BE-001 Spring Boot 전환 반영 |
+| 1.2 | 2025-01-29 | FE-001 React → Next.js 14 수정 |
