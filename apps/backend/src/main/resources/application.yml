@@ -51,12 +51,19 @@ jwt:
 springdoc:
   api-docs:
     path: /docs/api-docs
+    enabled: true
   swagger-ui:
     path: /docs/swagger-ui.html
+    enabled: true
     display-request-duration: true
-    operations-sorter: alpha
+    operations-sorter: method
     tags-sorter: alpha
     try-it-out-enabled: true
+    disable-swagger-default-url: true
+    doc-expansion: none
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  show-actuator: false
 
 # Actuator 설정
 management:

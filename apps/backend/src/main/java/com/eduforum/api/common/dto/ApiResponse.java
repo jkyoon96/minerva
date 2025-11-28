@@ -1,6 +1,7 @@
 package com.eduforum.api.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,31 +16,37 @@ import java.util.Map;
 @Getter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(description = "표준 API 응답")
 public class ApiResponse<T> {
 
     /**
      * HTTP 상태 코드
      */
+    @Schema(description = "HTTP 상태 코드", example = "200")
     private final int status;
 
     /**
      * 응답 메시지
      */
+    @Schema(description = "응답 메시지", example = "Success")
     private final String message;
 
     /**
      * 응답 데이터
      */
+    @Schema(description = "응답 데이터")
     private final T data;
 
     /**
      * 메타데이터 (페이징 정보 등)
      */
+    @Schema(description = "메타데이터 (페이징 정보 등)")
     private final Map<String, Object> meta;
 
     /**
      * 응답 시간
      */
+    @Schema(description = "응답 시간", example = "2025-11-29T10:30:00")
     @Builder.Default
     private final LocalDateTime timestamp = LocalDateTime.now();
 
