@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://210.115.229.12:5432/eduforum
+    username: eduforum
+    password: eduforum12
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  level:
+    com.eduforum.api: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG

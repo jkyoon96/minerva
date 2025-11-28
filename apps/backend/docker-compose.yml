@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: eduforum-postgres
+    environment:
+      POSTGRES_DB: eduforum
+      POSTGRES_USER: eduforum
+      POSTGRES_PASSWORD: eduforum12
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - eduforum-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U eduforum"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: eduforum-api
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/eduforum
+      SPRING_DATASOURCE_USERNAME: eduforum
+      SPRING_DATASOURCE_PASSWORD: eduforum12
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - eduforum-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  eduforum-network:
+    driver: bridge
