@@ -1,7 +1,7 @@
 # EduForum 시스템 아키텍처
 
-> **버전**: 1.0
-> **최종 수정일**: 2025-01-28
+> **버전**: 1.1
+> **최종 수정일**: 2025-01-29
 > **참조 문서**: PRD (03-product-requirements.md), 기능 세분화 (04-feature-breakdown.md), 기술 아키텍처 (02-technical-architecture.md)
 
 ---
@@ -83,10 +83,12 @@ Frontend:
   Auth: NextAuth.js (Auth.js)
 
 Backend:
-  Framework: Django 5.x + Django REST Framework
-  Async Support: Django Channels (ASGI)
-  Task Queue: Celery + Redis
-  WebSocket: Django Channels / Socket.io
+  Framework: Spring Boot 3.2.x + Java 17
+  Security: Spring Security + JWT
+  ORM: Spring Data JPA
+  Task Queue: Spring Scheduler + Redis
+  WebSocket: Spring WebSocket / Socket.io
+  API Docs: Springdoc OpenAPI (Swagger)
 
 Media Server:
   Primary: Jitsi Meet / mediasoup (SFU)
@@ -150,7 +152,7 @@ Infrastructure:
 │                              Presentation Layer                                   │
 │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐                   │
 │  │   Next.js App   │  │  Mobile App     │  │   Admin Panel   │                   │
-│  │  (SSR/SSG/CSR)  │  │  (PWA/Native)   │  │  (Django Admin) │                   │
+│  │  (SSR/SSG/CSR)  │  │  (PWA/Native)   │  │ (Spring Admin)  │                   │
 │  └────────┬────────┘  └────────┬────────┘  └────────┬────────┘                   │
 └───────────┼─────────────────────┼─────────────────────┼──────────────────────────┘
             │                     │                     │
@@ -191,7 +193,7 @@ Infrastructure:
 │                              Integration Layer                                    │
 │  ┌────────────────┐  ┌────────────────┐  ┌────────────────┐                      │
 │  │  Message Queue │  │  Event Bus     │  │  WebSocket Hub │                      │
-│  │  (Redis/Celery)│  │  (Redis Pub/Sub)│ │  (Socket.io)   │                      │
+│  │ (Redis/Spring) │  │  (Redis Pub/Sub)│ │  (Socket.io)   │                      │
 │  └────────────────┘  └────────────────┘  └────────────────┘                      │
 └───────────────────────────────────────┬──────────────────────────────────────────┘
                                         │
@@ -268,7 +270,7 @@ Infrastructure:
 │  │   ├── auth/                                                               │
 │  │   │   └── [...nextauth]/route.ts  # NextAuth.js                          │
 │  │   ├── proxy/                                                              │
-│  │   │   └── [...path]/route.ts      # Django API 프록시                    │
+│  │   │   └── [...path]/route.ts      # Spring Boot API 프록시               │
 │  │   └── webhooks/                                                           │
 │  │       └── route.ts                # 외부 웹훅                            │
 │  │                                                                           │
@@ -326,9 +328,9 @@ export const config = {
 | **Course Service** | 코스, 세션, 과제, 성적 관리 | `/api/courses/*` | REST |
 | **Media Service** | 화상 회의, 녹화, 스트리밍 | `/api/media/*` | WebRTC, WebSocket |
 | **Learning Service** | 투표, 퀴즈, 분반, 화이트보드 | `/api/learning/*` | REST, WebSocket |
-| **Assessment Service** | 자동/AI 채점, 피드백 | `/api/assessment/*` | REST, Async (Celery) |
+| **Assessment Service** | 자동/AI 채점, 피드백 | `/api/assessment/*` | REST, Async (Spring) |
 | **Analytics Service** | 참여도, 리포트, 경보 | `/api/analytics/*` | REST, WebSocket |
-| **Notification Service** | 이메일, 푸시, 인앱 알림 | `/api/notifications/*` | Async (Celery) |
+| **Notification Service** | 이메일, 푸시, 인앱 알림 | `/api/notifications/*` | Async (Spring) |
 
 ### 4.2 서비스 상세 설계
 
@@ -517,7 +519,7 @@ export const config = {
 │  Client ────► API Gateway ────► Service ────► Database                       │
 │                                                                              │
 │  [비동기 통신 - Message Queue]                                               │
-│  Service A ────► Redis/Celery Queue ────► Service B                          │
+│  Service A ────► Redis/Spring Async ────► Service B                          │
 │                                                                              │
 │  예시:                                                                       │
 │  • 과제 제출 → Assessment Service (채점) → Notification Service (결과 알림)  │
@@ -731,7 +733,7 @@ poll:{poll_id}:voted: [user_ids]
 │  │                         Workers Namespace                             │   │
 │  │                                                                       │   │
 │  │  ┌───────────────┐  ┌───────────────┐  ┌───────────────┐            │   │
-│  │  │ Celery Worker │  │ Celery Worker │  │ Celery Beat   │            │   │
+│  │  │ Spring Worker │  │ Spring Worker │  │ Spring Sched  │            │   │
 │  │  │ (Assessment)  │  │ (Notification)│  │ (Scheduler)   │            │   │
 │  │  │  Replicas: 5  │  │  Replicas: 3  │  │  Replicas: 1  │            │   │
 │  │  └───────────────┘  └───────────────┘  └───────────────┘            │   │
