@@ -46,7 +46,29 @@ public enum ErrorCode {
     // Assignment
     ASSIGNMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "AS001", "과제를 찾을 수 없습니다"),
     SUBMISSION_DEADLINE_PASSED(HttpStatus.BAD_REQUEST, "AS002", "제출 기한이 지났습니다"),
-    ALREADY_SUBMITTED(HttpStatus.CONFLICT, "AS003", "이미 제출한 과제입니다");
+    ALREADY_SUBMITTED(HttpStatus.CONFLICT, "AS003", "이미 제출한 과제입니다"),
+
+    // Seminar Room
+    ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "SR001", "세미나 룸을 찾을 수 없습니다"),
+    ROOM_ALREADY_EXISTS(HttpStatus.CONFLICT, "SR002", "세션에 이미 룸이 존재합니다"),
+    ROOM_FULL(HttpStatus.BAD_REQUEST, "SR003", "룸 정원이 초과되었습니다"),
+    ROOM_ALREADY_STARTED(HttpStatus.BAD_REQUEST, "SR004", "이미 시작된 룸입니다"),
+    ROOM_ALREADY_ENDED(HttpStatus.BAD_REQUEST, "SR005", "이미 종료된 룸입니다"),
+    ROOM_NOT_ACTIVE(HttpStatus.BAD_REQUEST, "SR006", "활성화된 룸이 아닙니다"),
+
+    // Participant
+    PARTICIPANT_NOT_FOUND(HttpStatus.NOT_FOUND, "SP001", "참가자를 찾을 수 없습니다"),
+    ALREADY_IN_ROOM(HttpStatus.CONFLICT, "SP002", "이미 룸에 참가 중입니다"),
+    NOT_IN_ROOM(HttpStatus.BAD_REQUEST, "SP003", "룸에 참가하지 않았습니다"),
+    PARTICIPANT_NOT_HOST(HttpStatus.FORBIDDEN, "SP004", "호스트 권한이 필요합니다"),
+
+    // Chat
+    CHAT_MESSAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "CH001", "채팅 메시지를 찾을 수 없습니다"),
+    CHAT_DISABLED(HttpStatus.BAD_REQUEST, "CH002", "채팅이 비활성화되어 있습니다"),
+
+    // Screen Share
+    SCREEN_SHARE_NOT_ALLOWED(HttpStatus.FORBIDDEN, "SS001", "화면 공유 권한이 없습니다"),
+    SCREEN_SHARE_IN_PROGRESS(HttpStatus.CONFLICT, "SS002", "이미 화면 공유 중입니다");
 
     private final HttpStatus httpStatus;
     private final String code;
