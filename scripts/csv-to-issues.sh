@@ -5,21 +5,22 @@
 set -e
 
 CSV_FILE="${1:-docs/09-git-issues-tasks.csv}"
-MAPPING_FILE="scripts/issues-mapping.json"
+MAPPING_FILE="scripts/issues-mapping.txt"
 EPIC_FILTER=""
 PRIORITY_FILTER=""
 DRY_RUN=false
 DELAY=2  # API Rate Limit 방지 (초)
 
 # 인자 파싱
-while [[ $# -gt 1 ]]; do
-    case $2 in
+shift || true
+while [[ $# -gt 0 ]]; do
+    case $1 in
         --epic)
-            EPIC_FILTER="$3"
+            EPIC_FILTER="$2"
             shift 2
             ;;
         --priority)
-            PRIORITY_FILTER="$3"
+            PRIORITY_FILTER="$2"
             shift 2
             ;;
         --dry-run)
@@ -52,10 +53,23 @@ if [ ! -f "$CSV_FILE" ]; then
     exit 1
 fi
 
-# 매핑 파일 초기화
+# 매핑 파일 초기화 (key=value 형식)
 if [ ! -f "$MAPPING_FILE" ]; then
-    echo "{}" > "$MAPPING_FILE"
+    echo "# Task ID to Issue Number Mapping" > "$MAPPING_FILE"
 fi
+
+# 매핑 파일에서 Issue 번호 조회
+get_issue_number() {
+    local task_id="$1"
+    grep "^${task_id}=" "$MAPPING_FILE" 2>/dev/null | cut -d'=' -f2 || echo ""
+}
+
+# 매핑 파일에 저장
+save_mapping() {
+    local task_id="$1"
+    local issue_num="$2"
+    echo "${task_id}=${issue_num}" >> "$MAPPING_FILE"
+}
 
 # Story Points → Size Label 매핑
 get_size_label() {
@@ -129,11 +143,11 @@ resolve_dependencies() {
         dep=$(echo "$dep" | xargs)  # trim
         if [ -n "$dep" ]; then
             # 매핑 파일에서 Issue 번호 조회
-            issue_num=$(jq -r --arg key "$dep" '.[$key] // empty' "$MAPPING_FILE")
+            issue_num=$(get_issue_number "$dep")
             if [ -n "$issue_num" ]; then
-                result+="- [ ] #$issue_num ($dep)\n"
+                result+="- [ ] #$issue_num ($dep)"$'\n'
             else
-                result+="- [ ] $dep (미생성)\n"
+                result+="- [ ] $dep (미생성)"$'\n'
             fi
         fi
     done
@@ -141,14 +155,13 @@ resolve_dependencies() {
     if [ -z "$result" ]; then
         echo "- 없음"
     else
-        echo -e "$result"
+        echo "$result"
     fi
 }
 
 # Acceptance Criteria 생성
 generate_acceptance_criteria() {
     local type_label="$1"
-    local description="$2"
 
     case $type_label in
         "type:db")
@@ -273,6 +286,31 @@ get_epic_name() {
     esac
 }
 
+# Milestone 생성 확인/생성
+ensure_milestones() {
+    echo "Milestone 확인 중..."
+
+    # MVP (v0.1) Milestone
+    if ! gh milestone view "MVP (v0.1)" &>/dev/null; then
+        gh milestone create "MVP (v0.1)" --description "최소 기능 제품 - P0 우선순위" 2>/dev/null || true
+        echo "[OK] Created milestone: MVP (v0.1)"
+    fi
+
+    # v1.0 Milestone
+    if ! gh milestone view "v1.0" &>/dev/null; then
+        gh milestone create "v1.0" --description "첫 번째 정식 릴리즈 - P1 우선순위" 2>/dev/null || true
+        echo "[OK] Created milestone: v1.0"
+    fi
+
+    # v2.0 Milestone
+    if ! gh milestone view "v2.0" &>/dev/null; then
+        gh milestone create "v2.0" --description "확장 기능 - P2 우선순위" 2>/dev/null || true
+        echo "[OK] Created milestone: v2.0"
+    fi
+
+    echo ""
+}
+
 # Issue 생성 함수
 create_issue() {
     local task_id="$1"
@@ -288,7 +326,7 @@ create_issue() {
     local wireframes="${11}"
 
     # 이미 생성된 Issue 확인
-    existing=$(jq -r --arg key "$task_id" '.[$key] // empty' "$MAPPING_FILE")
+    existing=$(get_issue_number "$task_id")
     if [ -n "$existing" ]; then
         echo "[SKIP] Already exists: $task_id -> #$existing"
         return
@@ -326,7 +364,7 @@ create_issue() {
     local resolved_deps=$(resolve_dependencies "$deps")
 
     # Acceptance Criteria
-    local acceptance=$(generate_acceptance_criteria "$type_label" "$description")
+    local acceptance=$(generate_acceptance_criteria "$type_label")
 
     # Wireframe 섹션
     local wireframe_section=""
@@ -354,8 +392,7 @@ docs/wireframes/$wireframes
     fi
 
     # Issue Body 생성
-    local body=$(cat << BODY
-## Task 개요
+    local body="## Task 개요
 
 | 항목 | 값 |
 |------|-----|
@@ -381,9 +418,7 @@ $wireframe_section
 $acceptance
 
 ---
-> Generated from: docs/09-git-issues-tasks.csv
-BODY
-)
+> Generated from: docs/09-git-issues-tasks.csv"
 
     local issue_title="[$task_id] $title"
 
@@ -394,31 +429,31 @@ BODY
         echo ""
     else
         # Issue 생성
-        local issue_url
+        local issue_url=""
         if [ -n "$milestone" ]; then
             issue_url=$(gh issue create \
                 --title "$issue_title" \
                 --body "$body" \
                 --label "$issue_labels" \
-                --milestone "$milestone" 2>/dev/null || echo "")
+                --milestone "$milestone" 2>&1) || true
         else
             issue_url=$(gh issue create \
                 --title "$issue_title" \
                 --body "$body" \
-                --label "$issue_labels" 2>/dev/null || echo "")
+                --label "$issue_labels" 2>&1) || true
         fi
 
-        if [ -n "$issue_url" ]; then
+        if [[ "$issue_url" == *"github.com"* ]]; then
             # Issue 번호 추출
             local issue_num=$(echo "$issue_url" | grep -oE '[0-9]+$')
 
             # 매핑 저장
-            jq --arg key "$task_id" --arg val "$issue_num" '. + {($key): $val}' "$MAPPING_FILE" > "${MAPPING_FILE}.tmp"
-            mv "${MAPPING_FILE}.tmp" "$MAPPING_FILE"
+            save_mapping "$task_id" "$issue_num"
 
             echo "[OK] Created: $issue_title -> #$issue_num"
         else
             echo "[ERROR] Failed to create: $issue_title"
+            echo "  $issue_url"
         fi
 
         # Rate limit 방지
@@ -426,12 +461,44 @@ BODY
     fi
 }
 
+# Milestone 생성
+ensure_milestones
+
 # CSV 파싱 및 Issue 생성
 echo "=== Issue 생성 시작 ==="
 echo ""
 
-# 첫 줄(헤더) 건너뛰고 처리
-tail -n +2 "$CSV_FILE" | while IFS=',' read -r task_id epic story title labels description sp priority deps ref_docs wireframes; do
+# CSV 파일 처리 - 쉼표로 구분된 필드 파싱
+line_num=0
+while IFS= read -r line || [ -n "$line" ]; do
+    line_num=$((line_num + 1))
+
+    # 첫 줄(헤더) 건너뛰기
+    if [ $line_num -eq 1 ]; then
+        continue
+    fi
+
+    # CSV 파싱 (쉼표 구분, 따옴표 처리)
+    # Task ID,Epic,Story,Task Title,Labels,Description,Story Points,Priority,Dependencies,Reference Docs,Wireframe Files
+
+    # 간단한 CSV 파싱
+    task_id=$(echo "$line" | cut -d',' -f1 | tr -d '"')
+    epic=$(echo "$line" | cut -d',' -f2 | tr -d '"')
+    story=$(echo "$line" | cut -d',' -f3 | tr -d '"')
+    title=$(echo "$line" | cut -d',' -f4 | tr -d '"')
+    labels=$(echo "$line" | cut -d',' -f5 | tr -d '"')
+    description=$(echo "$line" | cut -d',' -f6 | tr -d '"')
+    sp=$(echo "$line" | cut -d',' -f7 | tr -d '"')
+    priority=$(echo "$line" | cut -d',' -f8 | tr -d '"')
+    deps=$(echo "$line" | cut -d',' -f9 | tr -d '"')
+    ref_docs=$(echo "$line" | cut -d',' -f10 | tr -d '"')
+    wireframes=$(echo "$line" | cut -d',' -f11 | tr -d '"')
+
+    # 빈 줄 건너뛰기
+    if [ -z "$task_id" ]; then
+        continue
+    fi
+
     # 필터 적용
     if [ -n "$EPIC_FILTER" ] && [ "$epic" != "$EPIC_FILTER" ]; then
         continue
@@ -441,16 +508,10 @@ tail -n +2 "$CSV_FILE" | while IFS=',' read -r task_id epic story title labels d
         continue
     fi
 
-    # 따옴표 제거
-    task_id=$(echo "$task_id" | tr -d '"')
-    title=$(echo "$title" | tr -d '"')
-    description=$(echo "$description" | tr -d '"')
-    labels=$(echo "$labels" | tr -d '"')
-    wireframes=$(echo "$wireframes" | tr -d '"')
-
     create_issue "$task_id" "$epic" "$story" "$title" "$labels" "$description" "$sp" "$priority" "$deps" "$ref_docs" "$wireframes"
-done
+done < "$CSV_FILE"
 
 echo ""
 echo "=== 완료 ==="
 echo "매핑 파일: $MAPPING_FILE"
+echo "생성된 Issue 수: $(grep -c '=' "$MAPPING_FILE" 2>/dev/null || echo 0)"

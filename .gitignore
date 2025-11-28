@@ -1,0 +1,18 @@
+# Backup folders
+apps/backend-nestjs-backup/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local

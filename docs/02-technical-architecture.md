@@ -1030,24 +1030,26 @@ is_correct = check_password('user_input', hashed_password)
 
 ### 11.2 백엔드
 
-#### 프레임워크
-- **Django + Django REST Framework** (Python) - 미네르바와 동일
-  - 빠른 개발
-  - Admin 패널 자동 생성
-  - ORM 강력
-  - 풍부한 패키지
-- **대안**: FastAPI (Python), NestJS (Node.js), Spring Boot (Java)
+#### 프레임워크 (EduForum 선택)
+- **Spring Boot 3.x** (Java 17) - 최종 선택
+  - 엔터프라이즈 검증된 안정성
+  - 높은 성능 및 확장성
+  - 강력한 타입 시스템
+  - Spring Security (보안)
+  - 한국 시장 채용 용이
+- **대안**: Django (Python), FastAPI (Python), NestJS (Node.js)
 
 #### 실시간 통신
-- **Django Channels** (WebSocket)
-  - ASGI 지원
-  - Channel Layers (Redis)
+- **Spring WebSocket + STOMP**
+  - SockJS 폴백 지원
+  - 메시지 브로커 (Redis/RabbitMQ)
 
 #### 백그라운드 작업
-- **Celery** + Redis/RabbitMQ
+- **Spring Batch** + **Spring Scheduler**
   - 녹화 처리
   - 이메일 발송
   - 리포트 생성
+- 대안: Quartz Scheduler
 
 ### 11.3 미디어 서버
 
@@ -1089,8 +1091,9 @@ is_correct = check_password('user_input', hashed_password)
 
 ### 11.8 인증/보안
 
-- **JWT**: djangorestframework-simplejwt
-- **OAuth**: django-allauth, Auth0
+- **JWT**: JJWT (Java JWT)
+- **보안 프레임워크**: Spring Security
+- **OAuth**: Spring Security OAuth2
 - **HTTPS**: Let's Encrypt (자동 갱신)
 
 ---
@@ -1112,12 +1115,12 @@ is_correct = check_password('user_input', hashed_password)
             ↓                                 ↓
 ┌───────────────────────┐         ┌───────────────────────┐
 │  APPLICATION SERVERS  │         │   MEDIA SERVERS       │
-│  (Django + Channels)  │         │  (Jitsi / Mediasoup)  │
+│  (Spring Boot)        │         │  (Jitsi / Mediasoup)  │
 │                       │         │                       │
 │  - REST API           │         │  - WebRTC SFU         │
-│  - WebSocket Handlers │         │  - STUN/TURN          │
+│  - WebSocket/STOMP    │         │  - STUN/TURN          │
 │  - Business Logic     │         │  - Recording          │
-│  - Celery Workers     │         │                       │
+│  - Spring Batch       │         │                       │
 └──────┬────────────────┘         └───────────────────────┘
        │                                     │
        ↓                                     ↓
