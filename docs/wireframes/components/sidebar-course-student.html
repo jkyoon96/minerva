@@ -1,0 +1,99 @@
+<!--
+  EduForum - Student Course Sidebar Component
+  학생용 코스 사이드바 컴포넌트
+
+  사용법:
+  1. 이 파일의 내용을 각 학생용 코스 페이지의 page-layout 내부에 붙여넣기
+  2. 현재 페이지에 해당하는 course-nav-link에 class="course-nav-link active" 추가
+  3. 필요시 코스 정보 수정
+
+  사이드바 메뉴:
+  - 개요: e2-course/crs-003-course-detail-student.html
+  - 과제: e2-course/asg-005-submit.html
+  - 퀴즈: e4-active/quiz-003-taking.html
+  - 동료 평가: e5-assessment/peer-001-evaluate-student.html
+  - 내 성적: e2-course/grd-003-student-view.html
+  - 학습 리포트: e6-analytics/report-001-personal.html
+
+  필수 CSS (페이지 <style>에 포함 필요):
+
+  .page-layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: var(--spacing-6);
+    align-items: start;
+  }
+  .course-nav {
+    position: sticky;
+    top: calc(57px + var(--spacing-6));
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-3);
+  }
+  .course-nav-title {
+    font-size: var(--text-xs);
+    font-weight: var(--font-semibold);
+    color: hsl(var(--muted-foreground));
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: var(--spacing-2) var(--spacing-3);
+    margin-bottom: var(--spacing-1);
+  }
+  .course-nav-link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: var(--text-sm);
+    color: hsl(var(--foreground));
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: all 0.15s ease;
+  }
+  .course-nav-link:hover {
+    background: hsl(var(--muted));
+  }
+  .course-nav-link.active {
+    background: hsl(var(--brand-primary) / 0.1);
+    color: hsl(var(--brand-primary));
+    font-weight: var(--font-medium);
+  }
+  .course-nav-link .icon-sm {
+    width: 16px;
+    height: 16px;
+    opacity: 0.7;
+  }
+  .course-nav-link.active .icon-sm {
+    opacity: 1;
+  }
+-->
+
+<!-- Student Course Sidebar -->
+<aside class="course-nav">
+  <div class="course-nav-title">코스 메뉴</div>
+  <a href="../e2-course/crs-003-course-detail-student.html" class="course-nav-link">
+    <i data-lucide="home" class="icon-sm"></i>
+    개요
+  </a>
+  <a href="../e2-course/asg-005-submit.html" class="course-nav-link">
+    <i data-lucide="file-text" class="icon-sm"></i>
+    과제
+  </a>
+  <a href="../e4-active/quiz-003-taking.html" class="course-nav-link">
+    <i data-lucide="file-question" class="icon-sm"></i>
+    퀴즈
+  </a>
+  <a href="../e5-assessment/peer-001-evaluate-student.html" class="course-nav-link">
+    <i data-lucide="users" class="icon-sm"></i>
+    동료 평가
+  </a>
+  <a href="../e2-course/grd-003-student-view.html" class="course-nav-link">
+    <i data-lucide="bar-chart-3" class="icon-sm"></i>
+    내 성적
+  </a>
+  <a href="../e6-analytics/report-001-personal.html" class="course-nav-link">
+    <i data-lucide="line-chart" class="icon-sm"></i>
+    학습 리포트
+  </a>
+</aside>

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRS-005: 코스 설정 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    /* Page Layout - Container with Internal Sidebar */
+    .page-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--spacing-6);
+      align-items: start;
+    }
+
+    /* Course Navigation (Internal Sidebar) */
+    .course-nav {
+      position: sticky;
+      top: calc(57px + var(--spacing-6));
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-3);
+    }
+    .course-nav-title {
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+      color: hsl(var(--muted-foreground));
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: var(--spacing-2) var(--spacing-3);
+      margin-bottom: var(--spacing-1);
+    }
+    .course-nav-link {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) var(--spacing-3);
+      font-size: var(--text-sm);
+      color: hsl(var(--foreground));
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      transition: all 0.15s ease;
+    }
+    .course-nav-link:hover {
+      background: hsl(var(--muted));
+    }
+    .course-nav-link.active {
+      background: hsl(var(--brand-primary) / 0.1);
+      color: hsl(var(--brand-primary));
+      font-weight: var(--font-medium);
+    }
+    .course-nav-link .icon-sm {
+      width: 16px;
+      height: 16px;
+      opacity: 0.7;
+    }
+    .course-nav-link.active .icon-sm {
+      opacity: 1;
+    }
+
+    /* Content Area */
+    .content-area {
+      min-width: 0;
+    }
+
+    .weight-slider {
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 8px;
+      background: hsl(var(--border));
+      border-radius: 9999px;
+      outline: none;
+      cursor: pointer;
+    }
+    .weight-slider::-webkit-slider-runnable-track {
+      height: 8px;
+      background: hsl(var(--border));
+      border-radius: 9999px;
+    }
+    .weight-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: hsl(var(--brand-primary));
+      border-radius: 50%;
+      cursor: pointer;
+      margin-top: -6px;
+    }
+    .weight-slider::-moz-range-track {
+      height: 8px;
+      background: hsl(var(--border));
+      border-radius: 9999px;
+    }
+    .weight-slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: hsl(var(--brand-primary));
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+    }
+    .upload-zone {
+      border: 2px dashed hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-8);
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .upload-zone:hover {
+      border-color: hsl(var(--brand-primary));
+      background-color: hsl(var(--brand-primary) / 0.05);
+    }
+    .danger-zone {
+      border: 1px solid hsl(var(--destructive) / 0.3);
+      background: hsl(var(--destructive) / 0.05);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-4);
+    }
+    .thumbnail-preview {
+      width: 120px;
+      height: 80px;
+      background: hsl(221 83% 95%);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="../index.html" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="dashboard.html" class="nav-link">대시보드</a>
+        <a href="crs-001-course-list.html" class="nav-link active">내 코스</a>
+        <a href="../e1-auth/profile-001-settings.html" class="nav-link">프로필</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-icon">
+          <i data-lucide="bell" class="icon-md"></i>
+        </button>
+        <div class="user-menu">
+          <button class="user-menu-trigger" onclick="toggleUserMenu()">
+            <div class="avatar avatar-sm">
+              <i data-lucide="user" class="icon-sm"></i>
+            </div>
+            <span class="text-sm font-medium">김교수</span>
+            <i data-lucide="chevron-down" class="icon-sm"></i>
+          </button>
+          <div class="user-menu-dropdown" id="userMenuDropdown">
+            <div class="user-menu-header">
+              <div class="user-menu-name">김교수</div>
+              <div class="user-menu-email">professor.kim@university.edu</div>
+            </div>
+            <a href="../e1-auth/profile-001-settings.html" class="user-menu-item">
+              <i data-lucide="user" class="icon-sm"></i>
+              프로필 설정
+            </a>
+            <a href="../e1-auth/profile-001-settings.html" class="user-menu-item">
+              <i data-lucide="settings" class="icon-sm"></i>
+              계정 설정
+            </a>
+            <div class="dropdown-divider"></div>
+            <button class="user-menu-item destructive" onclick="logout()">
+              <i data-lucide="log-out" class="icon-sm"></i>
+              로그아웃
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content with Container Layout -->
+  <main class="container py-6">
+    <div class="page-layout">
+      <!-- Course Navigation (Internal Sidebar) -->
+      <aside class="course-nav">
+        <div class="course-nav-title">코스 메뉴</div>
+        <a href="crs-003-course-detail.html" class="course-nav-link">
+          <i data-lucide="home" class="icon-sm"></i>
+          개요
+        </a>
+        <a href="ses-001-session-list.html" class="course-nav-link">
+          <i data-lucide="video" class="icon-sm"></i>
+          세션
+        </a>
+        <a href="crs-004-students.html" class="course-nav-link">
+          <i data-lucide="users" class="icon-sm"></i>
+          수강생
+        </a>
+        <a href="cnt-001-content-library.html" class="course-nav-link">
+          <i data-lucide="folder" class="icon-sm"></i>
+          콘텐츠
+        </a>
+        <a href="asg-001-assignment-list.html" class="course-nav-link">
+          <i data-lucide="file-text" class="icon-sm"></i>
+          과제
+        </a>
+        <a href="grd-001-grade-dashboard.html" class="course-nav-link">
+          <i data-lucide="bar-chart-3" class="icon-sm"></i>
+          성적
+        </a>
+        <a href="../e6-analytics/report-002-course.html" class="course-nav-link">
+          <i data-lucide="trending-up" class="icon-sm"></i>
+          분석
+        </a>
+        <a href="crs-005-course-settings.html" class="course-nav-link active">
+          <i data-lucide="settings" class="icon-sm"></i>
+          설정
+        </a>
+      </aside>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Breadcrumb -->
+        <div class="flex items-center gap-2 text-sm text-muted mb-4">
+          <a href="crs-001-course-list.html">내 코스</a>
+          <i data-lucide="chevron-right" class="icon-xs"></i>
+          <a href="crs-003-course-detail.html">경영학개론</a>
+          <i data-lucide="chevron-right" class="icon-xs"></i>
+          <span class="font-medium" style="color: hsl(var(--foreground))">설정</span>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h1 class="card-title flex items-center gap-2">
+              <i data-lucide="settings" class="icon-lg" style="color: hsl(var(--brand-primary))"></i>
+              코스 설정
+            </h1>
+          </div>
+          <div class="card-content">
+            <form>
+              <!-- 기본 정보 -->
+              <h2 class="font-semibold mb-4">기본 정보</h2>
+              <div class="separator mb-4"></div>
+
+              <div class="form-group mb-4">
+                <label class="form-label form-label-required">코스명</label>
+                <input type="text" class="input" value="경영학개론">
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="form-group">
+                  <label class="form-label form-label-required">코스 코드</label>
+                  <input type="text" class="input" value="BUSS101" disabled style="background: hsl(var(--muted)); cursor: not-allowed;">
+                  <p class="text-xs text-muted mt-1">코스 코드는 변경할 수 없습니다</p>
+                </div>
+                <div class="form-group">
+                  <label class="form-label form-label-required">학기</label>
+                  <select class="select">
+                    <option selected>2024년 2학기</option>
+                    <option>2024년 1학기</option>
+                    <option>2023년 2학기</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group mb-6">
+                <label class="form-label">코스 설명</label>
+                <textarea class="input" rows="3">경영학의 기초 개념과 이론을 학습합니다. 마케팅, 재무, 인사, 운영관리 등 경영의 주요 분야를 소개합니다.</textarea>
+              </div>
+
+              <!-- 일정 설정 -->
+              <h2 class="font-semibold mb-4">일정 설정</h2>
+              <div class="separator mb-4"></div>
+
+              <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="form-group">
+                  <label class="form-label form-label-required">시작일</label>
+                  <div class="input-group">
+                    <input type="date" class="input" value="2024-09-02">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label form-label-required">종료일</label>
+                  <div class="input-group">
+                    <input type="date" class="input" value="2024-12-20">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group mb-6">
+                <label class="form-label">정규 수업 시간</label>
+                <div class="flex flex-col gap-2">
+                  <div class="flex items-center gap-3">
+                    <select class="select" style="width: 120px;">
+                      <option selected>화요일</option>
+                      <option>월요일</option>
+                      <option>수요일</option>
+                      <option>목요일</option>
+                      <option>금요일</option>
+                    </select>
+                    <input type="time" class="input" style="width: 120px;" value="10:00">
+                    <span class="text-muted">~</span>
+                    <input type="time" class="input" style="width: 120px;" value="11:30">
+                    <button type="button" class="btn btn-ghost btn-icon btn-sm">
+                      <i data-lucide="x" class="icon-sm"></i>
+                    </button>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-outline btn-sm mt-2">
+                  <i data-lucide="plus" class="icon-sm"></i>
+                  시간 추가
+                </button>
+              </div>
+
+              <!-- 수강생 설정 -->
+              <h2 class="font-semibold mb-4">수강생 설정</h2>
+              <div class="separator mb-4"></div>
+
+              <div class="form-group mb-4">
+                <label class="form-label">최대 수강 인원</label>
+                <div class="flex items-center gap-2">
+                  <input type="number" class="input" style="width: 100px;" value="50">
+                  <span class="text-sm text-muted">명 (빈 칸: 제한 없음)</span>
+                </div>
+              </div>
+
+              <div class="form-group mb-4">
+                <label class="form-label">등록 방식</label>
+                <div class="flex flex-col gap-2">
+                  <label class="radio-wrapper">
+                    <input type="radio" name="enroll" class="radio" checked>
+                    <span class="radio-label">초대 코드로 등록</span>
+                  </label>
+                  <label class="radio-wrapper">
+                    <input type="radio" name="enroll" class="radio">
+                    <span class="radio-label">승인 후 등록 (수동 승인)</span>
+                  </label>
+                  <label class="radio-wrapper">
+                    <input type="radio" name="enroll" class="radio">
+                    <span class="radio-label">자유 등록 (누구나 등록 가능)</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group mb-6">
+                <label class="form-label">초대 코드</label>
+                <div class="flex items-center gap-2">
+                  <input type="text" class="input" value="ABC-123-XYZ" readonly style="width: 180px; font-family: monospace; background: hsl(var(--muted));">
+                  <button type="button" class="btn btn-outline btn-sm">
+                    <i data-lucide="copy" class="icon-sm"></i>
+                    복사
+                  </button>
+                  <button type="button" class="btn btn-outline btn-sm">
+                    <i data-lucide="refresh-cw" class="icon-sm"></i>
+                    재생성
+                  </button>
+                </div>
+                <p class="text-xs text-muted mt-1">학생들에게 이 코드를 공유하세요</p>
+              </div>
+
+              <!-- 평가 기준 -->
+              <h2 class="font-semibold mb-4">평가 기준</h2>
+              <div class="separator mb-4"></div>
+
+              <div class="table-wrapper mb-6">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>항목</th>
+                      <th style="width: 80px;">비중</th>
+                      <th>조절</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div class="flex items-center gap-2">
+                          <i data-lucide="bar-chart-2" class="icon-sm text-muted"></i>
+                          참여도
+                        </div>
+                      </td>
+                      <td><strong>30%</strong></td>
+                      <td><input type="range" class="weight-slider" value="30" min="0" max="100"></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="flex items-center gap-2">
+                          <i data-lucide="file-question" class="icon-sm text-muted"></i>
+                          퀴즈
+                        </div>
+                      </td>
+                      <td><strong>30%</strong></td>
+                      <td><input type="range" class="weight-slider" value="30" min="0" max="100"></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="flex items-center gap-2">
+                          <i data-lucide="folder" class="icon-sm text-muted"></i>
+                          과제
+                        </div>
+                      </td>
+                      <td><strong>40%</strong></td>
+                      <td><input type="range" class="weight-slider" value="40" min="0" max="100"></td>
+                    </tr>
+                    <tr>
+                      <td colspan="2"><strong>합계</strong></td>
+                      <td><strong>100%</strong></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- 조교 관리 -->
+              <h2 class="font-semibold mb-4">조교 관리</h2>
+              <div class="separator mb-4"></div>
+
+              <div class="mb-4">
+                <div class="flex items-center justify-between p-3 border rounded-md mb-2" style="border-color: hsl(var(--border));">
+                  <div class="flex items-center gap-3">
+                    <div class="avatar avatar-sm">
+                      <span class="avatar-fallback">박</span>
+                    </div>
+                    <div>
+                      <div class="font-medium">박조교</div>
+                      <div class="text-sm text-muted">ta@university.edu</div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="badge badge-default">조교</span>
+                    <button type="button" class="btn btn-ghost btn-icon btn-sm">
+                      <i data-lucide="x" class="icon-sm"></i>
+                    </button>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-outline btn-sm">
+                  <i data-lucide="plus" class="icon-sm"></i>
+                  조교 추가
+                </button>
+              </div>
+
+              <!-- 코스 썸네일 -->
+              <h2 class="font-semibold mb-4 mt-6">코스 썸네일</h2>
+              <div class="separator mb-4"></div>
+
+              <div class="flex items-start gap-4 mb-6">
+                <div class="thumbnail-preview">
+                  <span>📘</span>
+                </div>
+                <div>
+                  <div class="upload-zone" style="padding: var(--spacing-4);">
+                    <i data-lucide="upload" class="icon-lg text-muted mb-1"></i>
+                    <p class="text-sm text-muted">파일을 드래그하거나 클릭</p>
+                    <p class="text-xs text-muted">PNG, JPG, GIF (최대 5MB)</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 위험 영역 -->
+              <h2 class="font-semibold mb-4" style="color: hsl(var(--destructive));">
+                <i data-lucide="alert-triangle" class="icon-md" style="vertical-align: middle; margin-right: 4px;"></i>
+                위험 영역
+              </h2>
+              <div class="separator mb-4"></div>
+
+              <div class="danger-zone mb-6">
+                <div class="flex items-center justify-between mb-4 pb-4" style="border-bottom: 1px solid hsl(var(--destructive) / 0.2);">
+                  <div>
+                    <div class="font-medium">코스 보관</div>
+                    <div class="text-sm text-muted">코스를 보관 처리합니다. 언제든 복원할 수 있습니다.</div>
+                  </div>
+                  <button type="button" class="btn btn-outline">보관</button>
+                </div>
+
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="font-medium" style="color: hsl(var(--destructive));">코스 삭제</div>
+                    <div class="text-sm text-muted">코스와 모든 데이터가 영구 삭제됩니다. 이 작업은 되돌릴 수 없습니다.</div>
+                  </div>
+                  <button type="button" class="btn btn-destructive" onclick="document.getElementById('deleteModal').style.display='flex'">삭제</button>
+                </div>
+              </div>
+
+              <div class="separator mb-4"></div>
+
+              <!-- Actions -->
+              <div class="flex items-center justify-between">
+                <a href="crs-003-course-detail.html" class="btn btn-secondary">취소</a>
+                <button type="submit" class="btn btn-primary">
+                  <i data-lucide="save" class="icon-sm"></i>
+                  변경사항 저장
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal-overlay" id="deleteModal" style="display: none;">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" style="color: hsl(var(--destructive));">코스 삭제</h2>
+        <button class="modal-close" onclick="document.getElementById('deleteModal').style.display='none'">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="flex items-center gap-3 mb-4">
+          <div style="width: 48px; height: 48px; border-radius: var(--radius-full); background: hsl(var(--destructive) / 0.1); display: flex; align-items: center; justify-content: center;">
+            <i data-lucide="alert-triangle" class="icon-lg" style="color: hsl(var(--destructive))"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold">정말 삭제하시겠습니까?</h3>
+            <p class="text-sm text-muted">이 작업은 되돌릴 수 없습니다.</p>
+          </div>
+        </div>
+
+        <div class="bg-muted p-3 rounded-md mb-4" style="background: hsl(var(--destructive) / 0.05);">
+          <p class="text-sm">다음 데이터가 영구 삭제됩니다:</p>
+          <ul class="text-sm text-muted mt-2 ml-4" style="list-style: disc;">
+            <li>모든 세션 및 녹화본</li>
+            <li>모든 과제 및 제출물</li>
+            <li>모든 성적 데이터</li>
+            <li>수강생 등록 정보</li>
+          </ul>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">확인을 위해 코스명을 입력하세요</label>
+          <input type="text" class="input" placeholder="경영학개론">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="document.getElementById('deleteModal').style.display='none'">취소</button>
+        <button class="btn btn-destructive">
+          <i data-lucide="trash-2" class="icon-sm"></i>
+          영구 삭제
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // 사용자 메뉴 토글
+    function toggleUserMenu() {
+      const dropdown = document.getElementById('userMenuDropdown');
+      dropdown.classList.toggle('show');
+    }
+
+    // 외부 클릭 시 메뉴 닫기
+    document.addEventListener('click', function(event) {
+      const userMenu = document.querySelector('.user-menu');
+      const dropdown = document.getElementById('userMenuDropdown');
+      if (userMenu && !userMenu.contains(event.target)) {
+        dropdown.classList.remove('show');
+      }
+    });
+
+    // 로그아웃
+    function logout() {
+      window.location.href = '../e1-auth/auth-004-login.html';
+    }
+  </script>
+</body>
+</html>

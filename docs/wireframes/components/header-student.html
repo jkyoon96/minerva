@@ -1,0 +1,104 @@
+<!--
+  EduForum - Student Header Component
+  학생용 공통 헤더 컴포넌트
+
+  사용법:
+  1. 이 파일의 내용을 복사하여 각 학생용 페이지의 <body> 시작 부분에 붙여넣기
+  2. 현재 페이지에 해당하는 nav-link에 class="nav-link active" 추가
+  3. 사용자 정보(이름, 이메일) 수정
+
+  네비게이션 메뉴:
+  - 대시보드: e2-course/dashboard-student.html
+  - 내 코스: e2-course/crs-001-course-list-student.html
+  - 프로필: e1-auth/profile-001-settings-student.html
+
+  참고: 학습 리포트는 코스별로 다르므로 코스 상세 페이지의 사이드바에서 접근합니다.
+-->
+
+<!-- Student Header -->
+<header class="header">
+  <nav class="navbar">
+    <!-- Brand Logo -->
+    <a href="../index.html" class="navbar-brand">
+      <i data-lucide="graduation-cap" class="icon-lg"></i>
+      EduForum
+    </a>
+
+    <!-- Main Navigation -->
+    <div class="navbar-nav">
+      <a href="../e2-course/dashboard-student.html" class="nav-link">대시보드</a>
+      <a href="../e2-course/crs-001-course-list-student.html" class="nav-link">내 코스</a>
+      <a href="../e1-auth/profile-001-settings-student.html" class="nav-link">프로필</a>
+    </div>
+
+    <!-- Actions & User Menu -->
+    <div class="navbar-actions">
+      <!-- Notifications -->
+      <button class="btn btn-ghost btn-icon" title="알림">
+        <i data-lucide="bell" class="icon-md"></i>
+      </button>
+
+      <!-- User Menu -->
+      <div class="user-menu">
+        <button class="user-menu-trigger" onclick="toggleUserMenu()">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">이영희</span>
+          <i data-lucide="chevron-down" class="icon-sm"></i>
+        </button>
+        <div class="user-menu-dropdown" id="userMenuDropdown">
+          <div class="user-menu-header">
+            <div class="user-menu-name">이영희</div>
+            <div class="user-menu-email">younghee.lee@university.edu</div>
+            <div class="user-menu-role">
+              <span class="badge badge-default" style="margin-top: var(--spacing-2);">학생</span>
+            </div>
+          </div>
+          <a href="../e1-auth/profile-001-settings-student.html" class="user-menu-item">
+            <i data-lucide="user" class="icon-sm"></i>
+            프로필 설정
+          </a>
+          <a href="../e1-auth/profile-001-settings-student.html" class="user-menu-item">
+            <i data-lucide="settings" class="icon-sm"></i>
+            계정 설정
+          </a>
+          <a href="#" class="user-menu-item">
+            <i data-lucide="help-circle" class="icon-sm"></i>
+            도움말
+          </a>
+          <div class="dropdown-divider"></div>
+          <button class="user-menu-item destructive" onclick="logout()">
+            <i data-lucide="log-out" class="icon-sm"></i>
+            로그아웃
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Header JavaScript -->
+<script>
+  // 사용자 메뉴 토글
+  function toggleUserMenu() {
+    const dropdown = document.getElementById('userMenuDropdown');
+    dropdown.classList.toggle('show');
+  }
+
+  // 외부 클릭 시 메뉴 닫기
+  document.addEventListener('click', function(event) {
+    const userMenu = document.querySelector('.user-menu');
+    const dropdown = document.getElementById('userMenuDropdown');
+    if (userMenu && !userMenu.contains(event.target)) {
+      dropdown.classList.remove('show');
+    }
+  });
+
+  // 로그아웃
+  function logout() {
+    if (confirm('로그아웃 하시겠습니까?')) {
+      window.location.href = '../e1-auth/auth-004-login.html';
+    }
+  }
+</script>

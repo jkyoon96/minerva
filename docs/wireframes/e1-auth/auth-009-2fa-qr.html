@@ -27,7 +27,7 @@
     <!-- Step 1: QR Code -->
     <div class="mb-8">
       <div class="flex items-center gap-2 mb-4">
-        <span class="flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium" style="background: hsl(var(--brand-primary)); color: white;">1</span>
+        <span style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; min-width: 24px; border-radius: 50%; background: hsl(var(--brand-primary)); color: white; font-size: 12px; font-weight: 500;">1</span>
         <h2 class="font-semibold">QR 코드 스캔</h2>
       </div>
 
@@ -102,7 +102,7 @@
     <!-- Step 2: Enter Code -->
     <div>
       <div class="flex items-center gap-2 mb-4">
-        <span class="flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium" style="background: hsl(var(--brand-primary)); color: white;">2</span>
+        <span style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; min-width: 24px; border-radius: 50%; background: hsl(var(--brand-primary)); color: white; font-size: 12px; font-weight: 500;">2</span>
         <h2 class="font-semibold">인증 코드 입력</h2>
       </div>
 
@@ -118,7 +118,7 @@
         <input type="text" class="otp-input" maxlength="1" value="6">
       </div>
 
-      <button class="btn btn-primary w-full btn-lg">
+      <button class="btn btn-primary w-full btn-lg" onclick="window.location.href='auth-010-2fa-backup.html'">
         확인
       </button>
     </div>

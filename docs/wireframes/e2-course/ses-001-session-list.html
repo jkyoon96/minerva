@@ -9,10 +9,66 @@
   <link rel="stylesheet" href="../css/components.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <style>
-    .main-content {
-      margin-left: 280px;
-      padding: var(--spacing-6);
+    /* Page Layout - Container with Internal Sidebar */
+    .page-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--spacing-6);
+      align-items: start;
     }
+
+    /* Course Navigation (Internal Sidebar) */
+    .course-nav {
+      position: sticky;
+      top: calc(57px + var(--spacing-6));
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-3);
+    }
+    .course-nav-title {
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+      color: hsl(var(--muted-foreground));
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: var(--spacing-2) var(--spacing-3);
+      margin-bottom: var(--spacing-1);
+    }
+    .course-nav-link {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) var(--spacing-3);
+      font-size: var(--text-sm);
+      color: hsl(var(--foreground));
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      transition: all 0.15s ease;
+    }
+    .course-nav-link:hover {
+      background: hsl(var(--muted));
+    }
+    .course-nav-link.active {
+      background: hsl(var(--brand-primary) / 0.1);
+      color: hsl(var(--brand-primary));
+      font-weight: var(--font-medium);
+    }
+    .course-nav-link .icon-sm {
+      width: 16px;
+      height: 16px;
+      opacity: 0.7;
+    }
+    .course-nav-link.active .icon-sm {
+      opacity: 1;
+    }
+
+    /* Content Area */
+    .content-area {
+      min-width: 0;
+    }
+
+    /* Calendar Styles */
     .calendar {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
@@ -64,213 +120,255 @@
   <!-- Header -->
   <header class="header">
     <nav class="navbar">
-      <a href="#" class="navbar-brand">
+      <a href="../index.html" class="navbar-brand">
         <i data-lucide="graduation-cap" class="icon-lg"></i>
         EduForum
       </a>
       <div class="navbar-nav">
-        <a href="#" class="nav-link">대시보드</a>
+        <a href="dashboard.html" class="nav-link">대시보드</a>
         <a href="crs-001-course-list.html" class="nav-link active">내 코스</a>
-        <a href="#" class="nav-link">분석</a>
-        <a href="#" class="nav-link">설정</a>
+        <a href="../e1-auth/profile-001-settings.html" class="nav-link">프로필</a>
       </div>
       <div class="navbar-actions">
         <button class="btn btn-ghost btn-icon">
           <i data-lucide="bell" class="icon-md"></i>
         </button>
-        <div class="flex items-center gap-2">
-          <div class="avatar avatar-sm">
-            <i data-lucide="user" class="icon-sm"></i>
+        <div class="user-menu">
+          <button class="user-menu-trigger" onclick="toggleUserMenu()">
+            <div class="avatar avatar-sm">
+              <i data-lucide="user" class="icon-sm"></i>
+            </div>
+            <span class="text-sm font-medium">김교수</span>
+            <i data-lucide="chevron-down" class="icon-sm"></i>
+          </button>
+          <div class="user-menu-dropdown" id="userMenuDropdown">
+            <div class="user-menu-header">
+              <div class="user-menu-name">김교수</div>
+              <div class="user-menu-email">professor.kim@university.edu</div>
+            </div>
+            <a href="../e1-auth/profile-001-settings.html" class="user-menu-item">
+              <i data-lucide="user" class="icon-sm"></i>
+              프로필 설정
+            </a>
+            <a href="../e1-auth/profile-001-settings.html" class="user-menu-item">
+              <i data-lucide="settings" class="icon-sm"></i>
+              계정 설정
+            </a>
+            <div class="dropdown-divider"></div>
+            <button class="user-menu-item destructive" onclick="logout()">
+              <i data-lucide="log-out" class="icon-sm"></i>
+              로그아웃
+            </button>
           </div>
-          <span class="text-sm font-medium">김교수</span>
         </div>
       </div>
     </nav>
   </header>
 
-  <!-- Sidebar -->
-  <aside class="sidebar" style="top: 57px; height: calc(100vh - 57px);">
-    <div class="sidebar-nav">
-      <div class="sidebar-section">
-        <div class="sidebar-section-title">코스 메뉴</div>
-        <a href="crs-003-course-detail.html" class="sidebar-link">
-          <i data-lucide="home" class="icon-md"></i>
+  <!-- Main Content with Container Layout -->
+  <main class="container py-6">
+    <div class="page-layout">
+      <!-- Course Navigation (Internal Sidebar) -->
+      <aside class="course-nav">
+        <div class="course-nav-title">코스 메뉴</div>
+        <a href="crs-003-course-detail.html" class="course-nav-link">
+          <i data-lucide="home" class="icon-sm"></i>
           개요
         </a>
-        <a href="#" class="sidebar-link active">
-          <i data-lucide="video" class="icon-md"></i>
+        <a href="ses-001-session-list.html" class="course-nav-link active">
+          <i data-lucide="video" class="icon-sm"></i>
           세션
         </a>
-        <a href="crs-004-students.html" class="sidebar-link">
-          <i data-lucide="users" class="icon-md"></i>
+        <a href="crs-004-students.html" class="course-nav-link">
+          <i data-lucide="users" class="icon-sm"></i>
           수강생
         </a>
-        <a href="cnt-001-content-library.html" class="sidebar-link">
-          <i data-lucide="folder" class="icon-md"></i>
+        <a href="cnt-001-content-library.html" class="course-nav-link">
+          <i data-lucide="folder" class="icon-sm"></i>
           콘텐츠
         </a>
-        <a href="asg-001-assignment-list.html" class="sidebar-link">
-          <i data-lucide="file-text" class="icon-md"></i>
+        <a href="asg-001-assignment-list.html" class="course-nav-link">
+          <i data-lucide="file-text" class="icon-sm"></i>
           과제
         </a>
-        <a href="grd-001-grade-dashboard.html" class="sidebar-link">
-          <i data-lucide="bar-chart-3" class="icon-md"></i>
+        <a href="grd-001-grade-dashboard.html" class="course-nav-link">
+          <i data-lucide="bar-chart-3" class="icon-sm"></i>
           성적
         </a>
-        <a href="#" class="sidebar-link">
-          <i data-lucide="trending-up" class="icon-md"></i>
+        <a href="../e6-analytics/report-002-course.html" class="course-nav-link">
+          <i data-lucide="trending-up" class="icon-sm"></i>
           분석
         </a>
-        <a href="#" class="sidebar-link">
-          <i data-lucide="settings" class="icon-md"></i>
+        <a href="crs-005-course-settings.html" class="course-nav-link">
+          <i data-lucide="settings" class="icon-sm"></i>
           설정
         </a>
-      </div>
-    </div>
-  </aside>
+      </aside>
 
-  <!-- Main Content -->
-  <main class="main-content">
-    <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-muted mb-4">
-      <a href="crs-003-course-detail.html">경영학개론</a>
-      <i data-lucide="chevron-right" class="icon-xs"></i>
-      <span class="font-medium" style="color: hsl(var(--foreground))">세션</span>
-    </div>
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Breadcrumb -->
+        <div class="flex items-center gap-2 text-sm text-muted mb-4">
+          <a href="crs-003-course-detail.html">경영학개론</a>
+          <i data-lucide="chevron-right" class="icon-xs"></i>
+          <span class="font-medium" style="color: hsl(var(--foreground))">세션</span>
+        </div>
 
-    <h1 class="text-2xl font-bold mb-6">세션 관리</h1>
+        <h1 class="text-2xl font-bold mb-6">세션 관리</h1>
 
-    <!-- View Toggle and Actions -->
-    <div class="card mb-6">
-      <div class="card-content">
-        <div class="flex items-center justify-between">
-          <div class="tabs">
-            <button class="tab">
-              <i data-lucide="list" class="icon-sm"></i>
-              목록
-            </button>
-            <button class="tab tab-active">
-              <i data-lucide="calendar" class="icon-sm"></i>
-              캘린더
-            </button>
-          </div>
-          <div class="flex gap-2">
-            <a href="ses-002-create-session.html" class="btn btn-primary">
-              <i data-lucide="plus" class="icon-sm"></i>
-              새 세션
-            </a>
-            <button class="btn btn-outline">
-              <i data-lucide="download" class="icon-sm"></i>
-              iCal
-            </button>
+        <!-- View Toggle and Actions -->
+        <div class="card mb-6">
+          <div class="card-content">
+            <div class="flex items-center justify-between">
+              <div class="tabs-list">
+                <button class="tab-trigger">
+                  <i data-lucide="list" class="icon-sm"></i>
+                  목록
+                </button>
+                <button class="tab-trigger active">
+                  <i data-lucide="calendar" class="icon-sm"></i>
+                  캘린더
+                </button>
+              </div>
+              <div class="flex gap-2">
+                <a href="ses-002-create-session.html" class="btn btn-primary">
+                  <i data-lucide="plus" class="icon-sm"></i>
+                  새 세션
+                </a>
+                <button class="btn btn-outline">
+                  <i data-lucide="download" class="icon-sm"></i>
+                  iCal
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Calendar Navigation -->
-    <div class="flex items-center justify-center gap-4 mb-6">
-      <button class="btn btn-ghost btn-icon">
-        <i data-lucide="chevron-left" class="icon-md"></i>
-      </button>
-      <h2 class="text-xl font-semibold">2024년 11월</h2>
-      <button class="btn btn-ghost btn-icon">
-        <i data-lucide="chevron-right" class="icon-md"></i>
-      </button>
-    </div>
+        <!-- Calendar Navigation -->
+        <div class="flex items-center justify-center gap-4 mb-6">
+          <button class="btn btn-ghost btn-icon">
+            <i data-lucide="chevron-left" class="icon-md"></i>
+          </button>
+          <h2 class="text-xl font-semibold">2024년 11월</h2>
+          <button class="btn btn-ghost btn-icon">
+            <i data-lucide="chevron-right" class="icon-md"></i>
+          </button>
+        </div>
 
-    <!-- Calendar -->
-    <div class="calendar mb-6">
-      <!-- Header -->
-      <div class="calendar-header">일</div>
-      <div class="calendar-header">월</div>
-      <div class="calendar-header">화</div>
-      <div class="calendar-header">수</div>
-      <div class="calendar-header">목</div>
-      <div class="calendar-header">금</div>
-      <div class="calendar-header">토</div>
+        <!-- Calendar -->
+        <div class="calendar mb-6">
+          <!-- Header -->
+          <div class="calendar-header">일</div>
+          <div class="calendar-header">월</div>
+          <div class="calendar-header">화</div>
+          <div class="calendar-header">수</div>
+          <div class="calendar-header">목</div>
+          <div class="calendar-header">금</div>
+          <div class="calendar-header">토</div>
 
-      <!-- Week 1 -->
-      <div class="calendar-day other-month">27</div>
-      <div class="calendar-day other-month">28</div>
-      <div class="calendar-day other-month">29</div>
-      <div class="calendar-day other-month">30</div>
-      <div class="calendar-day other-month">31</div>
-      <div class="calendar-day">1</div>
-      <div class="calendar-day">2</div>
+          <!-- Week 1 -->
+          <div class="calendar-day other-month">27</div>
+          <div class="calendar-day other-month">28</div>
+          <div class="calendar-day other-month">29</div>
+          <div class="calendar-day other-month">30</div>
+          <div class="calendar-day other-month">31</div>
+          <div class="calendar-day">1</div>
+          <div class="calendar-day">2</div>
 
-      <!-- Week 2 -->
-      <div class="calendar-day">3</div>
-      <div class="calendar-day">4</div>
-      <div class="calendar-day">
-        5
-        <div class="calendar-event completed">#10</div>
-      </div>
-      <div class="calendar-day">6</div>
-      <div class="calendar-day">7</div>
-      <div class="calendar-day">8</div>
-      <div class="calendar-day">9</div>
+          <!-- Week 2 -->
+          <div class="calendar-day">3</div>
+          <div class="calendar-day">4</div>
+          <div class="calendar-day">
+            5
+            <a href="../e3-live/live-016-recording-playback.html" class="calendar-event completed">#10</a>
+          </div>
+          <div class="calendar-day">6</div>
+          <div class="calendar-day">7</div>
+          <div class="calendar-day">8</div>
+          <div class="calendar-day">9</div>
 
-      <!-- Week 3 -->
-      <div class="calendar-day">10</div>
-      <div class="calendar-day">11</div>
-      <div class="calendar-day">
-        12
-        <div class="calendar-event completed">#11</div>
-      </div>
-      <div class="calendar-day">13</div>
-      <div class="calendar-day">14</div>
-      <div class="calendar-day">15</div>
-      <div class="calendar-day">16</div>
+          <!-- Week 3 -->
+          <div class="calendar-day">10</div>
+          <div class="calendar-day">11</div>
+          <div class="calendar-day">
+            12
+            <a href="../e3-live/live-016-recording-playback.html" class="calendar-event completed">#11</a>
+          </div>
+          <div class="calendar-day">13</div>
+          <div class="calendar-day">14</div>
+          <div class="calendar-day">15</div>
+          <div class="calendar-day">16</div>
 
-      <!-- Week 4 -->
-      <div class="calendar-day">17</div>
-      <div class="calendar-day">18</div>
-      <div class="calendar-day">
-        19
-        <div class="calendar-event live">#12 LIVE</div>
-      </div>
-      <div class="calendar-day">20</div>
-      <div class="calendar-day">21</div>
-      <div class="calendar-day">22</div>
-      <div class="calendar-day">23</div>
+          <!-- Week 4 -->
+          <div class="calendar-day">17</div>
+          <div class="calendar-day">18</div>
+          <div class="calendar-day">
+            19
+            <a href="../e3-live/live-005-professor-view.html" class="calendar-event live">#12 LIVE</a>
+          </div>
+          <div class="calendar-day">20</div>
+          <div class="calendar-day">21</div>
+          <div class="calendar-day">22</div>
+          <div class="calendar-day">23</div>
 
-      <!-- Week 5 -->
-      <div class="calendar-day">24</div>
-      <div class="calendar-day">25</div>
-      <div class="calendar-day">
-        26
-        <div class="calendar-event scheduled">#13 예정</div>
-      </div>
-      <div class="calendar-day">27</div>
-      <div class="calendar-day">28</div>
-      <div class="calendar-day">29</div>
-      <div class="calendar-day">30</div>
-    </div>
+          <!-- Week 5 -->
+          <div class="calendar-day">24</div>
+          <div class="calendar-day">25</div>
+          <div class="calendar-day">
+            26
+            <a href="../e3-live/live-003-waiting-room.html" class="calendar-event scheduled">#13 예정</a>
+          </div>
+          <div class="calendar-day">27</div>
+          <div class="calendar-day">28</div>
+          <div class="calendar-day">29</div>
+          <div class="calendar-day">30</div>
+        </div>
 
-    <!-- Legend -->
-    <div class="flex items-center justify-center gap-6 text-sm">
-      <div class="flex items-center gap-2">
-        <span class="w-3 h-3 rounded-full" style="background: hsl(var(--destructive))"></span>
-        LIVE
-      </div>
-      <div class="flex items-center gap-2">
-        <span class="w-3 h-3 rounded-full" style="background: hsl(var(--brand-primary))"></span>
-        완료
-      </div>
-      <div class="flex items-center gap-2">
-        <span class="w-3 h-3 rounded-full" style="background: hsl(var(--muted))"></span>
-        예정
-      </div>
-      <div class="flex items-center gap-2">
-        <span class="w-3 h-3 rounded-full" style="background: hsl(var(--foreground))"></span>
-        취소
+        <!-- Legend -->
+        <div class="flex items-center justify-center gap-6 text-sm">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full" style="background: hsl(var(--destructive))"></span>
+            LIVE
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full" style="background: hsl(var(--brand-primary))"></span>
+            완료
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full" style="background: hsl(var(--muted))"></span>
+            예정
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full" style="background: hsl(var(--foreground))"></span>
+            취소
+          </div>
+        </div>
       </div>
     </div>
   </main>
 
   <script>
     lucide.createIcons();
+
+    // 사용자 메뉴 토글
+    function toggleUserMenu() {
+      const dropdown = document.getElementById('userMenuDropdown');
+      dropdown.classList.toggle('show');
+    }
+
+    // 외부 클릭 시 메뉴 닫기
+    document.addEventListener('click', function(event) {
+      const userMenu = document.querySelector('.user-menu');
+      const dropdown = document.getElementById('userMenuDropdown');
+      if (userMenu && !userMenu.contains(event.target)) {
+        dropdown.classList.remove('show');
+      }
+    });
+
+    // 로그아웃
+    function logout() {
+      window.location.href = '../e1-auth/auth-004-login.html';
+    }
   </script>
 </body>
 </html>

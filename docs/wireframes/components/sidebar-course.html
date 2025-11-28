@@ -1,0 +1,52 @@
+<!--
+  코스 사이드바 컴포넌트
+  사용: E2, E4, E5, E6 코스 관련 페이지
+
+  변수:
+  - {COURSE_NAME}: 코스명 (예: 경영학개론)
+  - {ACTIVE_MENU}: 현재 활성화된 메뉴
+    (overview, sessions, students, content, assignments, grades, analytics, quiz, settings)
+-->
+<aside class="sidebar" style="top: 57px; height: calc(100vh - 57px);">
+  <div class="sidebar-nav">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">코스 메뉴</div>
+      <a href="../e2-course/crs-003-course-detail.html" class="sidebar-link" data-menu="overview">
+        <i data-lucide="home" class="icon-md"></i>
+        개요
+      </a>
+      <a href="../e2-course/ses-001-session-list.html" class="sidebar-link" data-menu="sessions">
+        <i data-lucide="video" class="icon-md"></i>
+        세션
+      </a>
+      <a href="../e2-course/crs-004-students.html" class="sidebar-link" data-menu="students">
+        <i data-lucide="users" class="icon-md"></i>
+        수강생
+      </a>
+      <a href="../e2-course/cnt-001-content-library.html" class="sidebar-link" data-menu="content">
+        <i data-lucide="folder" class="icon-md"></i>
+        콘텐츠
+      </a>
+      <a href="../e2-course/asg-001-assignment-list.html" class="sidebar-link" data-menu="assignments">
+        <i data-lucide="file-text" class="icon-md"></i>
+        과제
+      </a>
+      <a href="../e2-course/grd-001-grade-dashboard.html" class="sidebar-link" data-menu="grades">
+        <i data-lucide="bar-chart-3" class="icon-md"></i>
+        성적
+      </a>
+      <a href="../e6-analytics/analytics-list.html" class="sidebar-link" data-menu="analytics">
+        <i data-lucide="trending-up" class="icon-md"></i>
+        분석
+      </a>
+      <a href="../e4-active/quiz-001-question-bank.html" class="sidebar-link" data-menu="quiz">
+        <i data-lucide="help-circle" class="icon-md"></i>
+        문제은행
+      </a>
+      <a href="#" class="sidebar-link" data-menu="settings">
+        <i data-lucide="settings" class="icon-md"></i>
+        설정
+      </a>
+    </div>
+  </div>
+</aside>

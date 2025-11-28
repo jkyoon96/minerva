@@ -15,19 +15,41 @@
     }
     .weight-slider {
       width: 100%;
+      -webkit-appearance: none;
       appearance: none;
       height: 8px;
-      background: hsl(var(--muted));
-      border-radius: var(--radius-full);
+      background: hsl(var(--border));
+      border-radius: 9999px;
       outline: none;
+      cursor: pointer;
+    }
+    .weight-slider::-webkit-slider-runnable-track {
+      height: 8px;
+      background: hsl(var(--border));
+      border-radius: 9999px;
     }
     .weight-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
       appearance: none;
       width: 20px;
       height: 20px;
       background: hsl(var(--brand-primary));
       border-radius: 50%;
       cursor: pointer;
+      margin-top: -6px;
+    }
+    .weight-slider::-moz-range-track {
+      height: 8px;
+      background: hsl(var(--border));
+      border-radius: 9999px;
+    }
+    .weight-slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: hsl(var(--brand-primary));
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
     }
     .upload-zone {
       border: 2px dashed hsl(var(--border));
@@ -47,22 +69,46 @@
   <!-- Header -->
   <header class="header">
     <nav class="navbar">
-      <a href="#" class="navbar-brand">
+      <a href="../index.html" class="navbar-brand">
         <i data-lucide="graduation-cap" class="icon-lg"></i>
         EduForum
       </a>
       <div class="navbar-nav">
-        <a href="#" class="nav-link">대시보드</a>
+        <a href="dashboard.html" class="nav-link">대시보드</a>
         <a href="crs-001-course-list.html" class="nav-link active">내 코스</a>
-        <a href="#" class="nav-link">분석</a>
-        <a href="#" class="nav-link">설정</a>
+        <a href="../e1-auth/profile-001-settings.html" class="nav-link">프로필</a>
       </div>
       <div class="navbar-actions">
-        <div class="flex items-center gap-2">
-          <div class="avatar avatar-sm">
-            <i data-lucide="user" class="icon-sm"></i>
+        <button class="btn btn-ghost btn-icon">
+          <i data-lucide="bell" class="icon-md"></i>
+        </button>
+        <div class="user-menu">
+          <button class="user-menu-trigger" onclick="toggleUserMenu()">
+            <div class="avatar avatar-sm">
+              <i data-lucide="user" class="icon-sm"></i>
+            </div>
+            <span class="text-sm font-medium">김교수</span>
+            <i data-lucide="chevron-down" class="icon-sm"></i>
+          </button>
+          <div class="user-menu-dropdown" id="userMenuDropdown">
+            <div class="user-menu-header">
+              <div class="user-menu-name">김교수</div>
+              <div class="user-menu-email">professor.kim@university.edu</div>
+            </div>
+            <a href="../e1-auth/profile-001-settings.html" class="user-menu-item">
+              <i data-lucide="user" class="icon-sm"></i>
+              프로필 설정
+            </a>
+            <a href="../e1-auth/profile-001-settings.html" class="user-menu-item">
+              <i data-lucide="settings" class="icon-sm"></i>
+              계정 설정
+            </a>
+            <div class="dropdown-divider"></div>
+            <button class="user-menu-item destructive" onclick="logout()">
+              <i data-lucide="log-out" class="icon-sm"></i>
+              로그아웃
+            </button>
           </div>
-          <span class="text-sm font-medium">김교수</span>
         </div>
       </div>
     </nav>
@@ -72,13 +118,14 @@
   <aside class="sidebar" style="top: 57px; height: calc(100vh - 57px);">
     <div class="sidebar-nav">
       <div class="sidebar-section">
-        <a href="#" class="sidebar-link">
-          <i data-lucide="layout-dashboard" class="icon-md"></i>
-          대시보드
+        <div class="sidebar-section-title">내 코스</div>
+        <a href="crs-001-course-list.html" class="sidebar-link">
+          <i data-lucide="play-circle" class="icon-md"></i>
+          진행중
         </a>
-        <a href="crs-001-course-list.html" class="sidebar-link active">
-          <i data-lucide="book-open" class="icon-md"></i>
-          내 코스
+        <a href="crs-001-course-list.html" class="sidebar-link">
+          <i data-lucide="check-circle" class="icon-md"></i>
+          완료
         </a>
       </div>
     </div>
@@ -282,6 +329,26 @@
 
   <script>
     lucide.createIcons();
+
+    // 사용자 메뉴 토글
+    function toggleUserMenu() {
+      const dropdown = document.getElementById('userMenuDropdown');
+      dropdown.classList.toggle('show');
+    }
+
+    // 외부 클릭 시 메뉴 닫기
+    document.addEventListener('click', function(event) {
+      const userMenu = document.querySelector('.user-menu');
+      const dropdown = document.getElementById('userMenuDropdown');
+      if (userMenu && !userMenu.contains(event.target)) {
+        dropdown.classList.remove('show');
+      }
+    });
+
+    // 로그아웃
+    function logout() {
+      window.location.href = '../e1-auth/auth-004-login.html';
+    }
   </script>
 </body>
 </html>

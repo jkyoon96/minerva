@@ -126,7 +126,7 @@
       <!-- Student Message -->
       <div class="chat-message">
         <div class="header">
-          <span class="sender">박서연</span>
+          <span class="sender" style="cursor: pointer;" onclick="location.href='live-010-direct-message.html'">박서연</span>
           <span class="time">10:08</span>
         </div>
         <div class="chat-bubble">
@@ -167,11 +167,36 @@
       <!-- Student Message -->
       <div class="chat-message">
         <div class="header">
-          <span class="sender">정도윤</span>
+          <span class="sender" style="cursor: pointer;" onclick="location.href='live-010-direct-message.html'">정도윤</span>
           <span class="time">10:15</span>
         </div>
         <div class="chat-bubble">
           C번 같아요!
+        </div>
+      </div>
+
+      <!-- File Share Message -->
+      <div class="chat-message">
+        <div class="header">
+          <span class="sender professor">김철수 (교수)</span>
+          <span class="time">10:20</span>
+        </div>
+        <div class="chat-bubble" style="background: transparent; padding: 0;">
+          <div style="background: hsl(var(--muted)); padding: var(--spacing-2) var(--spacing-3); border-radius: var(--radius-md);">
+            <div class="flex items-center gap-2 mb-2">
+              <i data-lucide="paperclip" class="icon-sm text-muted"></i>
+              <span>참고자료를 공유합니다</span>
+            </div>
+            <a href="live-011-file-share.html" style="display: block; background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-md); padding: var(--spacing-2); text-decoration: none; color: inherit;">
+              <div class="flex items-center gap-2">
+                <i data-lucide="file-text" class="icon-md" style="color: hsl(var(--destructive))"></i>
+                <div>
+                  <div class="font-medium">마케팅4P_자료.pdf</div>
+                  <div class="text-xs text-muted">2.5MB</div>
+                </div>
+              </div>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -179,10 +204,10 @@
     <div class="chat-input-area">
       <input type="text" class="input" placeholder="메시지를 입력하세요...">
       <div class="input-actions">
-        <button class="btn btn-ghost btn-icon btn-sm">
+        <a href="live-011-file-share.html" class="btn btn-ghost btn-icon btn-sm" title="파일 공유">
           <i data-lucide="paperclip" class="icon-sm"></i>
-        </button>
-        <button class="btn btn-ghost btn-icon btn-sm">
+        </a>
+        <button class="btn btn-ghost btn-icon btn-sm" title="이모지">
           <i data-lucide="smile" class="icon-sm"></i>
         </button>
         <button class="btn btn-primary btn-icon btn-sm ml-auto">

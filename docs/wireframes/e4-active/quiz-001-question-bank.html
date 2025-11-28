@@ -9,46 +9,9 @@
   <link rel="stylesheet" href="../css/components.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <style>
-    .page-layout {
-      display: flex;
-      min-height: 100vh;
-    }
-    .sidebar {
-      width: 240px;
-      background: hsl(var(--card));
-      border-right: 1px solid hsl(var(--border));
-      padding: var(--spacing-4);
-    }
-    .sidebar-title {
-      font-size: var(--text-xs);
-      font-weight: var(--font-semibold);
-      color: hsl(var(--muted-foreground));
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: var(--spacing-2);
-    }
-    .sidebar-item {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-2);
-      padding: var(--spacing-2) var(--spacing-3);
-      border-radius: var(--radius-md);
-      font-size: var(--text-sm);
-      color: hsl(var(--foreground));
-      cursor: pointer;
-      margin-bottom: var(--spacing-1);
-    }
-    .sidebar-item:hover {
-      background: hsl(var(--muted));
-    }
-    .sidebar-item.active {
-      background: hsl(var(--brand-primary) / 0.1);
-      color: hsl(var(--brand-primary));
-    }
     .main-content {
-      flex: 1;
+      margin-left: 280px;
       padding: var(--spacing-6);
-      overflow-y: auto;
     }
     .filter-bar {
       display: flex;
@@ -186,48 +149,52 @@
     </nav>
   </header>
 
-  <div class="page-layout">
-    <aside class="sidebar">
-      <div class="sidebar-title">코스 메뉴</div>
-      <div class="sidebar-item">
-        <i data-lucide="home" class="icon-sm"></i>
-        개요
+  <!-- Sidebar -->
+  <aside class="sidebar" style="top: 57px; height: calc(100vh - 57px);">
+    <div class="sidebar-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">코스 메뉴</div>
+        <a href="../e2-course/crs-003-course-detail.html" class="sidebar-link">
+          <i data-lucide="home" class="icon-md"></i>
+          개요
+        </a>
+        <a href="../e2-course/ses-001-session-list.html" class="sidebar-link">
+          <i data-lucide="video" class="icon-md"></i>
+          세션
+        </a>
+        <a href="../e2-course/crs-004-students.html" class="sidebar-link">
+          <i data-lucide="users" class="icon-md"></i>
+          수강생
+        </a>
+        <a href="../e2-course/cnt-001-content-library.html" class="sidebar-link">
+          <i data-lucide="folder" class="icon-md"></i>
+          콘텐츠
+        </a>
+        <a href="../e2-course/asg-001-assignment-list.html" class="sidebar-link">
+          <i data-lucide="file-text" class="icon-md"></i>
+          과제
+        </a>
+        <a href="../e2-course/grd-001-grade-dashboard.html" class="sidebar-link">
+          <i data-lucide="bar-chart-3" class="icon-md"></i>
+          성적
+        </a>
+        <a href="../e6-analytics/analytics-list.html" class="sidebar-link">
+          <i data-lucide="trending-up" class="icon-md"></i>
+          분석
+        </a>
+        <a href="quiz-001-question-bank.html" class="sidebar-link active">
+          <i data-lucide="help-circle" class="icon-md"></i>
+          문제은행
+        </a>
+        <a href="../e1-auth/profile-001-settings.html" class="sidebar-link">
+          <i data-lucide="settings" class="icon-md"></i>
+          설정
+        </a>
       </div>
-      <div class="sidebar-item">
-        <i data-lucide="video" class="icon-sm"></i>
-        세션
-      </div>
-      <div class="sidebar-item">
-        <i data-lucide="users" class="icon-sm"></i>
-        수강생
-      </div>
-      <div class="sidebar-item">
-        <i data-lucide="folder" class="icon-sm"></i>
-        콘텐츠
-      </div>
-      <div class="sidebar-item">
-        <i data-lucide="file-text" class="icon-sm"></i>
-        과제
-      </div>
-      <div class="sidebar-item">
-        <i data-lucide="bar-chart-3" class="icon-sm"></i>
-        성적
-      </div>
-      <div class="sidebar-item">
-        <i data-lucide="trending-up" class="icon-sm"></i>
-        분석
-      </div>
-      <div class="sidebar-item active">
-        <i data-lucide="help-circle" class="icon-sm"></i>
-        문제은행
-      </div>
-      <div class="sidebar-item">
-        <i data-lucide="settings" class="icon-sm"></i>
-        설정
-      </div>
-    </aside>
+    </div>
+  </aside>
 
-    <main class="main-content">
+  <main class="main-content">
       <h1 class="text-2xl font-bold mb-6">문제 은행 (Question Bank)</h1>
 
       <div class="card mb-4">
@@ -259,10 +226,10 @@
           </div>
 
           <div class="action-bar">
-            <button class="btn btn-primary">
+            <a href="quiz-002-edit-question.html" class="btn btn-primary">
               <i data-lucide="plus" class="icon-sm"></i>
               문제 추가
-            </button>
+            </a>
             <button class="btn btn-outline">
               <i data-lucide="download" class="icon-sm"></i>
               가져오기
@@ -454,8 +421,7 @@
           </div>
         </div>
       </div>
-    </main>
-  </div>
+  </main>
 
   <script>
     lucide.createIcons();

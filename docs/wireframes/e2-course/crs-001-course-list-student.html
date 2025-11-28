@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRS-001: 내 코스 목록 - EduForum (학생)</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    /* Page Layout - Container with Internal Sidebar */
+    .page-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--spacing-6);
+      align-items: start;
+    }
+
+    /* Course Navigation (Internal Sidebar) */
+    .course-nav {
+      position: sticky;
+      top: calc(57px + var(--spacing-6));
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-3);
+    }
+    .course-nav-title {
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+      color: hsl(var(--muted-foreground));
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: var(--spacing-2) var(--spacing-3);
+      margin-bottom: var(--spacing-1);
+    }
+    .course-nav-link {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) var(--spacing-3);
+      font-size: var(--text-sm);
+      color: hsl(var(--foreground));
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      transition: all 0.15s ease;
+    }
+    .course-nav-link:hover {
+      background: hsl(var(--muted));
+    }
+    .course-nav-link.active {
+      background: hsl(var(--brand-primary) / 0.1);
+      color: hsl(var(--brand-primary));
+      font-weight: var(--font-medium);
+    }
+    .course-nav-link .icon-sm {
+      width: 16px;
+      height: 16px;
+      opacity: 0.7;
+    }
+    .course-nav-link.active .icon-sm {
+      opacity: 1;
+    }
+
+    /* Content Area */
+    .content-area {
+      min-width: 0;
+    }
+
+    .course-card {
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: all var(--transition-fast);
+    }
+    .course-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .course-card-header {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+    .course-card-body {
+      padding: var(--spacing-4);
+    }
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      background-color: hsl(var(--destructive));
+      color: white;
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+    }
+    .live-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background-color: white;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .progress-bar {
+      height: 6px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: hsl(var(--success));
+      border-radius: var(--radius-full);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="../index.html" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="dashboard-student.html" class="nav-link">대시보드</a>
+        <a href="crs-001-course-list-student.html" class="nav-link active">내 코스</a>
+        <a href="../e1-auth/profile-001-settings-student.html" class="nav-link">프로필</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-icon">
+          <i data-lucide="bell" class="icon-md"></i>
+        </button>
+        <div class="user-menu">
+          <button class="user-menu-trigger" onclick="toggleUserMenu()">
+            <div class="avatar avatar-sm">
+              <i data-lucide="user" class="icon-sm"></i>
+            </div>
+            <span class="text-sm font-medium">이영희</span>
+            <i data-lucide="chevron-down" class="icon-sm"></i>
+          </button>
+          <div class="user-menu-dropdown" id="userMenuDropdown">
+            <div class="user-menu-header">
+              <div class="user-menu-name">이영희</div>
+              <div class="user-menu-email">younghee.lee@university.edu</div>
+            </div>
+            <a href="../e1-auth/profile-001-settings-student.html" class="user-menu-item">
+              <i data-lucide="user" class="icon-sm"></i>
+              프로필 설정
+            </a>
+            <a href="../e1-auth/profile-001-settings-student.html" class="user-menu-item">
+              <i data-lucide="settings" class="icon-sm"></i>
+              계정 설정
+            </a>
+            <div class="dropdown-divider"></div>
+            <button class="user-menu-item destructive" onclick="logout()">
+              <i data-lucide="log-out" class="icon-sm"></i>
+              로그아웃
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container py-6">
+    <div class="page-layout">
+      <!-- Internal Sidebar -->
+      <aside class="course-nav">
+        <div class="course-nav-title">내 코스</div>
+        <a href="crs-001-course-list-student.html" class="course-nav-link active">
+          <i data-lucide="play-circle" class="icon-sm"></i>
+          수강 중
+        </a>
+        <a href="crs-001-course-list-student.html" class="course-nav-link">
+          <i data-lucide="check-circle" class="icon-sm"></i>
+          완료
+        </a>
+      </aside>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <h1 class="text-2xl font-bold mb-6">내 코스</h1>
+
+        <!-- Search and Filter -->
+        <div class="flex items-center gap-4 mb-6">
+          <div class="input-group flex-1">
+            <span class="input-icon">
+              <i data-lucide="search" class="icon-sm"></i>
+            </span>
+            <input type="text" class="input" style="padding-left: 2.5rem" placeholder="코스 검색...">
+          </div>
+          <select class="select" style="width: 140px;">
+            <option>학기</option>
+            <option>2024년 2학기</option>
+            <option>2024년 1학기</option>
+          </select>
+          <select class="select" style="width: 120px;">
+            <option>상태</option>
+            <option>수강 중</option>
+            <option>완료</option>
+          </select>
+          <button class="btn btn-outline" id="registerBtn">
+            <i data-lucide="plus" class="icon-sm"></i>
+            코스 등록
+          </button>
+        </div>
+
+        <!-- Active Courses -->
+        <h2 class="text-lg font-semibold mb-4">수강 중 (3)</h2>
+        <div class="separator mb-4"></div>
+
+        <div class="grid grid-cols-3 gap-6 mb-8">
+          <!-- Course Card 1 - LIVE -->
+          <div class="course-card">
+            <div class="course-card-header" style="background-color: hsl(221 83% 95%);">
+              <span>📘</span>
+            </div>
+            <div class="course-card-body">
+              <h3 class="font-semibold mb-1">경영학개론</h3>
+              <p class="text-sm text-muted mb-2">BUSS101 · 김교수</p>
+              <p class="text-sm text-muted mb-3">2024-2학기</p>
+
+              <div class="mb-3">
+                <div class="flex justify-between text-sm mb-1">
+                  <span class="text-muted">진도</span>
+                  <span class="font-medium">12/16주</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-bar-fill" style="width: 75%;"></div>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <span class="live-badge">LIVE</span>
+              </div>
+              <div class="flex gap-2">
+                <a href="../e3-live/live-004-student-view.html" class="btn btn-primary btn-sm flex-1">입장</a>
+                <a href="crs-003-course-detail-student.html" class="btn btn-outline btn-sm flex-1">상세</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Course Card 2 -->
+          <div class="course-card">
+            <div class="course-card-header" style="background-color: hsl(142 76% 95%);">
+              <span>📗</span>
+            </div>
+            <div class="course-card-body">
+              <h3 class="font-semibold mb-1">마케팅원론</h3>
+              <p class="text-sm text-muted mb-2">MKTG201 · 박교수</p>
+              <p class="text-sm text-muted mb-3">2024-2학기</p>
+
+              <div class="mb-3">
+                <div class="flex justify-between text-sm mb-1">
+                  <span class="text-muted">진도</span>
+                  <span class="font-medium">11/16주</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-bar-fill" style="width: 69%;"></div>
+                </div>
+              </div>
+
+              <div class="text-sm text-muted mb-4">
+                다음: 수 10:00
+              </div>
+              <div class="flex gap-2">
+                <a href="../e3-live/live-002-student-join.html" class="btn btn-outline btn-sm flex-1">입장</a>
+                <a href="crs-003-course-detail-student.html" class="btn btn-outline btn-sm flex-1">상세</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Course Card 3 -->
+          <div class="course-card">
+            <div class="course-card-header" style="background-color: hsl(38 92% 95%);">
+              <span>📙</span>
+            </div>
+            <div class="course-card-body">
+              <h3 class="font-semibold mb-1">조직행동론</h3>
+              <p class="text-sm text-muted mb-2">ORGB301 · 최교수</p>
+              <p class="text-sm text-muted mb-3">2024-2학기</p>
+
+              <div class="mb-3">
+                <div class="flex justify-between text-sm mb-1">
+                  <span class="text-muted">진도</span>
+                  <span class="font-medium">10/16주</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-bar-fill" style="width: 63%;"></div>
+                </div>
+              </div>
+
+              <div class="text-sm text-muted mb-4">
+                다음: 목 14:00
+              </div>
+              <div class="flex gap-2">
+                <a href="../e3-live/live-002-student-join.html" class="btn btn-outline btn-sm flex-1">입장</a>
+                <a href="crs-003-course-detail-student.html" class="btn btn-outline btn-sm flex-1">상세</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Completed Courses -->
+        <h2 class="text-lg font-semibold mb-4">완료됨 (2)</h2>
+        <div class="separator mb-4"></div>
+
+        <div class="grid grid-cols-3 gap-6">
+          <!-- Completed Course 1 -->
+          <div class="course-card" style="opacity: 0.7;">
+            <div class="course-card-header" style="background-color: hsl(0 84% 95%);">
+              <span>📕</span>
+            </div>
+            <div class="course-card-body">
+              <h3 class="font-semibold mb-1">회계원리</h3>
+              <p class="text-sm text-muted mb-2">ACCT101 · 이교수</p>
+              <p class="text-sm text-muted mb-3">2024-1학기</p>
+
+              <div class="mb-3">
+                <div class="flex justify-between text-sm mb-1">
+                  <span class="text-muted">최종 성적</span>
+                  <span class="font-medium badge badge-success">A</span>
+                </div>
+              </div>
+
+              <div class="badge badge-default mb-4">완료</div>
+              <div class="flex gap-2">
+                <a href="crs-003-course-detail-student.html" class="btn btn-outline btn-sm flex-1">보기</a>
+                <a href="grd-003-student-view.html" class="btn btn-outline btn-sm flex-1">성적</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Completed Course 2 -->
+          <div class="course-card" style="opacity: 0.7;">
+            <div class="course-card-header" style="background-color: hsl(var(--muted));">
+              <span>📓</span>
+            </div>
+            <div class="course-card-body">
+              <h3 class="font-semibold mb-1">재무관리</h3>
+              <p class="text-sm text-muted mb-2">FINC201 · 정교수</p>
+              <p class="text-sm text-muted mb-3">2024-1학기</p>
+
+              <div class="mb-3">
+                <div class="flex justify-between text-sm mb-1">
+                  <span class="text-muted">최종 성적</span>
+                  <span class="font-medium badge badge-success">B+</span>
+                </div>
+              </div>
+
+              <div class="badge badge-default mb-4">완료</div>
+              <div class="flex gap-2">
+                <a href="crs-003-course-detail-student.html" class="btn btn-outline btn-sm flex-1">보기</a>
+                <a href="grd-003-student-view.html" class="btn btn-outline btn-sm flex-1">성적</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Course Registration Modal -->
+  <div class="modal-overlay" id="registerModal" style="display: none;">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">코스 등록</h2>
+        <button class="modal-close" onclick="document.getElementById('registerModal').style.display='none'">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group mb-4">
+          <label class="form-label form-label-required">초대 코드</label>
+          <input type="text" class="input" placeholder="교수님께 받은 코드 입력">
+          <p class="text-sm text-muted mt-1">예: ABC-123-XYZ</p>
+        </div>
+        <div class="text-center text-sm text-muted mb-4">또는</div>
+        <div class="form-group">
+          <label class="form-label">코스 검색</label>
+          <div class="input-group">
+            <span class="input-icon">
+              <i data-lucide="search" class="icon-sm"></i>
+            </span>
+            <input type="text" class="input" style="padding-left: 2.5rem" placeholder="코스명 또는 코드로 검색">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="document.getElementById('registerModal').style.display='none'">취소</button>
+        <button class="btn btn-primary">등록 신청</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // Course registration modal
+    document.getElementById('registerBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('registerModal').style.display = 'flex';
+    });
+
+    // 사용자 메뉴 토글
+    function toggleUserMenu() {
+      const dropdown = document.getElementById('userMenuDropdown');
+      dropdown.classList.toggle('show');
+    }
+
+    // 외부 클릭 시 메뉴 닫기
+    document.addEventListener('click', function(event) {
+      const userMenu = document.querySelector('.user-menu');
+      const dropdown = document.getElementById('userMenuDropdown');
+      if (userMenu && !userMenu.contains(event.target)) {
+        dropdown.classList.remove('show');
+      }
+    });
+
+    // 로그아웃
+    function logout() {
+      window.location.href = '../e1-auth/auth-004-login.html';
+    }
+  </script>
+</body>
+</html>

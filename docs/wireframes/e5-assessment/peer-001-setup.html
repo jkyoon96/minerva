@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PEER-001: 동료 평가 설정 (교수용) - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-3) var(--spacing-4);
+      background: hsl(var(--card));
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .section-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--spacing-4);
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+      font-weight: var(--font-semibold);
+    }
+    .section-content {
+      padding: var(--spacing-4);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: var(--spacing-3);
+      align-items: start;
+      margin-bottom: var(--spacing-4);
+    }
+    .form-row:last-child {
+      margin-bottom: 0;
+    }
+    .form-label {
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      padding-top: var(--spacing-2);
+    }
+    .form-hint {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+      margin-top: var(--spacing-1);
+    }
+    .criteria-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-2);
+    }
+    .criteria-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+      padding: var(--spacing-2) var(--spacing-3);
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-md);
+    }
+    .criteria-item .drag-handle {
+      cursor: grab;
+      color: hsl(var(--muted-foreground));
+    }
+    .criteria-item .criteria-name {
+      flex: 1;
+    }
+    .criteria-item .criteria-weight {
+      width: 80px;
+    }
+    .add-criteria-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) var(--spacing-3);
+      border: 1px dashed hsl(var(--border));
+      border-radius: var(--radius-md);
+      background: transparent;
+      color: hsl(var(--muted-foreground));
+      cursor: pointer;
+      width: 100%;
+      justify-content: center;
+      margin-top: var(--spacing-2);
+    }
+    .add-criteria-btn:hover {
+      border-color: hsl(var(--brand-primary));
+      color: hsl(var(--brand-primary));
+    }
+    .team-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-2);
+    }
+    .team-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-3);
+      background: hsl(var(--muted) / 0.2);
+      border-radius: var(--radius-md);
+    }
+    .team-info {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .team-name {
+      font-weight: var(--font-medium);
+    }
+    .team-members {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+    }
+    .status-badge {
+      font-size: var(--text-xs);
+      padding: var(--spacing-1) var(--spacing-2);
+      border-radius: var(--radius-sm);
+    }
+    .status-badge.pending {
+      background: hsl(var(--muted) / 0.3);
+      color: hsl(var(--muted-foreground));
+    }
+    .status-badge.in-progress {
+      background: hsl(var(--warning) / 0.1);
+      color: hsl(var(--warning));
+    }
+    .status-badge.completed {
+      background: hsl(var(--success) / 0.1);
+      color: hsl(var(--success));
+    }
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-2);
+    }
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      font-size: var(--text-sm);
+    }
+    .action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-4);
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      margin-top: var(--spacing-4);
+    }
+    .action-buttons {
+      display: flex;
+      gap: var(--spacing-3);
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <div class="header-left">
+      <a href="../e2-course/crs-003-course-detail.html" class="btn btn-ghost btn-icon">
+        <i data-lucide="arrow-left" class="icon-md"></i>
+      </a>
+      <h1 class="font-semibold">동료 평가 설정</h1>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="badge badge-secondary">미게시</span>
+    </div>
+  </header>
+
+  <main class="container py-6">
+    <!-- Basic Settings -->
+    <div class="section-card">
+      <div class="section-header">
+        <i data-lucide="settings" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        기본 설정
+      </div>
+      <div class="section-content">
+        <div class="form-row">
+          <label class="form-label">평가 제목</label>
+          <div>
+            <input type="text" class="input" value="팀 프로젝트 동료 평가" style="width: 100%;">
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">대상 과제</label>
+          <div>
+            <select class="input" style="width: 100%;">
+              <option>팀 프로젝트: 웹 쇼핑몰 개발</option>
+              <option>팀 프로젝트: 모바일 앱 개발</option>
+              <option>그룹 과제: 케이스 스터디</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">평가 기간</label>
+          <div class="flex gap-2 items-center">
+            <input type="date" class="input" value="2024-11-20" style="width: auto;">
+            <span>~</span>
+            <input type="date" class="input" value="2024-11-27" style="width: auto;">
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">성적 반영 비율</label>
+          <div>
+            <div class="flex items-center gap-2">
+              <input type="number" class="input" value="10" style="width: 80px;" min="0" max="100">
+              <span class="text-sm text-muted">%</span>
+            </div>
+            <div class="form-hint">팀 프로젝트 점수의 일부를 동료 평가 결과로 조정합니다</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Evaluation Criteria -->
+    <div class="section-card">
+      <div class="section-header">
+        <i data-lucide="clipboard-list" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        평가 항목
+      </div>
+      <div class="section-content">
+        <div class="criteria-list">
+          <div class="criteria-item">
+            <i data-lucide="grip-vertical" class="icon-sm drag-handle"></i>
+            <input type="text" class="input criteria-name" value="기여도 (프로젝트 전체 기여)">
+            <input type="number" class="input criteria-weight" value="40" min="0" max="100">
+            <span class="text-sm text-muted">%</span>
+            <button class="btn btn-ghost btn-icon btn-sm">
+              <i data-lucide="trash-2" class="icon-sm text-destructive"></i>
+            </button>
+          </div>
+          <div class="criteria-item">
+            <i data-lucide="grip-vertical" class="icon-sm drag-handle"></i>
+            <input type="text" class="input criteria-name" value="협업 능력 (의사소통, 일정 준수)">
+            <input type="number" class="input criteria-weight" value="30" min="0" max="100">
+            <span class="text-sm text-muted">%</span>
+            <button class="btn btn-ghost btn-icon btn-sm">
+              <i data-lucide="trash-2" class="icon-sm text-destructive"></i>
+            </button>
+          </div>
+          <div class="criteria-item">
+            <i data-lucide="grip-vertical" class="icon-sm drag-handle"></i>
+            <input type="text" class="input criteria-name" value="문제 해결 (기술적 문제 해결 능력)">
+            <input type="number" class="input criteria-weight" value="30" min="0" max="100">
+            <span class="text-sm text-muted">%</span>
+            <button class="btn btn-ghost btn-icon btn-sm">
+              <i data-lucide="trash-2" class="icon-sm text-destructive"></i>
+            </button>
+          </div>
+        </div>
+        <button class="add-criteria-btn">
+          <i data-lucide="plus" class="icon-sm"></i>
+          평가 항목 추가
+        </button>
+        <div class="form-hint mt-2">가중치 합계: 100%</div>
+      </div>
+    </div>
+
+    <!-- Team Status -->
+    <div class="section-card">
+      <div class="section-header">
+        <i data-lucide="users" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        팀별 현황
+      </div>
+      <div class="section-content">
+        <div class="team-list">
+          <div class="team-item">
+            <div class="team-info">
+              <div>
+                <div class="team-name">A조</div>
+                <div class="team-members">김민수, 이영희, 박지원, 최영수</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="status-badge in-progress">진행 중 (3/4)</span>
+              <a href="peer-002-result.html" class="btn btn-outline btn-sm">결과 보기</a>
+            </div>
+          </div>
+          <div class="team-item">
+            <div class="team-info">
+              <div>
+                <div class="team-name">B조</div>
+                <div class="team-members">정수민, 한지훈, 오수진, 강민호</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="status-badge completed">완료 (4/4)</span>
+              <a href="peer-002-result.html" class="btn btn-outline btn-sm">결과 보기</a>
+            </div>
+          </div>
+          <div class="team-item">
+            <div class="team-info">
+              <div>
+                <div class="team-name">C조</div>
+                <div class="team-members">윤서영, 임재현, 송지아, 조현우</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="status-badge pending">미시작 (0/4)</span>
+              <button class="btn btn-outline btn-sm" disabled>결과 보기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Advanced Options -->
+    <div class="section-card">
+      <div class="section-header">
+        <i data-lucide="sliders" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        고급 옵션
+      </div>
+      <div class="section-content">
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" checked>
+            익명 평가 (평가자 정보 비공개)
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" checked>
+            자기 평가 제외
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" checked>
+            이상치 자동 감지 및 제외 (평균 대비 ±2 표준편차)
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox">
+            코멘트 필수 입력
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox">
+            마감 후 자동 성적 반영
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Bar -->
+    <div class="action-bar">
+      <button class="btn btn-outline" onclick="window.location.href='../e2-course/crs-003-course-detail.html'">
+        취소
+      </button>
+      <div class="action-buttons">
+        <button class="btn btn-outline">
+          <i data-lucide="save" class="icon-sm"></i>
+          임시 저장
+        </button>
+        <button class="btn btn-primary" onclick="publishEvaluation()">
+          <i data-lucide="send" class="icon-sm"></i>
+          게시하기
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+
+    function publishEvaluation() {
+      if (confirm('동료 평가를 게시하시겠습니까?\n게시 후 학생들이 평가를 시작할 수 있습니다.')) {
+        alert('동료 평가가 게시되었습니다.');
+        window.location.href = '../e2-course/crs-003-course-detail.html';
+      }
+    }
+  </script>
+</body>
+</html>

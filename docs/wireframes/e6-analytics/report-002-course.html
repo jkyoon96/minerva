@@ -9,19 +9,65 @@
   <link rel="stylesheet" href="../css/components.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <style>
-    .page-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: var(--spacing-3) var(--spacing-4);
-      background: hsl(var(--card));
-      border-bottom: 1px solid hsl(var(--border));
+    /* Page Layout - Container with Internal Sidebar */
+    .page-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--spacing-6);
+      align-items: start;
     }
-    .header-left {
+
+    /* Course Navigation (Internal Sidebar) */
+    .course-nav {
+      position: sticky;
+      top: calc(57px + var(--spacing-6));
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-3);
+    }
+    .course-nav-title {
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+      color: hsl(var(--muted-foreground));
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: var(--spacing-2) var(--spacing-3);
+      margin-bottom: var(--spacing-1);
+    }
+    .course-nav-link {
       display: flex;
       align-items: center;
       gap: var(--spacing-2);
+      padding: var(--spacing-2) var(--spacing-3);
+      font-size: var(--text-sm);
+      color: hsl(var(--foreground));
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      transition: all 0.15s ease;
     }
+    .course-nav-link:hover {
+      background: hsl(var(--muted));
+    }
+    .course-nav-link.active {
+      background: hsl(var(--brand-primary) / 0.1);
+      color: hsl(var(--brand-primary));
+      font-weight: var(--font-medium);
+    }
+    .course-nav-link .icon-sm {
+      width: 16px;
+      height: 16px;
+      opacity: 0.7;
+    }
+    .course-nav-link.active .icon-sm {
+      opacity: 1;
+    }
+
+    /* Content Area */
+    .content-area {
+      min-width: 0;
+    }
+
     .overview-card {
       background: hsl(var(--card));
       border: 1px solid hsl(var(--border));
@@ -146,228 +192,351 @@
       gap: var(--spacing-3);
       margin-top: var(--spacing-4);
     }
+    .analytics-tabs {
+      display: flex;
+      gap: var(--spacing-1);
+      border-bottom: 1px solid hsl(var(--border));
+      margin-bottom: var(--spacing-6);
+    }
+    .analytics-tab {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      color: hsl(var(--muted-foreground));
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.2s ease;
+    }
+    .analytics-tab:hover {
+      color: hsl(var(--foreground));
+      background: hsl(var(--muted) / 0.3);
+    }
+    .analytics-tab.active {
+      color: hsl(var(--brand-primary));
+      border-bottom-color: hsl(var(--brand-primary));
+    }
   </style>
 </head>
 <body>
-  <header class="page-header">
-    <div class="header-left">
-      <a href="index.html" class="btn btn-ghost btn-icon">
-        <i data-lucide="arrow-left" class="icon-md"></i>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="../index.html" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
       </a>
-      <h1 class="font-semibold">CS101 - 학기 분석 리포트</h1>
-    </div>
-    <button class="btn btn-outline">
-      <i data-lucide="download" class="icon-sm"></i>
-      내보내기
-      <i data-lucide="chevron-down" class="icon-xs"></i>
-    </button>
+      <div class="navbar-nav">
+        <a href="../e2-course/dashboard.html" class="nav-link">대시보드</a>
+        <a href="../e2-course/crs-001-course-list.html" class="nav-link active">내 코스</a>
+        <a href="../e1-auth/profile-001-settings.html" class="nav-link">프로필</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-icon">
+          <i data-lucide="bell" class="icon-md"></i>
+        </button>
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">김교수</span>
+        </div>
+      </div>
+    </nav>
   </header>
 
+  <!-- Main Content with Container Layout -->
   <main class="container py-6">
-    <!-- Course Overview -->
-    <div class="overview-card">
-      <div class="flex items-center gap-2 mb-3">
-        <i data-lucide="bar-chart-2" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
-        <span class="font-semibold">코스 전체 개요</span>
-      </div>
-      <div class="overview-stats">
-        <span>등록: <strong>48명</strong></span>
-        <span>활성: <strong>45명 (93.8%)</strong></span>
-        <span>완료: <strong>--</strong></span>
-        <span>세션 진행: <strong>24/30</strong></span>
-        <span>총 참여 시간: <strong>1,245시간</strong></span>
-        <span>퀴즈 실시: <strong>12회</strong></span>
-        <span>평균 참여율: <strong>89.3%</strong></span>
-      </div>
-    </div>
-
-    <!-- Weekly Participation Trend -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <h2 class="card-title flex items-center gap-2">
-          <i data-lucide="trending-up" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
-          주차별 참여도 트렌드
-        </h2>
-      </div>
-      <div class="card-content">
-        <div class="chart-placeholder">
-          [주차별 참여도 라인 차트 - W1~W12]
-        </div>
-        <div class="insight-box">
+    <div class="page-layout">
+      <!-- Course Navigation (Internal Sidebar) -->
+      <aside class="course-nav">
+        <div class="course-nav-title">코스 메뉴</div>
+        <a href="../e2-course/crs-003-course-detail.html" class="course-nav-link">
+          <i data-lucide="home" class="icon-sm"></i>
+          개요
+        </a>
+        <a href="../e2-course/ses-001-session-list.html" class="course-nav-link">
+          <i data-lucide="video" class="icon-sm"></i>
+          세션
+        </a>
+        <a href="../e2-course/crs-004-students.html" class="course-nav-link">
+          <i data-lucide="users" class="icon-sm"></i>
+          수강생
+        </a>
+        <a href="../e2-course/cnt-001-content-library.html" class="course-nav-link">
+          <i data-lucide="folder" class="icon-sm"></i>
+          콘텐츠
+        </a>
+        <a href="../e2-course/asg-001-assignment-list.html" class="course-nav-link">
           <i data-lucide="file-text" class="icon-sm"></i>
-          <div>
-            <strong>인사이트:</strong> Week 5-6 중간고사 기간 참여도 하락. Week 7 이후 회복세 유지 중
-          </div>
-        </div>
-      </div>
-    </div>
+          과제
+        </a>
+        <a href="../e2-course/grd-001-grade-dashboard.html" class="course-nav-link">
+          <i data-lucide="bar-chart-3" class="icon-sm"></i>
+          성적
+        </a>
+        <a href="report-002-course.html" class="course-nav-link active">
+          <i data-lucide="trending-up" class="icon-sm"></i>
+          분석
+        </a>
+        <a href="../e2-course/crs-005-course-settings.html" class="course-nav-link">
+          <i data-lucide="settings" class="icon-sm"></i>
+          설정
+        </a>
+      </aside>
 
-    <!-- Difficult Topics -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <h2 class="card-title flex items-center gap-2">
-          <i data-lucide="clipboard-list" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
-          문항별 정답률 분석
-        </h2>
-      </div>
-      <div class="card-content">
-        <div class="text-sm mb-3" style="color: hsl(var(--warning));">
-          <i data-lucide="alert-triangle" class="icon-xs"></i>
-          어려운 개념 Top 5 (정답률 60% 미만)
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Breadcrumb -->
+        <div class="flex items-center gap-2 text-sm text-muted mb-4">
+          <a href="../e2-course/crs-003-course-detail.html">경영학개론</a>
+          <i data-lucide="chevron-right" class="icon-xs"></i>
+          <span class="font-medium" style="color: hsl(var(--foreground))">분석</span>
         </div>
-        <table class="difficult-table">
-          <thead>
-            <tr>
-              <th>순위</th>
-              <th>주제</th>
-              <th>정답률</th>
-              <th>관련 세션</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>트랜잭션 격리 수준</td>
-              <td class="low-rate">42%</td>
-              <td>Week 8 - DB 고급</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>TCP/UDP 차이점</td>
-              <td class="low-rate">48%</td>
-              <td>Week 9 - 네트워크</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>OAuth 2.0 플로우</td>
-              <td class="low-rate">52%</td>
-              <td>Week 11 - 보안</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>재귀 vs 반복 시간복잡도</td>
-              <td class="low-rate">55%</td>
-              <td>Week 4 - 알고리즘</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>REST vs GraphQL</td>
-              <td class="low-rate">58%</td>
-              <td>Week 10 - API</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="recommendation">
-          <i data-lucide="lightbulb" class="icon-sm"></i>
-          권장 조치: 해당 주제에 대한 보충 세션 또는 추가 자료 제공
-        </div>
-      </div>
-    </div>
 
-    <!-- Grade Distribution & Student Groups -->
-    <div class="two-col-grid mb-4">
-      <div class="card">
-        <div class="card-header">
-          <h2 class="card-title flex items-center gap-2">
-            <i data-lucide="bar-chart-3" class="icon-sm" style="color: hsl(var(--brand-primary))"></i>
-            성적 분포
-          </h2>
+        <!-- Page Header -->
+        <div class="flex items-center justify-between mb-4">
+          <h1 class="text-2xl font-bold">코스 분석</h1>
+          <button class="btn btn-outline">
+            <i data-lucide="download" class="icon-sm"></i>
+            내보내기
+            <i data-lucide="chevron-down" class="icon-xs"></i>
+          </button>
         </div>
-        <div class="card-content">
-          <div class="grade-distribution">
-            <div class="grade-row">
-              <span class="grade-label">A (90+)</span>
-              <div class="grade-bar" style="width: 80px;"></div>
-              <span class="grade-count">8명</span>
-            </div>
-            <div class="grade-row">
-              <span class="grade-label">B (80-89)</span>
-              <div class="grade-bar" style="width: 160px;"></div>
-              <span class="grade-count">16명</span>
-            </div>
-            <div class="grade-row">
-              <span class="grade-label">C (70-79)</span>
-              <div class="grade-bar" style="width: 120px;"></div>
-              <span class="grade-count">12명</span>
-            </div>
-            <div class="grade-row">
-              <span class="grade-label">D (60-69)</span>
-              <div class="grade-bar" style="width: 60px;"></div>
-              <span class="grade-count">6명</span>
-            </div>
-            <div class="grade-row">
-              <span class="grade-label">F (&lt;60)</span>
-              <div class="grade-bar" style="width: 40px; background: hsl(var(--destructive));"></div>
-              <span class="grade-count">4명</span>
-            </div>
-          </div>
-          <div class="text-sm text-muted mt-3">
-            평균: 76.5점 | 표준편차: 12.3
-          </div>
-        </div>
-      </div>
 
-      <div class="card">
-        <div class="card-header">
-          <h2 class="card-title flex items-center gap-2">
-            <i data-lucide="target" class="icon-sm" style="color: hsl(var(--brand-primary))"></i>
-            학생 분류
-          </h2>
-        </div>
-        <div class="card-content">
-          <div class="student-group">
-            <div class="group-title" style="color: hsl(var(--success));">우수 그룹 (상위 20%)</div>
-            <div class="group-students">● 이영희, 김철수, 박민수 외 7명</div>
-          </div>
-          <div class="student-group">
-            <div class="group-title">보통 그룹 (중간 60%)</div>
-            <div class="group-students">● 28명</div>
-          </div>
-          <div class="student-group">
-            <div class="group-title danger-group">위험 그룹 (하위 20%) ⚠️</div>
-            <div class="group-students">● 권태희, 오지훈, 백승민 외 6명</div>
-          </div>
-          <a href="alert-001-dashboard.html" class="btn btn-outline btn-sm mt-3">
-            위험 학생 관리
-            <i data-lucide="chevron-right" class="icon-xs"></i>
+        <!-- Analytics Tabs -->
+        <nav class="analytics-tabs">
+          <a href="report-002-course.html" class="analytics-tab active">
+            <i data-lucide="bar-chart-3" class="icon-sm"></i>
+            전체 분석 리포트
           </a>
-        </div>
-      </div>
-    </div>
+          <a href="alert-001-dashboard.html" class="analytics-tab">
+            <i data-lucide="alert-triangle" class="icon-sm"></i>
+            학업 위험 학생
+          </a>
+          <a href="alert-002-tracking.html" class="analytics-tab">
+            <i data-lucide="clipboard-list" class="icon-sm"></i>
+            개입 기록 및 추적
+          </a>
+          <a href="network-001-visualization.html" class="analytics-tab">
+            <i data-lucide="share-2" class="icon-sm"></i>
+            토론 네트워크
+          </a>
+          <a href="network-002-individual.html" class="analytics-tab">
+            <i data-lucide="user" class="icon-sm"></i>
+            개인 네트워크 상세
+          </a>
+        </nav>
 
-    <!-- Correlation Analysis -->
-    <div class="card">
-      <div class="card-header">
-        <h2 class="card-title flex items-center gap-2">
-          <i data-lucide="git-branch" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
-          참여도 vs 성적 상관관계
-        </h2>
-      </div>
-      <div class="card-content">
-        <div class="correlation-chart">
-          [참여도-성적 산점도 차트 (r=0.78)]
+        <!-- Course Overview -->
+        <div class="overview-card">
+          <div class="flex items-center gap-2 mb-3">
+            <i data-lucide="bar-chart-2" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            <span class="font-semibold">코스 전체 개요</span>
+          </div>
+          <div class="overview-stats">
+            <span>등록: <strong>48명</strong></span>
+            <span>활성: <strong>45명 (93.8%)</strong></span>
+            <span>완료: <strong>--</strong></span>
+            <span>세션 진행: <strong>24/30</strong></span>
+            <span>총 참여 시간: <strong>1,245시간</strong></span>
+            <span>퀴즈 실시: <strong>12회</strong></span>
+            <span>평균 참여율: <strong>89.3%</strong></span>
+          </div>
         </div>
-        <div class="correlation-stats">
-          <div><strong>상관계수:</strong> r = 0.78 (강한 양의 상관관계)</div>
-          <div class="text-muted mt-1">해석: 참여도가 높을수록 성적도 높은 경향이 있음</div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Action Buttons -->
-    <div class="action-buttons">
-      <button class="btn btn-outline">
-        <i data-lucide="file-text" class="icon-sm"></i>
-        PDF 다운로드
-      </button>
-      <button class="btn btn-outline">
-        <i data-lucide="table" class="icon-sm"></i>
-        Excel 내보내기
-      </button>
-      <button class="btn btn-outline">
-        <i data-lucide="share" class="icon-sm"></i>
-        학생에게 공유
-      </button>
+        <!-- Weekly Participation Trend -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h2 class="card-title flex items-center gap-2">
+              <i data-lucide="trending-up" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+              주차별 참여도 트렌드
+            </h2>
+          </div>
+          <div class="card-content">
+            <div class="chart-placeholder">
+              [주차별 참여도 라인 차트 - W1~W12]
+            </div>
+            <div class="insight-box">
+              <i data-lucide="file-text" class="icon-sm"></i>
+              <div>
+                <strong>인사이트:</strong> Week 5-6 중간고사 기간 참여도 하락. Week 7 이후 회복세 유지 중
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Difficult Topics -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h2 class="card-title flex items-center gap-2">
+              <i data-lucide="clipboard-list" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+              문항별 정답률 분석
+            </h2>
+          </div>
+          <div class="card-content">
+            <div class="text-sm mb-3" style="color: hsl(var(--warning));">
+              <i data-lucide="alert-triangle" class="icon-xs"></i>
+              어려운 개념 Top 5 (정답률 60% 미만)
+            </div>
+            <table class="difficult-table">
+              <thead>
+                <tr>
+                  <th>순위</th>
+                  <th>주제</th>
+                  <th>정답률</th>
+                  <th>관련 세션</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>트랜잭션 격리 수준</td>
+                  <td class="low-rate">42%</td>
+                  <td>Week 8 - DB 고급</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>TCP/UDP 차이점</td>
+                  <td class="low-rate">48%</td>
+                  <td>Week 9 - 네트워크</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>OAuth 2.0 플로우</td>
+                  <td class="low-rate">52%</td>
+                  <td>Week 11 - 보안</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>재귀 vs 반복 시간복잡도</td>
+                  <td class="low-rate">55%</td>
+                  <td>Week 4 - 알고리즘</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>REST vs GraphQL</td>
+                  <td class="low-rate">58%</td>
+                  <td>Week 10 - API</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="recommendation">
+              <i data-lucide="lightbulb" class="icon-sm"></i>
+              권장 조치: 해당 주제에 대한 보충 세션 또는 추가 자료 제공
+            </div>
+          </div>
+        </div>
+
+        <!-- Grade Distribution & Student Groups -->
+        <div class="two-col-grid mb-4">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title flex items-center gap-2">
+                <i data-lucide="bar-chart-3" class="icon-sm" style="color: hsl(var(--brand-primary))"></i>
+                성적 분포
+              </h2>
+            </div>
+            <div class="card-content">
+              <div class="grade-distribution">
+                <div class="grade-row">
+                  <span class="grade-label">A (90+)</span>
+                  <div class="grade-bar" style="width: 80px;"></div>
+                  <span class="grade-count">8명</span>
+                </div>
+                <div class="grade-row">
+                  <span class="grade-label">B (80-89)</span>
+                  <div class="grade-bar" style="width: 160px;"></div>
+                  <span class="grade-count">16명</span>
+                </div>
+                <div class="grade-row">
+                  <span class="grade-label">C (70-79)</span>
+                  <div class="grade-bar" style="width: 120px;"></div>
+                  <span class="grade-count">12명</span>
+                </div>
+                <div class="grade-row">
+                  <span class="grade-label">D (60-69)</span>
+                  <div class="grade-bar" style="width: 60px;"></div>
+                  <span class="grade-count">6명</span>
+                </div>
+                <div class="grade-row">
+                  <span class="grade-label">F (&lt;60)</span>
+                  <div class="grade-bar" style="width: 40px; background: hsl(var(--destructive));"></div>
+                  <span class="grade-count">4명</span>
+                </div>
+              </div>
+              <div class="text-sm text-muted mt-3">
+                평균: 76.5점 | 표준편차: 12.3
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title flex items-center gap-2">
+                <i data-lucide="target" class="icon-sm" style="color: hsl(var(--brand-primary))"></i>
+                학생 분류
+              </h2>
+            </div>
+            <div class="card-content">
+              <div class="student-group">
+                <div class="group-title" style="color: hsl(var(--success));">우수 그룹 (상위 20%)</div>
+                <div class="group-students">● 이영희, 김철수, 박민수 외 7명</div>
+              </div>
+              <div class="student-group">
+                <div class="group-title">보통 그룹 (중간 60%)</div>
+                <div class="group-students">● 28명</div>
+              </div>
+              <div class="student-group">
+                <div class="group-title danger-group">위험 그룹 (하위 20%) ⚠️</div>
+                <div class="group-students">● 권태희, 오지훈, 백승민 외 6명</div>
+              </div>
+              <a href="alert-001-dashboard.html" class="btn btn-outline btn-sm mt-3">
+                위험 학생 관리
+                <i data-lucide="chevron-right" class="icon-xs"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Correlation Analysis -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title flex items-center gap-2">
+              <i data-lucide="git-branch" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+              참여도 vs 성적 상관관계
+            </h2>
+          </div>
+          <div class="card-content">
+            <div class="correlation-chart">
+              [참여도-성적 산점도 차트 (r=0.78)]
+            </div>
+            <div class="correlation-stats">
+              <div><strong>상관계수:</strong> r = 0.78 (강한 양의 상관관계)</div>
+              <div class="text-muted mt-1">해석: 참여도가 높을수록 성적도 높은 경향이 있음</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button class="btn btn-outline">
+            <i data-lucide="file-text" class="icon-sm"></i>
+            PDF 다운로드
+          </button>
+          <button class="btn btn-outline">
+            <i data-lucide="table" class="icon-sm"></i>
+            Excel 내보내기
+          </button>
+          <button class="btn btn-outline">
+            <i data-lucide="share" class="icon-sm"></i>
+            학생에게 공유
+          </button>
+        </div>
+      </div>
     </div>
   </main>
 

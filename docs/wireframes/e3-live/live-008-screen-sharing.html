@@ -201,10 +201,10 @@
       </span>
     </div>
     <div class="flex items-center gap-2">
-      <button class="btn btn-ghost btn-icon">
+      <button class="btn btn-ghost btn-icon" title="설정">
         <i data-lucide="settings" class="icon-md"></i>
       </button>
-      <button class="btn btn-destructive btn-sm">세션 종료</button>
+      <button class="btn btn-destructive btn-sm" onclick="location.href='live-022-end-session.html'">세션 종료</button>
     </div>
   </header>
 
@@ -253,13 +253,9 @@
           </button>
         </div>
         <div class="text-center">
-          <button class="control-btn sharing" title="화면 공유 중">
+          <a href="live-005-professor-view.html" class="control-btn sharing" title="화면 공유 중지">
             <i data-lucide="monitor" class="icon-md"></i>
-          </button>
-          <div class="share-status">
-            <i data-lucide="circle" class="icon-xs"></i>
-            공유 중
-          </div>
+          </a>
         </div>
         <div class="text-center">
           <button class="control-btn active" title="녹화 중">

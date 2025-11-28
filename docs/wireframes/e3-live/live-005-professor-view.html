@@ -196,6 +196,605 @@
     .participant-list-item:hover {
       background: hsl(var(--muted) / 0.5);
     }
+
+    /* Mini Analytics Popup */
+    .analytics-popup {
+      position: fixed;
+      bottom: var(--spacing-4);
+      right: var(--spacing-4);
+      width: 380px;
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      z-index: 1000;
+      display: none;
+      flex-direction: column;
+      max-height: 480px;
+    }
+    .analytics-popup.show {
+      display: flex;
+    }
+    .popup-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-2) var(--spacing-3);
+      background: hsl(var(--muted) / 0.3);
+      border-bottom: 1px solid hsl(var(--border));
+      flex-shrink: 0;
+    }
+    .popup-header .header-title {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .popup-header .header-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+    }
+    .view-toggle {
+      display: flex;
+      gap: var(--spacing-1);
+    }
+    .view-btn {
+      padding: var(--spacing-1) var(--spacing-2);
+      border: 1px solid hsl(var(--border));
+      background: hsl(var(--card));
+      border-radius: var(--radius-sm);
+      font-size: var(--text-xs);
+      cursor: pointer;
+      text-decoration: none;
+      color: hsl(var(--foreground));
+    }
+    .view-btn:hover {
+      background: hsl(var(--muted));
+    }
+    .view-btn.active {
+      background: hsl(var(--brand-primary));
+      color: white;
+      border-color: hsl(var(--brand-primary));
+    }
+    .close-btn {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      color: hsl(var(--muted-foreground));
+    }
+    .close-btn:hover {
+      background: hsl(var(--destructive) / 0.1);
+      color: hsl(var(--destructive));
+    }
+    .session-time {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+      margin-left: var(--spacing-2);
+    }
+    .popup-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--spacing-3);
+    }
+    .mini-overview-card {
+      background: hsl(var(--muted) / 0.2);
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-3);
+      margin-bottom: var(--spacing-3);
+    }
+    .mini-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-3);
+    }
+    .mini-stat-item {
+      text-align: center;
+      padding: var(--spacing-2);
+      background: hsl(var(--card));
+      border-radius: var(--radius-md);
+    }
+    .mini-stat-value {
+      font-size: var(--text-lg);
+      font-weight: var(--font-bold);
+      color: hsl(var(--brand-primary));
+    }
+    .mini-stat-label {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .mini-chart {
+      background: hsl(var(--card));
+      border-radius: var(--radius-md);
+      padding: var(--spacing-2);
+      height: 80px;
+    }
+    .mini-talktime-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+    }
+    .mini-talktime-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-2) var(--spacing-3);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .mini-talktime-content {
+      padding: var(--spacing-2) var(--spacing-3);
+    }
+    .student-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-1);
+      font-size: var(--text-xs);
+    }
+    .student-name {
+      width: 55px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .bar-container {
+      flex: 1;
+      height: 10px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background: hsl(var(--brand-primary));
+    }
+    .bar-fill.high { background: hsl(var(--success)); }
+    .bar-fill.warning { background: hsl(var(--warning)); }
+    .bar-fill.danger { background: hsl(var(--destructive)); }
+    .time-value {
+      width: 35px;
+      text-align: right;
+      font-size: var(--text-xs);
+    }
+    .mini-alert {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2);
+      background: hsl(var(--destructive) / 0.1);
+      border-radius: var(--radius-md);
+      margin-top: var(--spacing-2);
+      font-size: var(--text-xs);
+      color: hsl(var(--destructive));
+    }
+
+    /* Screen Share Popup */
+    .screen-share-popup {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 340px;
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      z-index: 1000;
+      display: none;
+      flex-direction: column;
+    }
+    .screen-share-popup.show {
+      display: flex;
+    }
+    .screen-options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-2);
+    }
+    .screen-option {
+      border: 2px solid hsl(var(--border));
+      border-radius: var(--radius-md);
+      padding: var(--spacing-2);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .screen-option:hover {
+      border-color: hsl(var(--brand-primary) / 0.5);
+    }
+    .screen-option.selected {
+      border-color: hsl(var(--brand-primary));
+      background: hsl(var(--brand-primary) / 0.05);
+    }
+    .screen-preview {
+      background: hsl(var(--muted));
+      border-radius: var(--radius-sm);
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--spacing-1);
+    }
+
+    /* Chat Tab Styles */
+    .system-message {
+      background: hsl(var(--muted) / 0.5);
+      padding: var(--spacing-2);
+      border-radius: var(--radius-md);
+      font-size: var(--text-xs);
+      text-align: center;
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-3);
+    }
+    .chat-message {
+      margin-bottom: var(--spacing-3);
+    }
+    .chat-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      margin-bottom: var(--spacing-1);
+    }
+    .chat-sender {
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+    }
+    .chat-sender.professor {
+      color: hsl(var(--brand-primary));
+    }
+    .chat-time {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .chat-bubble {
+      background: hsl(var(--muted));
+      padding: var(--spacing-2) var(--spacing-3);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      display: inline-block;
+      max-width: 90%;
+    }
+    .file-bubble {
+      background: hsl(var(--muted));
+      padding: var(--spacing-3);
+      border-radius: var(--radius-md);
+    }
+    .file-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-md);
+      padding: var(--spacing-2);
+    }
+    .chat-input-area {
+      padding: var(--spacing-2);
+      border-top: 1px solid hsl(var(--border));
+    }
+    .chat-input-actions {
+      display: flex;
+      gap: var(--spacing-1);
+      margin-top: var(--spacing-2);
+    }
+
+    /* DM Popup */
+    .dm-popup {
+      position: fixed;
+      bottom: var(--spacing-4);
+      right: 300px;
+      width: 300px;
+      height: 400px;
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      z-index: 1001;
+      display: none;
+      flex-direction: column;
+    }
+    .dm-popup.show {
+      display: flex;
+    }
+    .dm-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--spacing-3);
+    }
+    .dm-message {
+      margin-bottom: var(--spacing-2);
+    }
+    .dm-bubble {
+      background: hsl(var(--muted));
+      padding: var(--spacing-2) var(--spacing-3);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      display: inline-block;
+      max-width: 85%;
+    }
+    .dm-message.mine {
+      text-align: right;
+    }
+    .dm-message.mine .dm-bubble {
+      background: hsl(var(--brand-primary));
+      color: white;
+    }
+
+    /* File Share Popup */
+    .file-share-popup {
+      position: fixed;
+      bottom: 80px;
+      right: 300px;
+      width: 280px;
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      z-index: 1001;
+      display: none;
+      flex-direction: column;
+    }
+    .file-share-popup.show {
+      display: flex;
+    }
+    .file-drop-zone {
+      border: 2px dashed hsl(var(--border));
+      border-radius: var(--radius-md);
+      padding: var(--spacing-6);
+      text-align: center;
+      margin-bottom: var(--spacing-3);
+    }
+
+    /* Reaction Popup */
+    .reaction-popup {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 380px;
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      z-index: 1000;
+      display: none;
+      flex-direction: column;
+      padding: var(--spacing-4);
+    }
+    .reaction-popup.show {
+      display: flex;
+    }
+    .reaction-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--spacing-2);
+    }
+    .reaction-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--spacing-2);
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.2s;
+      background: transparent;
+    }
+    .reaction-btn:hover {
+      background: hsl(var(--muted) / 0.5);
+      transform: scale(1.05);
+    }
+    .reaction-btn:active {
+      transform: scale(0.95);
+    }
+    .reaction-emoji {
+      font-size: 1.5rem;
+      margin-bottom: var(--spacing-1);
+    }
+    .reaction-label {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+
+    /* Floating Reactions */
+    .floating-reaction {
+      position: absolute;
+      font-size: 2.5rem;
+      animation: float-up 3s ease-out forwards;
+      pointer-events: none;
+      z-index: 100;
+    }
+    @keyframes float-up {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(-80px) scale(1.3);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-150px) scale(0.8);
+      }
+    }
+
+    .layout-dropdown {
+      position: relative;
+    }
+    /* Layout Dropdown Popup */
+    .layout-popup {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: var(--spacing-1);
+      width: 260px;
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      display: none;
+      flex-direction: column;
+    }
+    .layout-popup.show {
+      display: flex;
+    }
+    .layout-option {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .layout-option:hover {
+      background: hsl(var(--muted) / 0.5);
+    }
+    .layout-option.selected {
+      background: hsl(var(--brand-primary) / 0.1);
+    }
+    .layout-icon {
+      width: 32px;
+      height: 32px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .layout-info {
+      flex: 1;
+    }
+    .layout-name {
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-1);
+    }
+    .layout-desc {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .layout-check {
+      color: hsl(var(--brand-primary));
+    }
+    .professor-section {
+      padding: var(--spacing-3);
+      border-top: 1px solid hsl(var(--border));
+      background: hsl(var(--muted) / 0.3);
+    }
+    .professor-title {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-2);
+    }
+    .lock-option {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+      padding: var(--spacing-2);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .lock-option:hover {
+      background: hsl(var(--muted) / 0.5);
+    }
+
+    /* Connection Quality Indicator */
+    .connection-indicator {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      padding: var(--spacing-1) var(--spacing-2);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .connection-indicator:hover {
+      background: hsl(var(--muted) / 0.5);
+    }
+    .signal-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 16px;
+    }
+    .signal-bar {
+      width: 3px;
+      border-radius: 1px;
+    }
+    .signal-bar.active {
+      background: currentColor;
+    }
+    .signal-bar.inactive {
+      background: hsl(var(--muted-foreground) / 0.3);
+    }
+    .connection-good { color: hsl(var(--success)); }
+    .connection-fair { color: hsl(var(--warning)); }
+    .connection-poor { color: hsl(var(--destructive)); }
+
+    .tile-signal {
+      position: absolute;
+      top: var(--spacing-1);
+      left: var(--spacing-1);
+      display: flex;
+      align-items: flex-end;
+      gap: 1px;
+      height: 12px;
+    }
+    .tile-signal .signal-bar {
+      width: 2px;
+      border-radius: 1px;
+    }
+
+    /* Network Warning Modal */
+    .network-warning-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+    .network-warning-modal.show {
+      display: flex;
+    }
+    .network-warning-content {
+      background: hsl(var(--card));
+      border-radius: var(--radius-lg);
+      width: 400px;
+      max-width: 90%;
+    }
+    .network-warning-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .network-warning-body {
+      padding: var(--spacing-4);
+    }
+    .network-warning-footer {
+      padding: var(--spacing-3) var(--spacing-4);
+      border-top: 1px solid hsl(var(--border));
+      display: flex;
+      gap: var(--spacing-2);
+      justify-content: flex-end;
+    }
   </style>
 </head>
 <body>
@@ -211,10 +810,82 @@
       </span>
     </div>
     <div class="flex items-center gap-2">
-      <button class="btn btn-ghost btn-icon">
+      <!-- Connection Quality Indicator -->
+      <a href="live-020-connection-quality.html" class="connection-indicator connection-good" title="연결 품질: 우수">
+        <div class="signal-bars">
+          <div class="signal-bar active" style="height: 4px;"></div>
+          <div class="signal-bar active" style="height: 8px;"></div>
+          <div class="signal-bar active" style="height: 12px;"></div>
+          <div class="signal-bar active" style="height: 16px;"></div>
+        </div>
+        <span class="text-xs">우수</span>
+      </a>
+      <div class="layout-dropdown">
+        <button class="btn btn-outline btn-sm" onclick="openLayoutPopup()">
+          <i data-lucide="user" class="icon-sm"></i>
+          발표자
+          <i data-lucide="chevron-down" class="icon-xs ml-1"></i>
+        </button>
+        <!-- Layout Popup -->
+        <div class="layout-popup" id="layoutPopup">
+          <div class="popup-header">
+            <div class="header-title">
+              <i data-lucide="layout-grid" class="icon-sm" style="color: hsl(var(--brand-primary))"></i>
+              <span class="font-semibold text-sm">레이아웃 선택</span>
+            </div>
+            <button class="close-btn" onclick="closeLayoutPopup()" title="닫기">
+              <i data-lucide="x" class="icon-sm"></i>
+            </button>
+          </div>
+          <div class="popup-content">
+            <a href="live-017-grid-view.html" class="layout-option">
+              <div class="layout-icon">
+                <i data-lucide="layout-grid" class="icon-sm text-muted"></i>
+              </div>
+              <div class="layout-info">
+                <div class="layout-name">그리드 뷰</div>
+                <div class="layout-desc">모든 참가자를 균등하게 표시</div>
+              </div>
+            </a>
+            <div class="layout-option selected">
+              <div class="layout-icon">
+                <i data-lucide="user" class="icon-sm text-muted"></i>
+              </div>
+              <div class="layout-info">
+                <div class="layout-name">발표자 뷰</div>
+                <div class="layout-desc">발표자 크게, 나머지 작게</div>
+              </div>
+              <i data-lucide="check" class="icon-sm layout-check"></i>
+            </div>
+            <div class="layout-option">
+              <div class="layout-icon">
+                <i data-lucide="focus" class="icon-sm text-muted"></i>
+              </div>
+              <div class="layout-info">
+                <div class="layout-name">스포트라이트</div>
+                <div class="layout-desc">특정 참가자만 강조</div>
+              </div>
+            </div>
+          </div>
+          <!-- Professor Only Section -->
+          <div class="professor-section">
+            <div class="professor-title">교수 전용 (전체 강제 적용)</div>
+            <div class="lock-option">
+              <div class="layout-icon">
+                <i data-lucide="lock" class="icon-sm text-muted"></i>
+              </div>
+              <div class="layout-info">
+                <div class="layout-name">전체 레이아웃 고정</div>
+                <div class="layout-desc">모든 참가자에게 동일 레이아웃 적용</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-icon" title="설정">
         <i data-lucide="settings" class="icon-md"></i>
       </button>
-      <button class="btn btn-destructive btn-sm">세션 종료</button>
+      <button class="btn btn-destructive btn-sm" onclick="location.href='live-022-end-session.html'">세션 종료</button>
     </div>
   </header>
 
@@ -222,7 +893,7 @@
     <!-- Video Area -->
     <div class="video-area">
       <!-- Main Video -->
-      <div class="main-video">
+      <div class="main-video" id="mainVideo">
         <div class="text-center">
           <div class="avatar avatar-xl mb-2">
             <i data-lucide="user" class="icon-xl"></i>
@@ -239,6 +910,13 @@
       <!-- Participant Strip -->
       <div class="participant-strip">
         <div class="participant-tile">
+          <!-- Connection Quality: Good -->
+          <div class="tile-signal" style="color: hsl(var(--success));" title="연결: 우수">
+            <div class="signal-bar active" style="height: 3px;"></div>
+            <div class="signal-bar active" style="height: 6px;"></div>
+            <div class="signal-bar active" style="height: 9px;"></div>
+            <div class="signal-bar active" style="height: 12px;"></div>
+          </div>
           <div class="avatar avatar-sm">
             <i data-lucide="user" class="icon-sm"></i>
           </div>
@@ -252,6 +930,13 @@
           </div>
         </div>
         <div class="participant-tile">
+          <!-- Connection Quality: Good -->
+          <div class="tile-signal" style="color: hsl(var(--success));" title="연결: 우수">
+            <div class="signal-bar active" style="height: 3px;"></div>
+            <div class="signal-bar active" style="height: 6px;"></div>
+            <div class="signal-bar active" style="height: 9px;"></div>
+            <div class="signal-bar active" style="height: 12px;"></div>
+          </div>
           <div class="avatar avatar-sm">
             <i data-lucide="user" class="icon-sm"></i>
           </div>
@@ -265,6 +950,13 @@
           </div>
         </div>
         <div class="participant-tile">
+          <!-- Connection Quality: Fair -->
+          <div class="tile-signal" style="color: hsl(var(--warning));" title="연결: 보통">
+            <div class="signal-bar active" style="height: 3px;"></div>
+            <div class="signal-bar active" style="height: 6px;"></div>
+            <div class="signal-bar inactive" style="height: 9px;"></div>
+            <div class="signal-bar inactive" style="height: 12px;"></div>
+          </div>
           <div class="avatar avatar-sm">
             <i data-lucide="user" class="icon-sm"></i>
           </div>
@@ -274,7 +966,14 @@
             <i data-lucide="video" class="icon-xs" style="color: hsl(var(--success))"></i>
           </div>
         </div>
-        <div class="participant-tile">
+        <div class="participant-tile" onclick="openNetworkWarningModal()" style="cursor: pointer;">
+          <!-- Connection Quality: Poor -->
+          <div class="tile-signal" style="color: hsl(var(--destructive));" title="연결: 불량 - 클릭하여 상세 보기">
+            <div class="signal-bar active" style="height: 3px;"></div>
+            <div class="signal-bar inactive" style="height: 6px;"></div>
+            <div class="signal-bar inactive" style="height: 9px;"></div>
+            <div class="signal-bar inactive" style="height: 12px;"></div>
+          </div>
           <div class="avatar avatar-sm">
             <i data-lucide="user" class="icon-sm"></i>
           </div>
@@ -297,7 +996,7 @@
         <button class="control-btn active" title="카메라 ON">
           <i data-lucide="video" class="icon-md"></i>
         </button>
-        <button class="control-btn inactive" title="화면 공유">
+        <button class="control-btn inactive" title="화면 공유" onclick="openScreenSharePopup()">
           <i data-lucide="monitor" class="icon-md"></i>
         </button>
         <button class="control-btn active" title="녹화 중">
@@ -306,34 +1005,41 @@
 
         <div class="control-divider"></div>
 
-        <button class="control-btn inactive" title="투표">
+        <a href="../e4-active/poll-001-create-poll.html" class="control-btn inactive" title="투표">
           <i data-lucide="bar-chart-2" class="icon-md"></i>
-        </button>
-        <button class="control-btn inactive" title="퀴즈">
+        </a>
+        <a href="../e4-active/quiz-001-question-bank.html" class="control-btn inactive" title="퀴즈">
           <i data-lucide="help-circle" class="icon-md"></i>
-        </button>
-        <button class="control-btn inactive" title="분반">
+        </a>
+        <button class="control-btn inactive" title="분반" onclick="openBreakoutPopup()">
           <i data-lucide="users" class="icon-md"></i>
         </button>
         <button class="control-btn inactive" title="손들기">
           <i data-lucide="hand" class="icon-md"></i>
         </button>
+        <button class="control-btn inactive" title="이모지" onclick="openReactionPopup()">
+          <i data-lucide="smile" class="icon-md"></i>
+        </button>
+        <button class="control-btn inactive" title="실시간 참여도" onclick="openAnalyticsPopup()">
+          <i data-lucide="bar-chart-3" class="icon-md"></i>
+        </button>
 
         <div class="control-divider"></div>
 
-        <button class="control-btn danger" title="종료">
+        <a href="live-022-end-session.html" class="control-btn danger" title="종료">
           <i data-lucide="phone-off" class="icon-md"></i>
-        </button>
+        </a>
       </div>
     </div>
 
     <!-- Side Panel -->
     <div class="side-panel">
       <div class="panel-tabs">
-        <div class="panel-tab active">참여자</div>
-        <div class="panel-tab">채팅</div>
+        <div class="panel-tab active" onclick="showTab('participants')">참여자</div>
+        <div class="panel-tab" onclick="showTab('chat')">채팅</div>
       </div>
-      <div class="panel-content">
+      <!-- Participants Tab -->
+      <div class="panel-content" id="participantsTab">
         <!-- Hand Raise Queue -->
         <div class="mb-4">
           <div class="text-sm font-semibold mb-2 flex items-center gap-2">
@@ -365,6 +1071,15 @@
         </div>
 
         <div class="separator my-3"></div>
+
+        <!-- Waiting Room -->
+        <div class="mb-3">
+          <a href="live-004-waiting-manage.html" class="btn btn-outline btn-sm w-full flex items-center justify-center gap-2">
+            <i data-lucide="clock" class="icon-sm"></i>
+            대기실 관리
+            <span class="badge badge-warning" style="margin-left: auto;">3</span>
+          </a>
+        </div>
 
         <!-- All Participants -->
         <div class="text-sm font-semibold mb-2">전체 (26)</div>
@@ -398,6 +1113,9 @@
             <div class="text-sm font-medium">이민준</div>
           </div>
           <div class="flex gap-1">
+            <button class="btn btn-ghost btn-icon btn-sm" onclick="openDmPopup('이민준')" title="1:1 메시지">
+              <i data-lucide="message-circle" class="icon-xs"></i>
+            </button>
             <i data-lucide="mic" class="icon-sm" style="color: hsl(var(--success))"></i>
             <i data-lucide="video" class="icon-sm" style="color: hsl(var(--success))"></i>
           </div>
@@ -410,8 +1128,509 @@
             <div class="text-sm font-medium">박서연</div>
           </div>
           <div class="flex gap-1">
+            <button class="btn btn-ghost btn-icon btn-sm" onclick="openDmPopup('박서연')" title="1:1 메시지">
+              <i data-lucide="message-circle" class="icon-xs"></i>
+            </button>
             <i data-lucide="mic" class="icon-sm" style="color: hsl(var(--success))"></i>
             <i data-lucide="video" class="icon-sm" style="color: hsl(var(--success))"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Tab -->
+      <div class="panel-content" id="chatTab" style="display: none;">
+        <div class="chat-messages" style="flex: 1; overflow-y: auto;">
+          <!-- System Message -->
+          <div class="system-message">
+            세션이 시작되었습니다
+          </div>
+
+          <!-- Professor Message -->
+          <div class="chat-message">
+            <div class="chat-header">
+              <span class="chat-sender professor">김철수 (교수)</span>
+              <span class="chat-time">10:05</span>
+            </div>
+            <div class="chat-bubble">
+              오늘은 마케팅 믹스 4P에 대해 알아보겠습니다.
+            </div>
+          </div>
+
+          <!-- Student Message -->
+          <div class="chat-message">
+            <div class="chat-header">
+              <span class="chat-sender" onclick="openDmPopup('박서연')" style="cursor: pointer;">박서연</span>
+              <span class="chat-time">10:08</span>
+            </div>
+            <div class="chat-bubble">
+              교수님, Price와 관련해서 질문이 있습니다!
+            </div>
+          </div>
+
+          <!-- File Share Message -->
+          <div class="chat-message">
+            <div class="chat-header">
+              <span class="chat-sender professor">김철수 (교수)</span>
+              <span class="chat-time">10:20</span>
+            </div>
+            <div class="file-bubble">
+              <div class="flex items-center gap-2 mb-2">
+                <i data-lucide="paperclip" class="icon-sm text-muted"></i>
+                <span class="text-sm">참고자료를 공유합니다</span>
+              </div>
+              <div class="file-card">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="file-text" class="icon-md" style="color: hsl(var(--destructive))"></i>
+                  <div>
+                    <div class="text-sm font-medium">마케팅4P_자료.pdf</div>
+                    <div class="text-xs text-muted">2.5MB</div>
+                  </div>
+                </div>
+                <button class="btn btn-outline btn-sm w-full mt-2">
+                  <i data-lucide="download" class="icon-xs"></i>
+                  다운로드
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="chat-input-area">
+          <input type="text" class="input input-sm" placeholder="메시지를 입력하세요...">
+          <div class="chat-input-actions">
+            <button class="btn btn-ghost btn-icon btn-sm" onclick="openFileSharePopup()" title="파일 공유">
+              <i data-lucide="paperclip" class="icon-sm"></i>
+            </button>
+            <button class="btn btn-ghost btn-icon btn-sm" title="이모지">
+              <i data-lucide="smile" class="icon-sm"></i>
+            </button>
+            <button class="btn btn-primary btn-icon btn-sm">
+              <i data-lucide="send" class="icon-sm"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DM Popup -->
+  <div class="dm-popup" id="dmPopup">
+    <div class="popup-header">
+      <div class="header-title">
+        <div class="avatar avatar-sm">
+          <i data-lucide="user" class="icon-sm"></i>
+        </div>
+        <span class="font-semibold text-sm" id="dmRecipient">박서연</span>
+        <span class="badge badge-outline text-xs">1:1</span>
+      </div>
+      <button class="close-btn" onclick="closeDmPopup()" title="닫기">
+        <i data-lucide="x" class="icon-sm"></i>
+      </button>
+    </div>
+    <div class="dm-messages">
+      <div class="dm-message mine">
+        <div class="dm-bubble">안녕하세요, 질문이 있으신가요?</div>
+      </div>
+      <div class="dm-message">
+        <div class="dm-bubble">네, 과제 제출 기한에 대해 여쭤볼게요!</div>
+      </div>
+      <div class="dm-message mine">
+        <div class="dm-bubble">네, 말씀해주세요.</div>
+      </div>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" class="input input-sm" placeholder="메시지를 입력하세요...">
+      <div class="chat-input-actions">
+        <button class="btn btn-ghost btn-icon btn-sm">
+          <i data-lucide="paperclip" class="icon-sm"></i>
+        </button>
+        <button class="btn btn-primary btn-icon btn-sm">
+          <i data-lucide="send" class="icon-sm"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- File Share Popup -->
+  <div class="file-share-popup" id="fileSharePopup">
+    <div class="popup-header">
+      <div class="header-title">
+        <i data-lucide="paperclip" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        <span class="font-semibold text-sm">파일 공유</span>
+      </div>
+      <button class="close-btn" onclick="closeFileSharePopup()" title="닫기">
+        <i data-lucide="x" class="icon-sm"></i>
+      </button>
+    </div>
+    <div class="popup-content">
+      <div class="file-drop-zone">
+        <i data-lucide="upload" class="icon-lg text-muted mb-2"></i>
+        <p class="text-sm text-muted">파일을 드래그하거나</p>
+        <p class="text-sm text-muted">클릭하여 선택하세요</p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-outline btn-sm flex-1" onclick="closeFileSharePopup()">취소</button>
+        <button class="btn btn-primary btn-sm flex-1">공유</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reaction Popup -->
+  <div class="reaction-popup" id="reactionPopup">
+    <div class="flex items-center justify-between mb-3">
+      <span class="font-semibold text-sm">반응</span>
+      <button class="close-btn" onclick="closeReactionPopup()" title="닫기">
+        <i data-lucide="x" class="icon-sm"></i>
+      </button>
+    </div>
+    <div class="reaction-grid mb-3">
+      <button class="reaction-btn" onclick="sendReaction('👍')">
+        <span class="reaction-emoji">👍</span>
+        <span class="reaction-label">좋아요</span>
+      </button>
+      <button class="reaction-btn" onclick="sendReaction('👏')">
+        <span class="reaction-emoji">👏</span>
+        <span class="reaction-label">박수</span>
+      </button>
+      <button class="reaction-btn" onclick="sendReaction('❓')">
+        <span class="reaction-emoji">❓</span>
+        <span class="reaction-label">질문</span>
+      </button>
+      <button class="reaction-btn" onclick="sendReaction('🎉')">
+        <span class="reaction-emoji">🎉</span>
+        <span class="reaction-label">축하</span>
+      </button>
+      <button class="reaction-btn" onclick="sendReaction('💡')">
+        <span class="reaction-emoji">💡</span>
+        <span class="reaction-label">아이디어</span>
+      </button>
+    </div>
+    <div class="reaction-grid">
+      <button class="reaction-btn" onclick="sendReaction('😊')">
+        <span class="reaction-emoji">😊</span>
+        <span class="reaction-label">웃음</span>
+      </button>
+      <button class="reaction-btn" onclick="sendReaction('😢')">
+        <span class="reaction-emoji">😢</span>
+        <span class="reaction-label">슬픔</span>
+      </button>
+      <button class="reaction-btn" onclick="sendReaction('😮')">
+        <span class="reaction-emoji">😮</span>
+        <span class="reaction-label">놀람</span>
+      </button>
+      <button class="reaction-btn" onclick="sendReaction('🤔')">
+        <span class="reaction-emoji">🤔</span>
+        <span class="reaction-label">생각</span>
+      </button>
+      <button class="reaction-btn" onclick="sendReaction('❤️')">
+        <span class="reaction-emoji">❤️</span>
+        <span class="reaction-label">좋아</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Screen Share Select Popup -->
+  <div class="screen-share-popup" id="screenSharePopup">
+    <div class="popup-header">
+      <div class="header-title">
+        <i data-lucide="monitor" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        <span class="font-semibold text-sm">화면 공유</span>
+      </div>
+      <button class="close-btn" onclick="closeScreenSharePopup()" title="닫기">
+        <i data-lucide="x" class="icon-sm"></i>
+      </button>
+    </div>
+    <div class="popup-content">
+      <p class="text-xs text-muted mb-3">공유할 화면을 선택하세요</p>
+
+      <div class="text-xs font-semibold text-muted mb-2">전체 화면</div>
+      <div class="screen-options-grid mb-3">
+        <div class="screen-option selected" onclick="selectScreen(this)">
+          <div class="screen-preview">
+            <i data-lucide="monitor" class="icon-md text-muted"></i>
+          </div>
+          <div class="text-xs">모니터 1</div>
+        </div>
+        <div class="screen-option" onclick="selectScreen(this)">
+          <div class="screen-preview">
+            <i data-lucide="monitor" class="icon-md text-muted"></i>
+          </div>
+          <div class="text-xs">모니터 2</div>
+        </div>
+      </div>
+
+      <div class="text-xs font-semibold text-muted mb-2">애플리케이션</div>
+      <div class="screen-options-grid mb-3">
+        <div class="screen-option" onclick="selectScreen(this)">
+          <div class="screen-preview">
+            <i data-lucide="presentation" class="icon-md text-muted"></i>
+          </div>
+          <div class="text-xs">마케팅4P.pptx</div>
+        </div>
+        <div class="screen-option" onclick="selectScreen(this)">
+          <div class="screen-preview">
+            <i data-lucide="globe" class="icon-md text-muted"></i>
+          </div>
+          <div class="text-xs">Chrome</div>
+        </div>
+      </div>
+
+      <label class="flex items-center gap-2 mb-3">
+        <input type="checkbox" class="checkbox">
+        <span class="text-xs">시스템 오디오 공유</span>
+      </label>
+
+      <div class="flex gap-2">
+        <button class="btn btn-outline btn-sm flex-1" onclick="closeScreenSharePopup()">취소</button>
+        <button class="btn btn-primary btn-sm flex-1" onclick="location.href='live-008-screen-sharing.html'">공유 시작</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Breakout Room Setup Popup -->
+  <div class="breakout-popup-overlay" id="breakoutPopup" style="position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); display: none; align-items: center; justify-content: center; z-index: 2000;">
+    <div class="breakout-popup-content" style="background: hsl(var(--card)); border-radius: var(--radius-lg); width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-4); border-bottom: 1px solid hsl(var(--border)); position: sticky; top: 0; background: hsl(var(--card));">
+        <div class="flex items-center gap-2">
+          <i data-lucide="users" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+          <h2 class="font-semibold">분반 설정</h2>
+        </div>
+        <button class="btn btn-ghost btn-icon btn-sm" onclick="closeBreakoutPopup()">
+          <i data-lucide="x" class="icon-sm"></i>
+        </button>
+      </div>
+
+      <div style="padding: var(--spacing-4);">
+        <div style="display: flex; align-items: center; gap: var(--spacing-2); margin-bottom: var(--spacing-4);">
+          <label class="text-sm font-medium">분반 수:</label>
+          <input type="number" class="input" value="5" min="2" max="10" style="width: 80px; text-align: center;">
+          <span class="text-sm text-muted">개</span>
+        </div>
+
+        <div style="margin-bottom: var(--spacing-4);">
+          <label class="text-sm font-medium mb-2 block">배정 방식</label>
+          <div style="display: flex; align-items: center; gap: var(--spacing-2); padding: var(--spacing-2) 0; font-size: var(--text-sm);">
+            <input type="radio" name="assignment" checked>
+            <span>자동 (랜덤)</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: var(--spacing-2); padding: var(--spacing-2) 0; font-size: var(--text-sm);">
+            <input type="radio" name="assignment">
+            <span>자동 (균등 분배)</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: var(--spacing-2); padding: var(--spacing-2) 0; font-size: var(--text-sm);">
+            <input type="radio" name="assignment">
+            <span>자동 (성적 기반 혼합)</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: var(--spacing-2); padding: var(--spacing-2) 0; font-size: var(--text-sm);">
+            <input type="radio" name="assignment">
+            <span>수동 배정</span>
+          </div>
+        </div>
+
+        <div class="separator my-4"></div>
+
+        <div style="margin-bottom: var(--spacing-4);">
+          <div class="font-medium mb-2">미리보기</div>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-2);">
+            <div style="background: hsl(var(--muted) / 0.3); border-radius: var(--radius-md); padding: var(--spacing-3);">
+              <div style="font-weight: 500; font-size: var(--text-sm); margin-bottom: var(--spacing-2); color: hsl(var(--brand-primary));">분반 1 (5명)</div>
+              <div style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); padding: var(--spacing-1) 0;">이민준</div>
+              <div style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); padding: var(--spacing-1) 0;">박서연</div>
+              <div style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); padding: var(--spacing-1) 0;">정도윤</div>
+              <div style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); padding: var(--spacing-1) 0;">...</div>
+            </div>
+            <div style="background: hsl(var(--muted) / 0.3); border-radius: var(--radius-md); padding: var(--spacing-3);">
+              <div style="font-weight: 500; font-size: var(--text-sm); margin-bottom: var(--spacing-2); color: hsl(var(--brand-primary));">분반 2 (5명)</div>
+              <div style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); padding: var(--spacing-1) 0;">강수아</div>
+              <div style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); padding: var(--spacing-1) 0;">김민수</div>
+              <div style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); padding: var(--spacing-1) 0;">최유진</div>
+              <div style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); padding: var(--spacing-1) 0;">...</div>
+            </div>
+            <div style="background: hsl(var(--muted) / 0.3); border-radius: var(--radius-md); padding: var(--spacing-3);">
+              <div style="font-weight: 500; font-size: var(--text-sm); margin-bottom: var(--spacing-2); color: hsl(var(--brand-primary));">분반 3 (5명)</div>
+              <div style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); padding: var(--spacing-1) 0;">유지원</div>
+              <div style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); padding: var(--spacing-1) 0;">장민호</div>
+              <div style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); padding: var(--spacing-1) 0;">...</div>
+            </div>
+            <div style="background: hsl(var(--muted) / 0.3); border-radius: var(--radius-md); padding: var(--spacing-3);">
+              <div style="font-weight: 500; font-size: var(--text-sm); margin-bottom: var(--spacing-2); color: hsl(var(--brand-primary));">분반 4 (5명)</div>
+              <div style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); padding: var(--spacing-1) 0;">임수빈</div>
+              <div style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); padding: var(--spacing-1) 0;">조현우</div>
+              <div style="font-size: var(--text-xs); color: hsl(var(--muted-foreground)); padding: var(--spacing-1) 0;">...</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="separator my-4"></div>
+
+        <div style="background: hsl(var(--muted) / 0.3); border-radius: var(--radius-md); padding: var(--spacing-3); margin-bottom: var(--spacing-4);">
+          <label class="text-sm font-medium mb-2 block">설정</label>
+          <div style="display: flex; align-items: center; gap: var(--spacing-2); margin-bottom: var(--spacing-2);">
+            <i data-lucide="clock" class="icon-sm text-muted"></i>
+            <span class="text-sm">토론 시간:</span>
+            <input type="number" class="input" value="10" style="width: 60px;">
+            <span class="text-sm">분</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: var(--spacing-2); margin-top: var(--spacing-2);">
+            <label style="display: flex; align-items: center; gap: var(--spacing-2); font-size: var(--text-sm);">
+              <input type="checkbox" checked>
+              <span>타이머 표시</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: var(--spacing-2); font-size: var(--text-sm);">
+              <input type="checkbox" checked>
+              <span>1분 전 알림</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: var(--spacing-2); font-size: var(--text-sm);">
+              <input type="checkbox">
+              <span>자동 복귀</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="text-sm font-medium mb-2 block">토론 주제 (선택)</label>
+          <textarea class="input" rows="2" placeholder="토론 주제를 입력하세요">마케팅 전략 사례 분석</textarea>
+        </div>
+      </div>
+
+      <div style="padding: var(--spacing-4); border-top: 1px solid hsl(var(--border)); display: flex; justify-content: space-between; position: sticky; bottom: 0; background: hsl(var(--card));">
+        <button class="btn btn-ghost" onclick="closeBreakoutPopup()">취소</button>
+        <div class="flex gap-2">
+          <a href="../e4-active/brk-002-manual-assign.html" class="btn btn-outline">
+            <i data-lucide="shuffle" class="icon-sm"></i>
+            재배정
+          </a>
+          <a href="../e4-active/brk-003-monitor.html" class="btn btn-primary">분반 시작</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Network Warning Modal -->
+  <div class="network-warning-modal" id="networkWarningModal">
+    <div class="network-warning-content">
+      <div class="network-warning-header">
+        <i data-lucide="wifi-off" class="icon-md" style="color: hsl(var(--destructive))"></i>
+        <span class="font-semibold">네트워크 연결 불안정</span>
+      </div>
+      <div class="network-warning-body">
+        <p class="text-sm mb-3">
+          <strong>강수아</strong> 학생의 네트워크 연결이 불안정합니다.
+        </p>
+        <p class="text-sm text-muted mb-3">
+          비디오 품질이 자동으로 낮아질 수 있습니다.
+        </p>
+        <div class="bg-muted/30 p-3 rounded-md">
+          <p class="text-sm font-medium mb-2">권장 조치:</p>
+          <ul class="text-sm text-muted space-y-1">
+            <li class="flex items-center gap-2">
+              <i data-lucide="wifi" class="icon-xs"></i>
+              Wi-Fi 연결 확인
+            </li>
+            <li class="flex items-center gap-2">
+              <i data-lucide="refresh-cw" class="icon-xs"></i>
+              다른 네트워크로 전환
+            </li>
+            <li class="flex items-center gap-2">
+              <i data-lucide="video-off" class="icon-xs"></i>
+              비디오 OFF로 전환
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="network-warning-footer">
+        <button class="btn btn-outline btn-sm" onclick="closeNetworkWarningModal()">무시</button>
+        <a href="live-021-network-warning.html" class="btn btn-primary btn-sm">상세 보기</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mini Analytics Popup -->
+  <div class="analytics-popup" id="analyticsPopup">
+    <header class="popup-header">
+      <div class="header-title">
+        <i data-lucide="bar-chart-2" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+        <span class="font-semibold text-sm">실시간 참여도</span>
+        <span class="session-time">45:23</span>
+      </div>
+      <div class="header-actions">
+        <div class="view-toggle">
+          <button class="view-btn active">미니 뷰</button>
+          <a href="../e6-analytics/analytics-001-realtime.html" class="view-btn">전체 뷰</a>
+        </div>
+        <button class="close-btn" onclick="closeAnalyticsPopup()" title="닫기">
+          <i data-lucide="x" class="icon-sm"></i>
+        </button>
+      </div>
+    </header>
+    <div class="popup-content">
+      <!-- 전체 참여 현황 -->
+      <div class="mini-overview-card">
+        <div class="flex items-center gap-2 mb-2">
+          <i data-lucide="trending-up" class="icon-sm" style="color: hsl(var(--brand-primary))"></i>
+          <span class="font-semibold text-sm">전체 참여 현황</span>
+        </div>
+        <div class="mini-stats-grid">
+          <div class="mini-stat-item">
+            <div class="mini-stat-value">94%</div>
+            <div class="mini-stat-label">참여율</div>
+          </div>
+          <div class="mini-stat-item">
+            <div class="mini-stat-value">2.3</div>
+            <div class="mini-stat-label">평균발언</div>
+          </div>
+          <div class="mini-stat-item">
+            <div class="mini-stat-value">45/48</div>
+            <div class="mini-stat-label">활성참가</div>
+          </div>
+        </div>
+        <div class="mini-chart">
+          <div class="text-xs text-muted mb-1">참여 트렌드 (30분)</div>
+          <div class="text-xs text-muted text-center" style="padding-top: 20px;">
+            [실시간 참여율 차트]
+          </div>
+        </div>
+      </div>
+
+      <!-- 학생별 발언 시간 -->
+      <div class="mini-talktime-card">
+        <div class="mini-talktime-header">
+          <div class="flex items-center gap-2">
+            <i data-lucide="mic" class="icon-sm" style="color: hsl(var(--brand-primary))"></i>
+            <span class="font-semibold text-sm">발언 시간</span>
+          </div>
+        </div>
+        <div class="mini-talktime-content">
+          <div class="student-bar">
+            <span class="student-name">이영희</span>
+            <div class="bar-container"><div class="bar-fill high" style="width: 87%;"></div></div>
+            <span class="time-value">8:45</span>
+          </div>
+          <div class="student-bar">
+            <span class="student-name">김철수</span>
+            <div class="bar-container"><div class="bar-fill high" style="width: 72%;"></div></div>
+            <span class="time-value">7:12</span>
+          </div>
+          <div class="student-bar">
+            <span class="student-name">박민수</span>
+            <div class="bar-container"><div class="bar-fill" style="width: 55%;"></div></div>
+            <span class="time-value">5:30</span>
+          </div>
+          <div class="student-bar">
+            <span class="student-name">조민준</span>
+            <div class="bar-container"><div class="bar-fill warning" style="width: 14%;"></div></div>
+            <span class="time-value">1:25</span>
+          </div>
+          <div class="student-bar">
+            <span class="student-name">권태희</span>
+            <div class="bar-container"><div class="bar-fill danger" style="width: 1%;"></div></div>
+            <span class="time-value">0:12</span>
+          </div>
+
+          <div class="mini-alert">
+            <i data-lucide="alert-circle" class="icon-xs"></i>
+            <span><strong>30분+ 무참여:</strong> 권태희, 오지훈, 백승민</span>
           </div>
         </div>
       </div>
@@ -420,6 +1639,156 @@
 
   <script>
     lucide.createIcons();
+
+    const analyticsPopup = document.getElementById('analyticsPopup');
+    const screenSharePopup = document.getElementById('screenSharePopup');
+
+    function openAnalyticsPopup() {
+      analyticsPopup.classList.add('show');
+      lucide.createIcons();
+    }
+
+    function closeAnalyticsPopup() {
+      analyticsPopup.classList.remove('show');
+    }
+
+    function openScreenSharePopup() {
+      screenSharePopup.classList.add('show');
+      lucide.createIcons();
+    }
+
+    function closeScreenSharePopup() {
+      screenSharePopup.classList.remove('show');
+    }
+
+    function selectScreen(element) {
+      document.querySelectorAll('.screen-option').forEach(opt => opt.classList.remove('selected'));
+      element.classList.add('selected');
+    }
+
+    // Tab switching
+    function showTab(tabName) {
+      const participantsTab = document.getElementById('participantsTab');
+      const chatTab = document.getElementById('chatTab');
+      const tabs = document.querySelectorAll('.panel-tab');
+
+      tabs.forEach(tab => tab.classList.remove('active'));
+
+      if (tabName === 'participants') {
+        participantsTab.style.display = 'block';
+        chatTab.style.display = 'none';
+        tabs[0].classList.add('active');
+      } else {
+        participantsTab.style.display = 'none';
+        chatTab.style.display = 'flex';
+        chatTab.style.flexDirection = 'column';
+        tabs[1].classList.add('active');
+      }
+      lucide.createIcons();
+    }
+
+    // DM Popup
+    const dmPopup = document.getElementById('dmPopup');
+    function openDmPopup(name) {
+      document.getElementById('dmRecipient').textContent = name;
+      dmPopup.classList.add('show');
+      lucide.createIcons();
+    }
+    function closeDmPopup() {
+      dmPopup.classList.remove('show');
+    }
+
+    // File Share Popup
+    const fileSharePopup = document.getElementById('fileSharePopup');
+    function openFileSharePopup() {
+      fileSharePopup.classList.add('show');
+      lucide.createIcons();
+    }
+    function closeFileSharePopup() {
+      fileSharePopup.classList.remove('show');
+    }
+
+    // Reaction Popup
+    const reactionPopup = document.getElementById('reactionPopup');
+    function openReactionPopup() {
+      reactionPopup.classList.add('show');
+      lucide.createIcons();
+    }
+    function closeReactionPopup() {
+      reactionPopup.classList.remove('show');
+    }
+    function sendReaction(emoji) {
+      closeReactionPopup();
+      const mainVideo = document.getElementById('mainVideo');
+      // Create multiple floating reactions
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+          createFloatingReaction(mainVideo, emoji);
+        }, i * 150);
+      }
+    }
+    function createFloatingReaction(container, emoji) {
+      const reaction = document.createElement('div');
+      reaction.className = 'floating-reaction';
+      reaction.textContent = emoji;
+      // Random horizontal position
+      const randomX = Math.random() * 80 + 10; // 10% to 90%
+      reaction.style.left = randomX + '%';
+      reaction.style.bottom = '20%';
+      container.appendChild(reaction);
+      // Remove after animation
+      setTimeout(() => {
+        reaction.remove();
+      }, 3000);
+    }
+
+    // Layout Popup
+    const layoutPopup = document.getElementById('layoutPopup');
+    function openLayoutPopup() {
+      layoutPopup.classList.add('show');
+      lucide.createIcons();
+    }
+    function closeLayoutPopup() {
+      layoutPopup.classList.remove('show');
+    }
+
+    // Network Warning Modal
+    const networkWarningModal = document.getElementById('networkWarningModal');
+    function openNetworkWarningModal() {
+      networkWarningModal.classList.add('show');
+      lucide.createIcons();
+    }
+    function closeNetworkWarningModal() {
+      networkWarningModal.classList.remove('show');
+    }
+    // Close modal when clicking outside
+    networkWarningModal.addEventListener('click', function(e) {
+      if (e.target === networkWarningModal) {
+        closeNetworkWarningModal();
+      }
+    });
+
+    // Breakout Room Popup
+    const breakoutPopup = document.getElementById('breakoutPopup');
+    function openBreakoutPopup() {
+      breakoutPopup.style.display = 'flex';
+      lucide.createIcons();
+    }
+    function closeBreakoutPopup() {
+      breakoutPopup.style.display = 'none';
+    }
+    // Close popup when clicking outside
+    breakoutPopup.addEventListener('click', function(e) {
+      if (e.target === breakoutPopup) {
+        closeBreakoutPopup();
+      }
+    });
+
+    // URL 파라미터로 미니뷰 자동 열기
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('analytics') === 'mini') {
+      openAnalyticsPopup();
+    }
   </script>
 </body>
 </html>

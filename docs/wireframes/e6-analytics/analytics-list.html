@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>학습 분석 - EduForum</title>
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-4);
+    }
+    .analytics-card {
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-5);
+      transition: all 0.2s ease;
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+    .analytics-card:hover {
+      border-color: hsl(var(--brand-primary));
+      box-shadow: 0 4px 12px hsl(var(--brand-primary) / 0.1);
+    }
+    .analytics-card-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+      margin-bottom: var(--spacing-3);
+    }
+    .analytics-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .analytics-icon.blue {
+      background: hsl(var(--brand-primary) / 0.1);
+      color: hsl(var(--brand-primary));
+    }
+    .analytics-icon.green {
+      background: hsl(var(--success) / 0.1);
+      color: hsl(var(--success));
+    }
+    .analytics-icon.orange {
+      background: hsl(var(--warning) / 0.1);
+      color: hsl(var(--warning));
+    }
+    .analytics-icon.purple {
+      background: hsl(262 83% 58% / 0.1);
+      color: hsl(262 83% 58%);
+    }
+    .analytics-card-title {
+      font-weight: var(--font-semibold);
+      font-size: var(--text-lg);
+    }
+    .analytics-card-desc {
+      font-size: var(--text-sm);
+      color: hsl(var(--muted-foreground));
+      margin-bottom: var(--spacing-3);
+    }
+    .analytics-card-meta {
+      display: flex;
+      gap: var(--spacing-2);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="../index.html" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="../e2-course/dashboard.html" class="nav-link">대시보드</a>
+        <a href="../e2-course/crs-001-course-list.html" class="nav-link">내 코스</a>
+        <a href="analytics-list.html" class="nav-link active">분석</a>
+        <a href="../e1-auth/profile-001-settings.html" class="nav-link">프로필</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-icon">
+          <i data-lucide="bell" class="icon-md"></i>
+        </button>
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">김교수</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container py-8">
+    <h1 class="text-2xl font-bold mb-2">학습 분석</h1>
+    <p class="text-muted mb-6">코스 분석, 학생 리포트, 조기 경보 시스템</p>
+
+    <div class="analytics-grid">
+      <!-- 코스 분석 리포트 -->
+      <a href="report-002-course.html" class="analytics-card">
+        <div class="analytics-card-header">
+          <div class="analytics-icon blue">
+            <i data-lucide="bar-chart-3" class="icon-lg"></i>
+          </div>
+          <div class="analytics-card-title">코스 분석 리포트</div>
+        </div>
+        <div class="analytics-card-desc">
+          코스 전체 개요, 주차별 참여도 트렌드, 성적 분포, 참여도-성적 상관관계 분석
+        </div>
+        <div class="analytics-card-meta">
+          <span class="badge badge-primary">교수용</span>
+          <span class="badge badge-outline">리포트</span>
+        </div>
+      </a>
+
+      <!-- 개인별 학습 리포트 -->
+      <a href="report-001-personal.html" class="analytics-card">
+        <div class="analytics-card-header">
+          <div class="analytics-icon green">
+            <i data-lucide="user" class="icon-lg"></i>
+          </div>
+          <div class="analytics-card-title">개인별 학습 리포트</div>
+        </div>
+        <div class="analytics-card-desc">
+          학기 종합 분석, 주차별 추이, 강점/약점 분석, 클래스 내 위치 확인
+        </div>
+        <div class="analytics-card-meta">
+          <span class="badge badge-success">학생용</span>
+          <span class="badge badge-outline">리포트</span>
+        </div>
+      </a>
+
+      <!-- 학업 위험 학생 관리 -->
+      <a href="alert-001-dashboard.html" class="analytics-card">
+        <div class="analytics-card-header">
+          <div class="analytics-icon orange">
+            <i data-lucide="alert-triangle" class="icon-lg"></i>
+          </div>
+          <div class="analytics-card-title">학업 위험 학생 관리</div>
+        </div>
+        <div class="analytics-card-desc">
+          위험/주의/정상 현황 요약, 위험 학생 목록, 권장 조치 안내, 개입 기록
+        </div>
+        <div class="analytics-card-meta">
+          <span class="badge badge-primary">교수용</span>
+          <span class="badge badge-outline">경보</span>
+        </div>
+      </a>
+
+      <!-- 토론 네트워크 분석 -->
+      <a href="network-001-visualization.html" class="analytics-card">
+        <div class="analytics-card-header">
+          <div class="analytics-icon purple">
+            <i data-lucide="share-2" class="icon-lg"></i>
+          </div>
+          <div class="analytics-card-title">토론 네트워크 분석</div>
+        </div>
+        <div class="analytics-card-desc">
+          학생 간 상호작용 네트워크 그래프, 중심 인물/고립 학생, 클러스터 분석
+        </div>
+        <div class="analytics-card-meta">
+          <span class="badge badge-primary">교수용</span>
+          <span class="badge badge-outline">시각화</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- 실시간 분석 도구 안내 -->
+    <div class="card mt-6">
+      <div class="card-content">
+        <div class="flex items-center gap-4">
+          <div class="analytics-icon blue">
+            <i data-lucide="activity" class="icon-lg"></i>
+          </div>
+          <div class="flex-1">
+            <div class="font-semibold">실시간 참여도 대시보드</div>
+            <div class="text-sm text-muted">세션 중 학생별 발언 시간, 참여율, 투표/채팅 활성도를 실시간 모니터링</div>
+          </div>
+          <span class="badge badge-outline">라이브 세션에서 사용</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

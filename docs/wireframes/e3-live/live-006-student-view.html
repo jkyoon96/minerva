@@ -201,6 +201,174 @@
       text-align: center;
       color: hsl(var(--muted-foreground));
     }
+
+    .layout-dropdown {
+      position: relative;
+    }
+    /* Layout Dropdown Popup */
+    .layout-popup {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: var(--spacing-1);
+      width: 260px;
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      display: none;
+      flex-direction: column;
+    }
+    .layout-popup.show {
+      display: flex;
+    }
+    .popup-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-2) var(--spacing-3);
+      background: hsl(var(--muted) / 0.3);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+    }
+    .close-btn {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      color: hsl(var(--muted-foreground));
+    }
+    .close-btn:hover {
+      background: hsl(var(--destructive) / 0.1);
+      color: hsl(var(--destructive));
+    }
+    .popup-content {
+      padding: var(--spacing-2);
+    }
+    .layout-option {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .layout-option:hover {
+      background: hsl(var(--muted) / 0.5);
+    }
+    .layout-option.selected {
+      background: hsl(var(--brand-primary) / 0.1);
+    }
+    .layout-icon {
+      width: 32px;
+      height: 32px;
+      background: hsl(var(--muted));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .layout-info {
+      flex: 1;
+    }
+    .layout-name {
+      font-weight: var(--font-medium);
+      margin-bottom: var(--spacing-1);
+    }
+    .layout-desc {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+    .layout-check {
+      color: hsl(var(--brand-primary));
+    }
+
+    /* Connection Quality Indicator */
+    .connection-indicator {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      padding: var(--spacing-1) var(--spacing-2);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .connection-indicator:hover {
+      background: hsl(var(--muted) / 0.5);
+    }
+    .signal-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 16px;
+    }
+    .signal-bar {
+      width: 3px;
+      border-radius: 1px;
+    }
+    .signal-bar.active {
+      background: currentColor;
+    }
+    .signal-bar.inactive {
+      background: hsl(var(--muted-foreground) / 0.3);
+    }
+    .connection-good { color: hsl(var(--success)); }
+    .connection-fair { color: hsl(var(--warning)); }
+    .connection-poor { color: hsl(var(--destructive)); }
+
+    /* Network Warning Modal */
+    .network-warning-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+    .network-warning-modal.show {
+      display: flex;
+    }
+    .network-warning-content {
+      background: hsl(var(--card));
+      border-radius: var(--radius-lg);
+      width: 400px;
+      max-width: 90%;
+    }
+    .network-warning-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-4);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .network-warning-body {
+      padding: var(--spacing-4);
+    }
+    .network-warning-footer {
+      padding: var(--spacing-3) var(--spacing-4);
+      border-top: 1px solid hsl(var(--border));
+      display: flex;
+      gap: var(--spacing-2);
+      justify-content: flex-end;
+    }
   </style>
 </head>
 <body>
@@ -216,10 +384,69 @@
       </span>
     </div>
     <div class="flex items-center gap-2">
-      <button class="btn btn-ghost btn-icon">
+      <!-- Connection Quality Indicator -->
+      <div class="connection-indicator connection-good" onclick="openNetworkWarningModal()" title="연결 품질: 우수 - 클릭하여 상세 보기">
+        <div class="signal-bars">
+          <div class="signal-bar active" style="height: 4px;"></div>
+          <div class="signal-bar active" style="height: 8px;"></div>
+          <div class="signal-bar active" style="height: 12px;"></div>
+          <div class="signal-bar active" style="height: 16px;"></div>
+        </div>
+        <span class="text-xs">우수</span>
+      </div>
+      <div class="layout-dropdown">
+        <button class="btn btn-outline btn-sm" onclick="openLayoutPopup()">
+          <i data-lucide="user" class="icon-sm"></i>
+          발표자
+          <i data-lucide="chevron-down" class="icon-xs ml-1"></i>
+        </button>
+        <!-- Layout Popup -->
+        <div class="layout-popup" id="layoutPopup">
+          <div class="popup-header">
+            <div class="header-title">
+              <i data-lucide="layout-grid" class="icon-sm" style="color: hsl(var(--brand-primary))"></i>
+              <span class="font-semibold text-sm">레이아웃 선택</span>
+            </div>
+            <button class="close-btn" onclick="closeLayoutPopup()" title="닫기">
+              <i data-lucide="x" class="icon-sm"></i>
+            </button>
+          </div>
+          <div class="popup-content">
+            <a href="live-017-grid-view.html" class="layout-option">
+              <div class="layout-icon">
+                <i data-lucide="layout-grid" class="icon-sm text-muted"></i>
+              </div>
+              <div class="layout-info">
+                <div class="layout-name">그리드 뷰</div>
+                <div class="layout-desc">모든 참가자를 균등하게 표시</div>
+              </div>
+            </a>
+            <div class="layout-option selected">
+              <div class="layout-icon">
+                <i data-lucide="user" class="icon-sm text-muted"></i>
+              </div>
+              <div class="layout-info">
+                <div class="layout-name">발표자 뷰</div>
+                <div class="layout-desc">발표자 크게, 나머지 작게</div>
+              </div>
+              <i data-lucide="check" class="icon-sm layout-check"></i>
+            </div>
+            <div class="layout-option">
+              <div class="layout-icon">
+                <i data-lucide="focus" class="icon-sm text-muted"></i>
+              </div>
+              <div class="layout-info">
+                <div class="layout-name">스포트라이트</div>
+                <div class="layout-desc">특정 참가자만 강조</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-icon" title="설정">
         <i data-lucide="settings" class="icon-md"></i>
       </button>
-      <button class="btn btn-outline btn-sm">나가기</button>
+      <button class="btn btn-outline btn-sm" onclick="location.href='live-023-session-ended.html'">나가기</button>
     </div>
   </header>
 
@@ -362,8 +589,76 @@
     </div>
   </div>
 
+  <!-- Network Warning Modal -->
+  <div class="network-warning-modal" id="networkWarningModal">
+    <div class="network-warning-content">
+      <div class="network-warning-header">
+        <i data-lucide="wifi" class="icon-md" style="color: hsl(var(--success))"></i>
+        <span class="font-semibold">내 연결 상태</span>
+      </div>
+      <div class="network-warning-body">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="signal-bars connection-good" style="height: 24px;">
+            <div class="signal-bar active" style="height: 6px;"></div>
+            <div class="signal-bar active" style="height: 12px;"></div>
+            <div class="signal-bar active" style="height: 18px;"></div>
+            <div class="signal-bar active" style="height: 24px;"></div>
+          </div>
+          <div>
+            <div class="font-semibold" style="color: hsl(var(--success))">우수</div>
+            <div class="text-xs text-muted">연결이 안정적입니다</div>
+          </div>
+        </div>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-muted">지연 시간</span>
+            <span>23ms</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-muted">패킷 손실</span>
+            <span>0%</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-muted">비디오 품질</span>
+            <span>720p</span>
+          </div>
+        </div>
+      </div>
+      <div class="network-warning-footer">
+        <button class="btn btn-outline btn-sm" onclick="closeNetworkWarningModal()">닫기</button>
+        <a href="live-020-connection-quality.html" class="btn btn-primary btn-sm">상세 보기</a>
+      </div>
+    </div>
+  </div>
+
   <script>
     lucide.createIcons();
+
+    // Layout Popup
+    const layoutPopup = document.getElementById('layoutPopup');
+    function openLayoutPopup() {
+      layoutPopup.classList.add('show');
+      lucide.createIcons();
+    }
+    function closeLayoutPopup() {
+      layoutPopup.classList.remove('show');
+    }
+
+    // Network Warning Modal
+    const networkWarningModal = document.getElementById('networkWarningModal');
+    function openNetworkWarningModal() {
+      networkWarningModal.classList.add('show');
+      lucide.createIcons();
+    }
+    function closeNetworkWarningModal() {
+      networkWarningModal.classList.remove('show');
+    }
+    // Close modal when clicking outside
+    networkWarningModal.addEventListener('click', function(e) {
+      if (e.target === networkWarningModal) {
+        closeNetworkWarningModal();
+      }
+    });
   </script>
 </body>
 </html>

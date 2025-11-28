@@ -13,14 +13,14 @@
   <!-- Header -->
   <header class="header">
     <nav class="navbar">
-      <a href="#" class="navbar-brand">
+      <a href="../index.html" class="navbar-brand">
         <i data-lucide="graduation-cap" class="icon-lg"></i>
         EduForum
       </a>
       <div class="navbar-nav">
-        <a href="#" class="nav-link">대시보드</a>
-        <a href="#" class="nav-link">내 코스</a>
-        <a href="#" class="nav-link active">설정</a>
+        <a href="../e2-course/dashboard.html" class="nav-link">대시보드</a>
+        <a href="../e2-course/crs-001-course-list.html" class="nav-link">내 코스</a>
+        <a href="profile-001-settings.html" class="nav-link active">프로필</a>
       </div>
       <div class="navbar-actions">
         <button class="btn btn-ghost btn-icon">
@@ -53,7 +53,7 @@
           <div class="avatar avatar-xl mx-auto mb-4">
             <i data-lucide="user" class="icon-xl"></i>
           </div>
-          <button class="btn btn-outline btn-sm mb-4">
+          <button class="btn btn-outline btn-sm mb-4" onclick="window.location.href='profile-002-photo-modal.html'">
             <i data-lucide="camera" class="icon-sm"></i>
             사진 변경
           </button>
@@ -184,9 +184,9 @@
                   <div class="text-sm text-muted">user@gmail.com</div>
                 </div>
               </div>
-              <button class="btn btn-outline btn-sm text-destructive">
+              <a href="auth-007-oauth-link.html" class="btn btn-outline btn-sm text-destructive">
                 연결 해제
-              </button>
+              </a>
             </div>
 
             <div class="separator"></div>
@@ -205,10 +205,10 @@
                   <div class="text-sm text-muted">연결되지 않음</div>
                 </div>
               </div>
-              <button class="btn btn-primary btn-sm">
+              <a href="auth-007-oauth-link.html" class="btn btn-primary btn-sm">
                 <i data-lucide="link" class="icon-sm"></i>
                 연결하기
-              </button>
+              </a>
             </div>
           </div>
         </div>

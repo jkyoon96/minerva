@@ -9,14 +9,65 @@
   <link rel="stylesheet" href="../css/components.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <style>
-    .page-header {
+    /* Page Layout - Container with Internal Sidebar */
+    .page-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--spacing-6);
+      align-items: start;
+    }
+
+    /* Course Navigation (Internal Sidebar) */
+    .course-nav {
+      position: sticky;
+      top: calc(57px + var(--spacing-6));
+      background: hsl(var(--card));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-3);
+    }
+    .course-nav-title {
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+      color: hsl(var(--muted-foreground));
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: var(--spacing-2) var(--spacing-3);
+      margin-bottom: var(--spacing-1);
+    }
+    .course-nav-link {
       display: flex;
       align-items: center;
       gap: var(--spacing-2);
-      padding: var(--spacing-3) var(--spacing-4);
-      background: hsl(var(--card));
-      border-bottom: 1px solid hsl(var(--border));
+      padding: var(--spacing-2) var(--spacing-3);
+      font-size: var(--text-sm);
+      color: hsl(var(--foreground));
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      transition: all 0.15s ease;
     }
+    .course-nav-link:hover {
+      background: hsl(var(--muted));
+    }
+    .course-nav-link.active {
+      background: hsl(var(--brand-primary) / 0.1);
+      color: hsl(var(--brand-primary));
+      font-weight: var(--font-medium);
+    }
+    .course-nav-link .icon-sm {
+      width: 16px;
+      height: 16px;
+      opacity: 0.7;
+    }
+    .course-nav-link.active .icon-sm {
+      opacity: 1;
+    }
+
+    /* Content Area */
+    .content-area {
+      min-width: 0;
+    }
+
     .student-info-card {
       background: hsl(var(--card));
       border: 1px solid hsl(var(--border));
@@ -181,213 +232,338 @@
       font-size: var(--text-sm);
       resize: vertical;
     }
+    .analytics-tabs {
+      display: flex;
+      gap: var(--spacing-1);
+      border-bottom: 1px solid hsl(var(--border));
+      margin-bottom: var(--spacing-6);
+    }
+    .analytics-tab {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-4);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      color: hsl(var(--muted-foreground));
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.2s ease;
+    }
+    .analytics-tab:hover {
+      color: hsl(var(--foreground));
+      background: hsl(var(--muted) / 0.3);
+    }
+    .analytics-tab.active {
+      color: hsl(var(--brand-primary));
+      border-bottom-color: hsl(var(--brand-primary));
+    }
   </style>
 </head>
 <body>
-  <header class="page-header">
-    <a href="alert-001-dashboard.html" class="btn btn-ghost btn-icon">
-      <i data-lucide="arrow-left" class="icon-md"></i>
-    </a>
-    <h1 class="font-semibold">권태희 - 개입 기록</h1>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="../index.html" class="navbar-brand">
+        <i data-lucide="graduation-cap" class="icon-lg"></i>
+        EduForum
+      </a>
+      <div class="navbar-nav">
+        <a href="../e2-course/dashboard.html" class="nav-link">대시보드</a>
+        <a href="../e2-course/crs-001-course-list.html" class="nav-link active">내 코스</a>
+        <a href="../e1-auth/profile-001-settings.html" class="nav-link">프로필</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-icon">
+          <i data-lucide="bell" class="icon-md"></i>
+        </button>
+        <div class="flex items-center gap-2">
+          <div class="avatar avatar-sm">
+            <i data-lucide="user" class="icon-sm"></i>
+          </div>
+          <span class="text-sm font-medium">김교수</span>
+        </div>
+      </div>
+    </nav>
   </header>
 
+  <!-- Main Content with Container Layout -->
   <main class="container py-6">
-    <!-- Student Info -->
-    <div class="student-info-card">
-      <div class="flex items-center gap-2 mb-3">
-        <i data-lucide="user" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
-        <span class="font-semibold">학생 정보</span>
-      </div>
-      <div class="student-info-row">
-        <div class="info-item">
-          <span class="info-label">이름:</span>
-          <strong>권태희</strong>
-        </div>
-        <div class="info-item">
-          <span class="info-label">학번:</span>
-          <span>2023-12345</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label">이메일:</span>
-          <span>kt@university.edu</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label">현재 상태:</span>
-          <span class="status-badge-danger">
-            <span>🔴</span> 위험 (상)
-          </span>
-        </div>
-        <div class="info-item">
-          <span class="info-label">담당 TA:</span>
-          <span>김민수</span>
-        </div>
-      </div>
-    </div>
+    <div class="page-layout">
+      <!-- Course Navigation (Internal Sidebar) -->
+      <aside class="course-nav">
+        <div class="course-nav-title">코스 메뉴</div>
+        <a href="../e2-course/crs-003-course-detail.html" class="course-nav-link">
+          <i data-lucide="home" class="icon-sm"></i>
+          개요
+        </a>
+        <a href="../e2-course/ses-001-session-list.html" class="course-nav-link">
+          <i data-lucide="video" class="icon-sm"></i>
+          세션
+        </a>
+        <a href="../e2-course/crs-004-students.html" class="course-nav-link">
+          <i data-lucide="users" class="icon-sm"></i>
+          수강생
+        </a>
+        <a href="../e2-course/cnt-001-content-library.html" class="course-nav-link">
+          <i data-lucide="folder" class="icon-sm"></i>
+          콘텐츠
+        </a>
+        <a href="../e2-course/asg-001-assignment-list.html" class="course-nav-link">
+          <i data-lucide="file-text" class="icon-sm"></i>
+          과제
+        </a>
+        <a href="../e2-course/grd-001-grade-dashboard.html" class="course-nav-link">
+          <i data-lucide="bar-chart-3" class="icon-sm"></i>
+          성적
+        </a>
+        <a href="report-002-course.html" class="course-nav-link active">
+          <i data-lucide="trending-up" class="icon-sm"></i>
+          분석
+        </a>
+        <a href="../e2-course/crs-005-course-settings.html" class="course-nav-link">
+          <i data-lucide="settings" class="icon-sm"></i>
+          설정
+        </a>
+      </aside>
 
-    <!-- Risk Trend Chart -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <h2 class="card-title flex items-center gap-2">
-          <i data-lucide="trending-up" class="icon-md" style="color: hsl(var(--destructive))"></i>
-          위험 지표 추이
-        </h2>
-      </div>
-      <div class="card-content">
-        <div class="risk-trend-chart">
-          [위험 점수 상승 라인 차트 - W5~W12]
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Breadcrumb -->
+        <div class="flex items-center gap-2 text-sm text-muted mb-4">
+          <a href="../e2-course/crs-003-course-detail.html">경영학개론</a>
+          <i data-lucide="chevron-right" class="icon-xs"></i>
+          <span class="font-medium" style="color: hsl(var(--foreground))">분석</span>
         </div>
-        <div class="trend-insight">
-          <i data-lucide="alert-triangle" class="icon-sm"></i>
-          <div>
-            <div>Week 8부터 지속적인 위험 지표 상승</div>
-            <div class="mt-1">Week 10에 위험 등급(상)으로 전환</div>
+
+        <!-- Page Header -->
+        <div class="flex items-center justify-between mb-4">
+          <h1 class="text-2xl font-bold">코스 분석</h1>
+        </div>
+
+        <!-- Analytics Tabs -->
+        <nav class="analytics-tabs">
+          <a href="report-002-course.html" class="analytics-tab">
+            <i data-lucide="bar-chart-3" class="icon-sm"></i>
+            전체 분석 리포트
+          </a>
+          <a href="alert-001-dashboard.html" class="analytics-tab">
+            <i data-lucide="alert-triangle" class="icon-sm"></i>
+            학업 위험 학생
+          </a>
+          <a href="alert-002-tracking.html" class="analytics-tab active">
+            <i data-lucide="clipboard-list" class="icon-sm"></i>
+            개입 기록 및 추적
+          </a>
+          <a href="network-001-visualization.html" class="analytics-tab">
+            <i data-lucide="share-2" class="icon-sm"></i>
+            토론 네트워크
+          </a>
+          <a href="network-002-individual.html" class="analytics-tab">
+            <i data-lucide="user" class="icon-sm"></i>
+            개인 네트워크 상세
+          </a>
+        </nav>
+
+        <!-- Student Info -->
+        <div class="student-info-card">
+          <div class="flex items-center gap-2 mb-3">
+            <i data-lucide="user" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            <span class="font-semibold">학생 정보</span>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Intervention Timeline -->
-    <div class="card">
-      <div class="card-header">
-        <h2 class="card-title flex items-center gap-2">
-          <i data-lucide="clipboard-list" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
-          개입 기록 타임라인
-        </h2>
-      </div>
-      <div class="card-content">
-        <div class="timeline">
-          <!-- Today -->
-          <div class="timeline-item">
-            <div class="timeline-dot danger"></div>
-            <div class="timeline-card">
-              <div class="timeline-date">
-                <i data-lucide="calendar" class="icon-xs"></i>
-                2025-11-27 (오늘)
-              </div>
-              <div class="timeline-title danger">
-                <span>🔴</span> 위험 등급 상향: 중 → 상
-              </div>
-              <div class="timeline-content">
-                연속 결석 3회로 인해 위험 등급이 상향되었습니다.
-              </div>
+          <div class="student-info-row">
+            <div class="info-item">
+              <span class="info-label">이름:</span>
+              <strong>권태희</strong>
+            </div>
+            <div class="info-item">
+              <span class="info-label">학번:</span>
+              <span>2023-12345</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">이메일:</span>
+              <span>kt@university.edu</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">현재 상태:</span>
+              <span class="status-badge-danger">
+                <span>🔴</span> 위험 (상)
+              </span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">담당 TA:</span>
+              <span>김민수</span>
             </div>
           </div>
+        </div>
 
-          <!-- Nov 20 -->
-          <div class="timeline-item">
-            <div class="timeline-dot info"></div>
-            <div class="timeline-card">
-              <div class="timeline-date">
-                <i data-lucide="calendar" class="icon-xs"></i>
-                2025-11-20
-              </div>
-              <div class="timeline-title info">
-                <i data-lucide="mail" class="icon-sm"></i>
-                이메일 발송 (교수)
-              </div>
-              <div class="timeline-content">
-                "학업 상담 요청" 제목으로 면담 요청 이메일 발송
-              </div>
-              <div class="timeline-status">
-                <i data-lucide="alert-circle" class="icon-xs"></i>
-                회신 없음
-              </div>
-            </div>
+        <!-- Risk Trend Chart -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h2 class="card-title flex items-center gap-2">
+              <i data-lucide="trending-up" class="icon-md" style="color: hsl(var(--destructive))"></i>
+              위험 지표 추이
+            </h2>
           </div>
-
-          <!-- Nov 15 -->
-          <div class="timeline-item">
-            <div class="timeline-dot info"></div>
-            <div class="timeline-card">
-              <div class="timeline-date">
-                <i data-lucide="calendar" class="icon-xs"></i>
-                2025-11-15
-              </div>
-              <div class="timeline-title info">
-                <i data-lucide="file-text" class="icon-sm"></i>
-                메모 추가 (TA 김민수)
-              </div>
-              <div class="timeline-content">
-                "학생 연락 시도. 개인 사정으로 수업 참여 어려운 상황이라고 답변. 추가 지원 방안 논의 필요."
-              </div>
+          <div class="card-content">
+            <div class="risk-trend-chart">
+              [위험 점수 상승 라인 차트 - W5~W12]
             </div>
-          </div>
-
-          <!-- Nov 10 -->
-          <div class="timeline-item">
-            <div class="timeline-dot warning"></div>
-            <div class="timeline-card">
-              <div class="timeline-date">
-                <i data-lucide="calendar" class="icon-xs"></i>
-                2025-11-10
-              </div>
-              <div class="timeline-title warning">
-                <i data-lucide="alert-triangle" class="icon-sm"></i>
-                경보 발생: 참여도 급락
-              </div>
-              <div class="timeline-content">
-                참여도 85점 → 52점 (-39%) 감소
-              </div>
-            </div>
-          </div>
-
-          <!-- Nov 3 -->
-          <div class="timeline-item">
-            <div class="timeline-dot warning"></div>
-            <div class="timeline-card">
-              <div class="timeline-date">
-                <i data-lucide="calendar" class="icon-xs"></i>
-                2025-11-03
-              </div>
-              <div class="timeline-title warning">
-                <i data-lucide="alert-triangle" class="icon-sm"></i>
-                경보 발생: 연속 결석
-              </div>
-              <div class="timeline-content">
-                Week 10 세션 결석 (연속 2회째)
+            <div class="trend-insight">
+              <i data-lucide="alert-triangle" class="icon-sm"></i>
+              <div>
+                <div>Week 8부터 지속적인 위험 지표 상승</div>
+                <div class="mt-1">Week 10에 위험 등급(상)으로 전환</div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Add New Record -->
-    <div class="add-record-card">
-      <div class="flex items-center gap-2 mb-4">
-        <i data-lucide="plus-circle" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
-        <span class="font-semibold">새 개입 기록 추가</span>
-      </div>
+        <!-- Intervention Timeline -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title flex items-center gap-2">
+              <i data-lucide="clipboard-list" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+              개입 기록 타임라인
+            </h2>
+          </div>
+          <div class="card-content">
+            <div class="timeline">
+              <!-- Today -->
+              <div class="timeline-item">
+                <div class="timeline-dot danger"></div>
+                <div class="timeline-card">
+                  <div class="timeline-date">
+                    <i data-lucide="calendar" class="icon-xs"></i>
+                    2025-11-27 (오늘)
+                  </div>
+                  <div class="timeline-title danger">
+                    <span>🔴</span> 위험 등급 상향: 중 → 상
+                  </div>
+                  <div class="timeline-content">
+                    연속 결석 3회로 인해 위험 등급이 상향되었습니다.
+                  </div>
+                </div>
+              </div>
 
-      <div class="form-group">
-        <label class="form-label">개입 유형</label>
-        <select class="form-select">
-          <option>이메일 발송</option>
-          <option>면담 기록</option>
-          <option>전화 연락</option>
-          <option>메모 추가</option>
-          <option>학과 사무실 공유</option>
-        </select>
-      </div>
+              <!-- Nov 20 -->
+              <div class="timeline-item">
+                <div class="timeline-dot info"></div>
+                <div class="timeline-card">
+                  <div class="timeline-date">
+                    <i data-lucide="calendar" class="icon-xs"></i>
+                    2025-11-20
+                  </div>
+                  <div class="timeline-title info">
+                    <i data-lucide="mail" class="icon-sm"></i>
+                    이메일 발송 (교수)
+                  </div>
+                  <div class="timeline-content">
+                    "학업 상담 요청" 제목으로 면담 요청 이메일 발송
+                  </div>
+                  <div class="timeline-status">
+                    <i data-lucide="alert-circle" class="icon-xs"></i>
+                    회신 없음
+                  </div>
+                </div>
+              </div>
 
-      <div class="form-group">
-        <label class="form-label">내용</label>
-        <textarea class="form-textarea" placeholder="개입 내용을 입력하세요..."></textarea>
-      </div>
+              <!-- Nov 15 -->
+              <div class="timeline-item">
+                <div class="timeline-dot info"></div>
+                <div class="timeline-card">
+                  <div class="timeline-date">
+                    <i data-lucide="calendar" class="icon-xs"></i>
+                    2025-11-15
+                  </div>
+                  <div class="timeline-title info">
+                    <i data-lucide="file-text" class="icon-sm"></i>
+                    메모 추가 (TA 김민수)
+                  </div>
+                  <div class="timeline-content">
+                    "학생 연락 시도. 개인 사정으로 수업 참여 어려운 상황이라고 답변. 추가 지원 방안 논의 필요."
+                  </div>
+                </div>
+              </div>
 
-      <div class="flex gap-2">
-        <button class="btn btn-primary">
-          <i data-lucide="plus" class="icon-sm"></i>
-          기록 추가
-        </button>
-        <button class="btn btn-outline">
-          <i data-lucide="mail" class="icon-sm"></i>
-          이메일 작성
-        </button>
-        <button class="btn btn-outline">
-          <i data-lucide="check" class="icon-sm"></i>
-          해결됨 표시
-        </button>
+              <!-- Nov 10 -->
+              <div class="timeline-item">
+                <div class="timeline-dot warning"></div>
+                <div class="timeline-card">
+                  <div class="timeline-date">
+                    <i data-lucide="calendar" class="icon-xs"></i>
+                    2025-11-10
+                  </div>
+                  <div class="timeline-title warning">
+                    <i data-lucide="alert-triangle" class="icon-sm"></i>
+                    경보 발생: 참여도 급락
+                  </div>
+                  <div class="timeline-content">
+                    참여도 85점 → 52점 (-39%) 감소
+                  </div>
+                </div>
+              </div>
+
+              <!-- Nov 3 -->
+              <div class="timeline-item">
+                <div class="timeline-dot warning"></div>
+                <div class="timeline-card">
+                  <div class="timeline-date">
+                    <i data-lucide="calendar" class="icon-xs"></i>
+                    2025-11-03
+                  </div>
+                  <div class="timeline-title warning">
+                    <i data-lucide="alert-triangle" class="icon-sm"></i>
+                    경보 발생: 연속 결석
+                  </div>
+                  <div class="timeline-content">
+                    Week 10 세션 결석 (연속 2회째)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add New Record -->
+        <div class="add-record-card">
+          <div class="flex items-center gap-2 mb-4">
+            <i data-lucide="plus-circle" class="icon-md" style="color: hsl(var(--brand-primary))"></i>
+            <span class="font-semibold">새 개입 기록 추가</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">개입 유형</label>
+            <select class="form-select">
+              <option>이메일 발송</option>
+              <option>면담 기록</option>
+              <option>전화 연락</option>
+              <option>메모 추가</option>
+              <option>학과 사무실 공유</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">내용</label>
+            <textarea class="form-textarea" placeholder="개입 내용을 입력하세요..."></textarea>
+          </div>
+
+          <div class="flex gap-2">
+            <button class="btn btn-primary">
+              <i data-lucide="plus" class="icon-sm"></i>
+              기록 추가
+            </button>
+            <button class="btn btn-outline">
+              <i data-lucide="mail" class="icon-sm"></i>
+              이메일 작성
+            </button>
+            <a href="alert-001-dashboard.html" class="btn btn-outline">
+              <i data-lucide="check" class="icon-sm"></i>
+              해결됨 표시
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </main>

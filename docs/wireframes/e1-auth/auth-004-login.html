@@ -8,6 +8,56 @@
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/components.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    /* Role Selection Buttons */
+    .role-selection {
+      display: flex;
+      gap: var(--spacing-3);
+      margin-bottom: var(--spacing-6);
+    }
+    .role-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-4);
+      border: 2px solid hsl(var(--border));
+      border-radius: var(--radius-lg);
+      background: hsl(var(--card));
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .role-btn:hover {
+      border-color: hsl(var(--brand-primary) / 0.5);
+      background: hsl(var(--muted) / 0.5);
+    }
+    .role-btn.selected {
+      border-color: hsl(var(--brand-primary));
+      background: hsl(var(--brand-primary) / 0.1);
+    }
+    .role-btn .role-icon {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-full);
+      background: hsl(var(--muted));
+    }
+    .role-btn.selected .role-icon {
+      background: hsl(var(--brand-primary));
+      color: white;
+    }
+    .role-btn .role-title {
+      font-weight: var(--font-semibold);
+      font-size: var(--text-base);
+    }
+    .role-btn .role-desc {
+      font-size: var(--text-xs);
+      color: hsl(var(--muted-foreground));
+    }
+  </style>
 </head>
 <body>
   <div class="auth-layout">
@@ -24,7 +74,25 @@
           <h1 class="auth-title">로그인</h1>
         </div>
 
-        <form class="auth-form">
+        <!-- Role Selection -->
+        <div class="role-selection">
+          <button type="button" class="role-btn selected" id="role-professor" onclick="selectRole('professor')">
+            <div class="role-icon">
+              <i data-lucide="graduation-cap" class="icon-lg"></i>
+            </div>
+            <span class="role-title">교수용</span>
+            <span class="role-desc">강의 관리 및 운영</span>
+          </button>
+          <button type="button" class="role-btn" id="role-student" onclick="selectRole('student')">
+            <div class="role-icon">
+              <i data-lucide="book-open" class="icon-lg"></i>
+            </div>
+            <span class="role-title">학생용</span>
+            <span class="role-desc">수강 및 학습</span>
+          </button>
+        </div>
+
+        <form class="auth-form" id="login-form" onsubmit="handleLogin(event)">
           <!-- 이메일 -->
           <div class="form-group">
             <label class="form-label">이메일</label>
@@ -44,7 +112,7 @@
                 <i data-lucide="lock" class="icon-sm"></i>
               </span>
               <input type="password" class="input" style="padding-left: 2.5rem" placeholder="비밀번호를 입력하세요">
-              <button type="button" class="input-addon btn-ghost btn-icon-sm">
+              <button type="button" class="input-addon btn-ghost btn-icon-sm" style="border: none;">
                 <i data-lucide="eye" class="icon-sm"></i>
               </button>
             </div>
@@ -100,6 +168,37 @@
 
   <script>
     lucide.createIcons();
+
+    // 선택된 역할 저장
+    let selectedRole = 'professor';
+
+    // 역할 선택 함수
+    function selectRole(role) {
+      selectedRole = role;
+
+      // 모든 역할 버튼에서 selected 클래스 제거
+      document.querySelectorAll('.role-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+
+      // 선택된 버튼에 selected 클래스 추가
+      document.getElementById('role-' + role).classList.add('selected');
+
+      // 아이콘 다시 렌더링
+      lucide.createIcons();
+    }
+
+    // 로그인 처리 함수
+    function handleLogin(event) {
+      event.preventDefault();
+
+      // 역할에 따라 다른 페이지로 이동
+      if (selectedRole === 'professor') {
+        window.location.href = '../e2-course/dashboard.html';
+      } else {
+        window.location.href = '../e2-course/dashboard-student.html';
+      }
+    }
   </script>
 </body>
 </html>
