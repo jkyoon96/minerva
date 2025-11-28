@@ -1,0 +1,120 @@
+# GitHub Labels Configuration
+# Use with: https://github.com/EndBug/label-sync or manually with gh CLI
+
+# Epic Labels
+- name: "epic:e1-auth"
+  color: "7057ff"
+  description: "Epic 1: 사용자 인증/인가"
+
+- name: "epic:e2-course"
+  color: "008672"
+  description: "Epic 2: 코스 관리"
+
+- name: "epic:e3-live"
+  color: "d73a4a"
+  description: "Epic 3: 실시간 세미나"
+
+- name: "epic:e4-active"
+  color: "0075ca"
+  description: "Epic 4: 액티브 러닝 도구"
+
+- name: "epic:e5-assessment"
+  color: "e99695"
+  description: "Epic 5: 평가 및 피드백"
+
+- name: "epic:e6-analytics"
+  color: "5319e7"
+  description: "Epic 6: 학습 분석"
+
+# Type Labels
+- name: "type:db"
+  color: "1d76db"
+  description: "Database 스키마/마이그레이션"
+
+- name: "type:be"
+  color: "0e8a16"
+  description: "Backend API/로직"
+
+- name: "type:fe"
+  color: "fbca04"
+  description: "Frontend UI/컴포넌트"
+
+- name: "type:doc"
+  color: "c5def5"
+  description: "Documentation"
+
+- name: "type:infra"
+  color: "b60205"
+  description: "Infrastructure/DevOps"
+
+# Priority Labels
+- name: "priority:p0-mvp"
+  color: "d93f0b"
+  description: "MVP 필수 기능"
+
+- name: "priority:p1-v1"
+  color: "fbca04"
+  description: "v1.0 릴리즈"
+
+- name: "priority:p2-v2"
+  color: "0e8a16"
+  description: "v2.0+ 확장 기능"
+
+# Size Labels (Story Points)
+- name: "size:xs"
+  color: "ededed"
+  description: "1 SP (2-4시간)"
+
+- name: "size:s"
+  color: "c2e0c6"
+  description: "2 SP (0.5-1일)"
+
+- name: "size:m"
+  color: "bfd4f2"
+  description: "3 SP (1-2일)"
+
+- name: "size:l"
+  color: "d4c5f9"
+  description: "5 SP (3-5일)"
+
+- name: "size:xl"
+  color: "f9d0c4"
+  description: "8 SP (1-2주)"
+
+# Status Labels
+- name: "status:blocked"
+  color: "b60205"
+  description: "의존성으로 블록됨"
+
+- name: "status:ready"
+  color: "0e8a16"
+  description: "작업 가능"
+
+- name: "status:in-progress"
+  color: "fbca04"
+  description: "작업 중"
+
+- name: "status:in-review"
+  color: "1d76db"
+  description: "코드 리뷰 중"
+
+- name: "status:done"
+  color: "0e8a16"
+  description: "완료"
+
+# Additional Labels
+- name: "bug"
+  color: "d73a4a"
+  description: "Something isn't working"
+
+- name: "enhancement"
+  color: "a2eeef"
+  description: "New feature or request"
+
+- name: "help wanted"
+  color: "008672"
+  description: "Extra attention is needed"
+
+- name: "good first issue"
+  color: "7057ff"
+  description: "Good for newcomers"
