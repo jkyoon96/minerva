@@ -85,3 +85,4 @@ export * from './course';
 export * from './dashboard';
 export * from './assignment';
 export * from './session';
+export * from './seminar';

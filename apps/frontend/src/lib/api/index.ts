@@ -11,3 +11,4 @@ export * as sessionsApi from './sessions';
 export * as assignmentsApi from './assignments';
 export * as enrollmentsApi from './enrollments';
 export * as dashboardApi from './dashboard';
+export { default as seminarApi } from './seminar';
