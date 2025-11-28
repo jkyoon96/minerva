@@ -82,3 +82,6 @@ export interface ApiError {
 // Re-export 타입들
 export * from './auth';
 export * from './course';
+export * from './dashboard';
+export * from './assignment';
+export * from './session';
