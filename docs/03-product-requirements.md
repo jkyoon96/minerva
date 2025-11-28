@@ -888,11 +888,12 @@ v2 이후 고려:
 **목표**: 핵심 기능으로 파일럿 출시
 
 #### Sprint 1-2: 기본 인프라 (1개월)
-- [ ] Django 프로젝트 셋업
+- [ ] Django 백엔드 프로젝트 셋업
+- [ ] Next.js 프론트엔드 프로젝트 셋업 (App Router)
 - [ ] PostgreSQL, Redis 설정
 - [ ] Docker/Kubernetes 환경 구축
 - [ ] CI/CD 파이프라인
-- [ ] 사용자 인증 (JWT)
+- [ ] 사용자 인증 (JWT + NextAuth.js)
 
 #### Sprint 3-4: 화상 회의 (1개월)
 - [ ] Jitsi Meet 통합
@@ -1013,7 +1014,7 @@ Month 13-16: Phase 4 - AI & Advanced Analytics (v2.0)
 - **규제**: GDPR, FERPA 등 국가별 규정 준수 필요
 
 #### 리소스 제약
-- **개발 인력**: 5-10명 (백엔드 3, 프론트엔드 2, DevOps 1, QA 1, 디자인 1)
+- **개발 인력**: 5-10명 (백엔드 3, 프론트엔드 2 (Next.js), DevOps 1, QA 1, 디자인 1)
 - **개발 기간**: MVP까지 4개월, v1.0까지 9개월
 - **인프라 비용**: 초기 월 $5,000-$10,000 (AWS/Azure)
 
