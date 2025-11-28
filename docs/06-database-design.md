@@ -1518,20 +1518,20 @@ SELECT run_maintenance();
 
 ## 8. 마이그레이션 가이드
 
-### 8.1 Django 마이그레이션 파일 구조
+### 8.1 마이그레이션 파일 구조 (SQL 기반)
 
 ```
-migrations/
-├── 0001_initial.py              # 스키마 생성
-├── 0002_auth_tables.py          # 인증 테이블
-├── 0003_course_tables.py        # 코스 테이블
-├── 0004_live_tables.py          # 라이브 세션 테이블
-├── 0005_learning_tables.py      # 액티브 러닝 테이블
-├── 0006_assessment_tables.py    # 평가 테이블
-├── 0007_analytics_tables.py     # 분석 테이블
-├── 0008_indexes.py              # 인덱스 생성
-├── 0009_initial_data.py         # 초기 데이터 (역할, 권한)
-└── 0010_partitions.py           # 파티션 테이블
+database/migrations/
+├── 001_create_database.sql      # 데이터베이스 및 스키마 생성
+├── 002_auth_tables.sql          # 인증 테이블
+├── 003_course_tables.sql        # 코스 테이블
+├── 004_live_tables.sql          # 라이브 세션 테이블
+├── 005_learning_tables.sql      # 액티브 러닝 테이블
+├── 006_assessment_tables.sql    # 평가 테이블
+├── 007_analytics_tables.sql     # 분석 테이블
+├── 008_functions.sql            # 함수 및 트리거
+├── 009_indexes.sql              # 인덱스 생성
+└── 010_initial_data.sql         # 초기 데이터 (역할, 권한)
 ```
 
 ### 8.2 시드 데이터

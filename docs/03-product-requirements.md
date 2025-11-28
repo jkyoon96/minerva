@@ -888,7 +888,7 @@ v2 이후 고려:
 **목표**: 핵심 기능으로 파일럿 출시
 
 #### Sprint 1-2: 기본 인프라 (1개월)
-- [ ] Django 백엔드 프로젝트 셋업
+- [x] Spring Boot 백엔드 프로젝트 셋업
 - [ ] Next.js 프론트엔드 프로젝트 셋업 (App Router)
 - [ ] PostgreSQL, Redis 설정
 - [ ] Docker/Kubernetes 환경 구축
@@ -1033,7 +1033,7 @@ Month 13-16: Phase 4 - AI & Advanced Analytics (v2.0)
 
 #### 기술 가정
 - WebRTC 기술은 충분히 성숙하여 안정적 서비스 가능
-- 오픈소스 (Jitsi, Django 등) 활용으로 빠른 개발 가능
+- 오픈소스 (Jitsi, Spring Boot 등) 활용으로 빠른 개발 가능
 - AI 자동 채점 정확도는 교수 검토 후 80%+ 달성 가능
 
 ---
