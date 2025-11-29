@@ -87,4 +87,19 @@ export const API_ENDPOINTS = {
     VERIFY_EMAIL: '/v1/users/email/verify',
     CHANGE_PASSWORD: '/v1/users/password',
   },
+
+  // Admin 관련
+  ADMIN: {
+    USERS: '/v1/admin/users',
+    USER_DETAIL: (userId: string) => `/v1/admin/users/${userId}`,
+    CHANGE_ROLE: (userId: string) => `/v1/admin/users/${userId}/role`,
+    CHANGE_STATUS: (userId: string) => `/v1/admin/users/${userId}/status`,
+    ROLES: '/v1/admin/roles',
+    ASSIGN_ROLE: (userId: string) => `/v1/admin/users/${userId}/roles`,
+    REMOVE_ROLE: (userId: string, roleId: string) => `/v1/admin/users/${userId}/roles/${roleId}`,
+    STATISTICS: '/v1/admin/statistics/roles',
+    SEARCH_USERS: '/v1/admin/users/search',
+    BATCH_DELETE: '/v1/admin/users/batch-delete',
+    EXPORT_CSV: '/v1/admin/users/export',
+  },
 } as const;
