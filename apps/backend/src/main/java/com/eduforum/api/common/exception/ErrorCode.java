@@ -93,7 +93,38 @@ public enum ErrorCode {
     // Discussion
     DISCUSSION_THREAD_NOT_FOUND(HttpStatus.NOT_FOUND, "DS001", "토론 스레드를 찾을 수 없습니다"),
     SPEAKING_QUEUE_NOT_FOUND(HttpStatus.NOT_FOUND, "DS002", "발언 대기열을 찾을 수 없습니다"),
-    ALREADY_IN_QUEUE(HttpStatus.CONFLICT, "DS003", "이미 발언 대기 중입니다");
+    ALREADY_IN_QUEUE(HttpStatus.CONFLICT, "DS003", "이미 발언 대기 중입니다"),
+
+    // Assessment - Grading
+    GRADING_RESULT_NOT_FOUND(HttpStatus.NOT_FOUND, "GR001", "채점 결과를 찾을 수 없습니다"),
+    GRADING_ALREADY_FINALIZED(HttpStatus.BAD_REQUEST, "GR002", "이미 확정된 채점 결과입니다"),
+    ANSWER_STATISTICS_NOT_FOUND(HttpStatus.NOT_FOUND, "GR003", "답변 통계를 찾을 수 없습니다"),
+
+    // Assessment - Code Evaluation
+    CODE_SUBMISSION_NOT_FOUND(HttpStatus.NOT_FOUND, "CE001", "코드 제출을 찾을 수 없습니다"),
+    CODE_EXECUTION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "CE002", "코드 실행에 실패했습니다"),
+    COMPILATION_ERROR(HttpStatus.BAD_REQUEST, "CE003", "컴파일 오류가 발생했습니다"),
+    TEST_CASE_NOT_FOUND(HttpStatus.NOT_FOUND, "CE004", "테스트 케이스를 찾을 수 없습니다"),
+
+    // Assessment - Plagiarism
+    PLAGIARISM_REPORT_NOT_FOUND(HttpStatus.NOT_FOUND, "PG001", "표절 검사 보고서를 찾을 수 없습니다"),
+    INSUFFICIENT_SUBMISSIONS(HttpStatus.BAD_REQUEST, "PG002", "표절 검사를 위한 제출이 부족합니다"),
+
+    // Assessment - Feedback
+    FEEDBACK_NOT_FOUND(HttpStatus.NOT_FOUND, "FB001", "피드백을 찾을 수 없습니다"),
+    LEARNING_RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "FB002", "학습 자료를 찾을 수 없습니다"),
+
+    // Assessment - Participation
+    PARTICIPATION_EVENT_NOT_FOUND(HttpStatus.NOT_FOUND, "PT001", "참여 이벤트를 찾을 수 없습니다"),
+    PARTICIPATION_SCORE_NOT_FOUND(HttpStatus.NOT_FOUND, "PT002", "참여 점수를 찾을 수 없습니다"),
+    PARTICIPATION_WEIGHT_NOT_FOUND(HttpStatus.NOT_FOUND, "PT003", "참여 가중치를 찾을 수 없습니다"),
+
+    // Assessment - Peer Review
+    PEER_REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "PR001", "동료 평가를 찾을 수 없습니다"),
+    PEER_REVIEW_NOT_ASSIGNED(HttpStatus.FORBIDDEN, "PR002", "평가 권한이 없습니다"),
+    PEER_REVIEW_DEADLINE_PASSED(HttpStatus.BAD_REQUEST, "PR003", "동료 평가 기한이 지났습니다"),
+    PEER_REVIEW_ALREADY_SUBMITTED(HttpStatus.CONFLICT, "PR004", "이미 제출한 평가입니다"),
+    PEER_REVIEW_NOT_SETUP(HttpStatus.BAD_REQUEST, "PR005", "동료 평가가 설정되지 않았습니다");
 
     private final HttpStatus httpStatus;
     private final String code;
