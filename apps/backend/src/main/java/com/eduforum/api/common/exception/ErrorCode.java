@@ -68,7 +68,32 @@ public enum ErrorCode {
 
     // Screen Share
     SCREEN_SHARE_NOT_ALLOWED(HttpStatus.FORBIDDEN, "SS001", "화면 공유 권한이 없습니다"),
-    SCREEN_SHARE_IN_PROGRESS(HttpStatus.CONFLICT, "SS002", "이미 화면 공유 중입니다");
+    SCREEN_SHARE_IN_PROGRESS(HttpStatus.CONFLICT, "SS002", "이미 화면 공유 중입니다"),
+
+    // Poll
+    POLL_NOT_FOUND(HttpStatus.NOT_FOUND, "PL001", "투표를 찾을 수 없습니다"),
+    POLL_NOT_ACTIVE(HttpStatus.BAD_REQUEST, "PL002", "활성화된 투표가 아닙니다"),
+    POLL_ALREADY_RESPONDED(HttpStatus.CONFLICT, "PL003", "이미 응답한 투표입니다"),
+
+    // Question & Quiz
+    QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "QZ001", "문제를 찾을 수 없습니다"),
+    QUIZ_NOT_FOUND(HttpStatus.NOT_FOUND, "QZ002", "퀴즈를 찾을 수 없습니다"),
+    QUIZ_NOT_ACTIVE(HttpStatus.BAD_REQUEST, "QZ003", "활성화된 퀴즈가 아닙니다"),
+    QUIZ_ALREADY_SUBMITTED(HttpStatus.CONFLICT, "QZ004", "이미 제출한 퀴즈입니다"),
+    QUIZ_TIME_EXPIRED(HttpStatus.BAD_REQUEST, "QZ005", "퀴즈 시간이 만료되었습니다"),
+
+    // Breakout Room
+    BREAKOUT_NOT_FOUND(HttpStatus.NOT_FOUND, "BR001", "분반 룸을 찾을 수 없습니다"),
+    BREAKOUT_NOT_ACTIVE(HttpStatus.BAD_REQUEST, "BR002", "활성화된 분반 룸이 아닙니다"),
+    BREAKOUT_FULL(HttpStatus.BAD_REQUEST, "BR003", "분반 룸이 가득 찼습니다"),
+
+    // Whiteboard
+    WHITEBOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "WB001", "화이트보드를 찾을 수 없습니다"),
+
+    // Discussion
+    DISCUSSION_THREAD_NOT_FOUND(HttpStatus.NOT_FOUND, "DS001", "토론 스레드를 찾을 수 없습니다"),
+    SPEAKING_QUEUE_NOT_FOUND(HttpStatus.NOT_FOUND, "DS002", "발언 대기열을 찾을 수 없습니다"),
+    ALREADY_IN_QUEUE(HttpStatus.CONFLICT, "DS003", "이미 발언 대기 중입니다");
 
     private final HttpStatus httpStatus;
     private final String code;
