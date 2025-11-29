@@ -148,3 +148,14 @@ export const resetPassword = async (
     throw parseApiError(error);
   }
 };
+
+/**
+ * 이메일 인증
+ */
+export const verifyEmail = async (token: string): Promise<void> => {
+  try {
+    await apiClient.post(API_ENDPOINTS.AUTH.VERIFY_EMAIL, { token });
+  } catch (error) {
+    throw parseApiError(error);
+  }
+};

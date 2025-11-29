@@ -1,5 +1,7 @@
 package com.eduforum.api.domain.course.service;
 
+import com.eduforum.api.common.email.EmailService;
+import com.eduforum.api.common.email.dto.EmailRequest;
 import com.eduforum.api.common.exception.BusinessException;
 import com.eduforum.api.common.exception.ErrorCode;
 import com.eduforum.api.domain.auth.entity.User;
@@ -15,6 +17,7 @@ import com.eduforum.api.domain.course.repository.EnrollmentRepository;
 import com.eduforum.api.domain.course.repository.InviteLinkRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -25,7 +28,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -37,6 +42,10 @@ public class EnrollmentService {
     private final CourseRepository courseRepository;
     private final InviteLinkRepository inviteLinkRepository;
     private final UserRepository userRepository;
+    private final EmailService emailService;
+
+    @Value("${app.frontend.url:http://localhost:3000}")
+    private String frontendUrl;
 
     @Transactional
     public EnrollmentResponse joinCourse(CourseJoinRequest request) {
@@ -136,15 +145,13 @@ public class EnrollmentService {
                     String firstName = parts[1].trim();
                     String lastName = parts[2].trim();
 
-                    // Find or create user
-                    User user = userRepository.findByEmail(email)
-                        .orElseGet(() -> {
-                            // In a real application, you might want to send invitation emails instead
-                            log.warn("User not found: {}. Skipping enrollment.", email);
-                            return null;
-                        });
+                    // Find user (사용자가 없으면 초대 이메일 발송)
+                    User user = userRepository.findByEmail(email).orElse(null);
 
                     if (user == null) {
+                        // 사용자가 없으면 초대 이메일 발송
+                        sendCourseInvitationEmail(email, firstName, lastName, course);
+                        log.info("Invitation email sent to non-existing user: {}", email);
                         continue;
                     }
 
@@ -224,5 +231,44 @@ public class EnrollmentService {
             .status(enrollment.getStatus().name())
             .joinedAt(enrollment.getJoinedAt())
             .build();
+    }
+
+    /**
+     * 코스 초대 이메일 발송
+     */
+    private void sendCourseInvitationEmail(String email, String firstName, String lastName, Course course) {
+        try {
+            String userName = (firstName + " " + lastName).trim();
+            if (userName.isEmpty()) {
+                userName = email;
+            }
+
+            // 초대 링크 생성 (InviteLink가 있다면 해당 코드 사용)
+            String enrollmentUrl = frontendUrl + "/courses/" + course.getId() + "/join";
+
+            Map<String, Object> variables = new HashMap<>();
+            variables.put("userName", userName);
+            variables.put("instructorName", course.getProfessor().getFullName());
+            variables.put("courseTitle", course.getTitle());
+            variables.put("courseCode", course.getCode());
+            variables.put("courseDescription", course.getDescription() != null ? course.getDescription() : "");
+            variables.put("semester", course.getSemester());
+            variables.put("startDate", course.getStartDate() != null ? course.getStartDate().toString() : "TBD");
+            variables.put("enrollmentUrl", enrollmentUrl);
+            variables.put("expiresIn", "7");
+
+            EmailRequest request = EmailRequest.builder()
+                    .to(email)
+                    .templateName("course-invitation")
+                    .variables(variables)
+                    .build();
+
+            emailService.sendAsync(request);
+
+            log.info("Course invitation email queued for: {}", email);
+        } catch (Exception e) {
+            log.error("Failed to send course invitation email to: {}", email, e);
+            // 이메일 발송 실패는 등록 프로세스를 중단하지 않음
+        }
     }
 }

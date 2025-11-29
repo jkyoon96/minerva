@@ -1,5 +1,7 @@
 package com.eduforum.api.domain.auth.service;
 
+import com.eduforum.api.common.email.EmailService;
+import com.eduforum.api.common.email.dto.EmailRequest;
 import com.eduforum.api.common.exception.BusinessException;
 import com.eduforum.api.common.exception.ErrorCode;
 import com.eduforum.api.domain.auth.dto.PasswordResetConfirmRequest;
@@ -10,11 +12,14 @@ import com.eduforum.api.domain.auth.repository.PasswordResetTokenRepository;
 import com.eduforum.api.domain.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
@@ -25,6 +30,10 @@ public class PasswordResetService {
     private final UserRepository userRepository;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
+
+    @Value("${app.frontend.url:http://localhost:3000}")
+    private String frontendUrl;
 
     /**
      * 비밀번호 재설정 요청
@@ -54,8 +63,10 @@ public class PasswordResetService {
 
         passwordResetTokenRepository.save(resetToken);
 
+        // 비밀번호 재설정 이메일 발송
+        sendPasswordResetEmail(user, token);
+
         log.info("Password reset token generated for user: {}", user.getEmail());
-        // TODO: 이메일 발송 (재설정 링크)
     }
 
     /**
@@ -94,5 +105,33 @@ public class PasswordResetService {
         passwordResetTokenRepository.save(resetToken);
 
         log.info("Password reset successfully for user: {}", user.getEmail());
+    }
+
+    /**
+     * 비밀번호 재설정 이메일 발송
+     */
+    private void sendPasswordResetEmail(User user, String token) {
+        try {
+            String resetUrl = frontendUrl + "/auth/reset-password?token=" + token;
+
+            Map<String, Object> variables = new HashMap<>();
+            variables.put("userName", user.getFullName());
+            variables.put("resetToken", token);
+            variables.put("resetUrl", resetUrl);
+            variables.put("expiresIn", "60");
+
+            EmailRequest request = EmailRequest.builder()
+                    .to(user.getEmail())
+                    .templateName("password-reset")
+                    .variables(variables)
+                    .build();
+
+            emailService.sendAsync(request);
+
+            log.info("Password reset email queued for user: {}", user.getEmail());
+        } catch (Exception e) {
+            log.error("Failed to send password reset email to user: {}", user.getEmail(), e);
+            // 이메일 발송 실패는 재설정 요청 자체를 실패시키지 않음
+        }
     }
 }

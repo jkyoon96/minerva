@@ -147,7 +147,14 @@ public enum ErrorCode {
     INTERACTION_LOG_NOT_FOUND(HttpStatus.NOT_FOUND, "AN012", "상호작용 로그를 찾을 수 없습니다"),
     NETWORK_NODE_NOT_FOUND(HttpStatus.NOT_FOUND, "AN013", "네트워크 노드를 찾을 수 없습니다"),
     NETWORK_ANALYSIS_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "AN014", "네트워크 분석에 실패했습니다"),
-    CLUSTER_NOT_FOUND(HttpStatus.NOT_FOUND, "AN015", "학생 클러스터를 찾을 수 없습니다");
+    CLUSTER_NOT_FOUND(HttpStatus.NOT_FOUND, "AN015", "학생 클러스터를 찾을 수 없습니다"),
+
+    // Email
+    EMAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "EM001", "이메일 발송에 실패했습니다"),
+    EMAIL_TEMPLATE_NOT_FOUND(HttpStatus.NOT_FOUND, "EM002", "이메일 템플릿을 찾을 수 없습니다"),
+    EMAIL_TEMPLATE_RENDER_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "EM003", "이메일 템플릿 렌더링에 실패했습니다"),
+    EMAIL_JOB_NOT_FOUND(HttpStatus.NOT_FOUND, "EM004", "이메일 작업을 찾을 수 없습니다"),
+    EMAIL_INVALID_RECIPIENT(HttpStatus.BAD_REQUEST, "EM005", "유효하지 않은 수신자 이메일입니다");
 
     private final HttpStatus httpStatus;
     private final String code;

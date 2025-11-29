@@ -17,8 +17,9 @@ spring:
 
   servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 50MB
+      max-file-size: 50MB
+      max-request-size: 100MB
+      enabled: true
 
   jackson:
     serialization:
@@ -88,6 +89,57 @@ management:
       show-details: when-authorized
 
 # 로깅 설정
+# Application 설정
+app:
+  frontend:
+    url: ${FRONTEND_URL:http://localhost:3000}
+
+  # Email 설정
+  email:
+    provider: console  # console, smtp, sendgrid
+    from: noreply@eduforum.com
+    from-name: EduForum
+
+  # Storage 설정
+  storage:
+    provider: local  # local, s3
+    local:
+      base-path: ./uploads
+    s3:
+      bucket: ${AWS_S3_BUCKET:eduforum-files}
+      region: ${AWS_REGION:ap-northeast-2}
+      access-key: ${AWS_ACCESS_KEY:}
+      secret-key: ${AWS_SECRET_KEY:}
+      cloudfront-url: ${AWS_CLOUDFRONT_URL:}
+    upload:
+      max-file-size: 52428800  # 50MB in bytes
+      max-filename-length: 255
+      allowed-mime-types: image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/*,video/*,audio/*
+
+# SMTP 설정 (provider: smtp일 때 사용)
+spring.mail:
+  host: smtp.gmail.com
+  port: 587
+  username: ${MAIL_USERNAME:}
+  password: ${MAIL_PASSWORD:}
+  properties:
+    mail:
+      smtp:
+        auth: true
+        starttls:
+          enable: true
+          required: true
+        connectiontimeout: 5000
+        timeout: 5000
+        writetimeout: 5000
+        ssl:
+          enable: false
+      debug: false
+
+# SendGrid 설정 (provider: sendgrid일 때 사용)
+sendgrid:
+  api-key: ${SENDGRID_API_KEY:}
+
 logging:
   level:
     root: INFO

@@ -2,12 +2,15 @@ package com.eduforum.api.domain.auth.service;
 
 import com.eduforum.api.common.exception.BusinessException;
 import com.eduforum.api.common.exception.ErrorCode;
+import com.eduforum.api.common.email.EmailService;
+import com.eduforum.api.common.email.dto.EmailRequest;
 import com.eduforum.api.domain.auth.dto.*;
 import com.eduforum.api.domain.auth.entity.*;
 import com.eduforum.api.domain.auth.repository.*;
 import com.eduforum.api.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,7 +23,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -38,6 +43,10 @@ public class AuthService {
     private final LoginAttemptService loginAttemptService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final EmailService emailService;
+
+    @Value("${app.frontend.url:http://localhost:3000}")
+    private String frontendUrl;
 
     /**
      * 회원가입
@@ -96,6 +105,9 @@ public class AuthService {
             .build();
 
         emailVerificationTokenRepository.save(emailToken);
+
+        // 환영 이메일 + 이메일 인증 발송
+        sendWelcomeAndVerificationEmail(user, verificationToken);
 
         log.info("User registered successfully: {} (ID: {})", user.getEmail(), user.getId());
         // TODO: 이메일 발송 (인증 링크)
@@ -465,5 +477,42 @@ public class AuthService {
             .lastLoginAt(user.getLastLoginAt())
             .createdAt(user.getCreatedAt())
             .build();
+    }
+
+    /**
+     * 환영 및 이메일 인증 이메일 발송
+     */
+    private void sendWelcomeAndVerificationEmail(User user, String verificationToken) {
+        try {
+            String verificationUrl = frontendUrl + "/auth/verify-email?token=" + verificationToken;
+
+            Map<String, Object> variables = new HashMap<>();
+            variables.put("userName", user.getFullName());
+            variables.put("verificationCode", verificationToken.substring(0, 8).toUpperCase());
+            variables.put("verificationUrl", verificationUrl);
+            variables.put("expiresIn", "24");
+            variables.put("dashboardUrl", frontendUrl + "/dashboard");
+
+            // 이메일 인증 이메일 (비동기)
+            EmailRequest verificationRequest = EmailRequest.builder()
+                    .to(user.getEmail())
+                    .templateName("email-verification")
+                    .variables(variables)
+                    .build();
+            emailService.sendAsync(verificationRequest);
+
+            // 환영 이메일 (비동기)
+            EmailRequest welcomeRequest = EmailRequest.builder()
+                    .to(user.getEmail())
+                    .templateName("welcome")
+                    .variables(variables)
+                    .build();
+            emailService.sendAsync(welcomeRequest);
+
+            log.info("Welcome and verification emails queued for user: {}", user.getEmail());
+        } catch (Exception e) {
+            log.error("Failed to send welcome/verification emails to user: {}", user.getEmail(), e);
+            // 이메일 발송 실패는 회원가입 자체를 실패시키지 않음
+        }
     }
 }

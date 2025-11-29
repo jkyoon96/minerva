@@ -14,6 +14,7 @@ export const API_ENDPOINTS = {
     CHANGE_PASSWORD: '/auth/change-password',
     FORGOT_PASSWORD: '/auth/forgot-password',
     RESET_PASSWORD: '/auth/reset-password',
+    VERIFY_EMAIL: '/auth/verify-email',
 
     // 2FA 관련
     TWO_FACTOR_SETUP: '/auth/2fa/setup',
@@ -101,5 +102,19 @@ export const API_ENDPOINTS = {
     SEARCH_USERS: '/v1/admin/users/search',
     BATCH_DELETE: '/v1/admin/users/batch-delete',
     EXPORT_CSV: '/v1/admin/users/export',
+  },
+
+  // 파일 관련
+  FILES: {
+    UPLOAD: (courseId: string) => `/v1/courses/${courseId}/files`,
+    LIST: (courseId: string) => `/v1/courses/${courseId}/files`,
+    DETAIL: (fileId: string) => `/v1/files/${fileId}`,
+    DELETE: (fileId: string) => `/v1/files/${fileId}`,
+    DOWNLOAD: (fileId: string) => `/v1/files/${fileId}/download`,
+    SEARCH: (courseId: string) => `/v1/courses/${courseId}/files/search`,
+    UPDATE_PERMISSION: (fileId: string) => `/v1/files/${fileId}/permission`,
+    CREATE_FOLDER: (courseId: string) => `/v1/courses/${courseId}/folders`,
+    FOLDER_TREE: (courseId: string) => `/v1/courses/${courseId}/folders/tree`,
+    DELETE_FOLDER: (folderId: string) => `/v1/folders/${folderId}`,
   },
 } as const;

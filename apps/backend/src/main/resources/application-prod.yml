@@ -22,6 +22,33 @@ spring:
 jwt:
   secret: ${JWT_SECRET}
 
+# Email 설정 (운영 환경 - SMTP 또는 SendGrid)
+app:
+  email:
+    provider: ${EMAIL_PROVIDER:smtp}  # smtp 또는 sendgrid
+    from: ${EMAIL_FROM:noreply@eduforum.com}
+    from-name: ${EMAIL_FROM_NAME:EduForum}
+
+# SMTP 설정 (운영 환경)
+spring.mail:
+  host: ${MAIL_HOST:smtp.gmail.com}
+  port: ${MAIL_PORT:587}
+  username: ${MAIL_USERNAME}
+  password: ${MAIL_PASSWORD}
+  properties:
+    mail:
+      smtp:
+        auth: true
+        starttls:
+          enable: true
+          required: true
+        ssl:
+          enable: false
+
+# SendGrid 설정
+sendgrid:
+  api-key: ${SENDGRID_API_KEY:}
+
 logging:
   level:
     com.eduforum.api: INFO

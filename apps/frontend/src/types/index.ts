@@ -98,3 +98,4 @@ export * from './seminar';
 export * from './two-factor';
 export * from './profile';
 export * from './admin';
+export * from './file';

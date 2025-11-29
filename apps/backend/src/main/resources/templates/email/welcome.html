@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to EduForum</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: #3b82f6;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #1e293b;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .content {
+            color: #475569;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        .highlight {
+            background-color: #f1f5f9;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #3b82f6;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">EduForum</div>
+        </div>
+
+        <h1>환영합니다, {{userName}}님! 🎉</h1>
+
+        <div class="content">
+            <p>EduForum에 가입해주셔서 감사합니다.</p>
+            <p>EduForum은 미네르바 대학의 Active Learning Forum을 기반으로 한 혁신적인 온라인 학습 플랫폼입니다.</p>
+        </div>
+
+        <div class="highlight">
+            <p><strong>다음 기능들을 지금 바로 이용하실 수 있습니다:</strong></p>
+            <ul>
+                <li>실시간 온라인 세미나 참여</li>
+                <li>인터랙티브 투표 및 퀴즈</li>
+                <li>협업 화이트보드</li>
+                <li>AI 기반 학습 분석</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="{{dashboardUrl}}" class="button">대시보드로 이동</a>
+        </div>
+
+        <div class="content" style="margin-top: 30px;">
+            <p>궁금하신 점이 있으시면 언제든지 문의해 주세요.</p>
+            <p>즐거운 학습되세요!</p>
+        </div>
+
+        <div class="footer">
+            <p>© 2024 EduForum. All rights reserved.</p>
+            <p>이 메일은 발신 전용입니다.</p>
+        </div>
+    </div>
+</body>
+</html>
