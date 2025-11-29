@@ -35,6 +35,7 @@ public class AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final EmailVerificationTokenRepository emailVerificationTokenRepository;
     private final TwoFactorSecretRepository twoFactorSecretRepository;
+    private final LoginAttemptService loginAttemptService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -107,19 +108,43 @@ public class AuthService {
      */
     @Transactional
     public LoginResponse login(LoginRequest request) {
-        log.info("Login attempt for email: {}", request.getEmail());
+        return login(request, "unknown");
+    }
+
+    /**
+     * 로그인 (IP 주소 포함)
+     */
+    @Transactional
+    public LoginResponse login(LoginRequest request, String ipAddress) {
+        log.info("Login attempt for email: {} from IP: {}", request.getEmail(), ipAddress);
+
+        // 계정 잠금 확인
+        if (loginAttemptService.isAccountLocked(request.getEmail())) {
+            OffsetDateTime lockoutExpiry = loginAttemptService.getLockoutExpiryTime(request.getEmail());
+            loginAttemptService.recordAttempt(request.getEmail(), ipAddress, false, "ACCOUNT_LOCKED", null);
+            throw new BusinessException(ErrorCode.ACCESS_DENIED,
+                String.format("계정이 잠겼습니다. %s 이후 다시 시도해주세요.", lockoutExpiry));
+        }
 
         // 사용자 조회
-        User user = userRepository.findActiveByEmail(request.getEmail())
-            .orElseThrow(() -> new BusinessException(ErrorCode.AUTHENTICATION_FAILED, "이메일 또는 비밀번호가 올바르지 않습니다"));
+        User user = userRepository.findActiveByEmail(request.getEmail()).orElse(null);
+
+        if (user == null) {
+            loginAttemptService.recordAttempt(request.getEmail(), ipAddress, false, "USER_NOT_FOUND", null);
+            throw new BusinessException(ErrorCode.AUTHENTICATION_FAILED, "이메일 또는 비밀번호가 올바르지 않습니다");
+        }
 
         // 비밀번호 검증
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-            throw new BusinessException(ErrorCode.AUTHENTICATION_FAILED, "이메일 또는 비밀번호가 올바르지 않습니다");
+            loginAttemptService.recordAttempt(request.getEmail(), ipAddress, false, "INVALID_PASSWORD", user);
+            int remainingAttempts = loginAttemptService.getRemainingAttempts(request.getEmail());
+            throw new BusinessException(ErrorCode.AUTHENTICATION_FAILED,
+                String.format("이메일 또는 비밀번호가 올바르지 않습니다. (남은 시도: %d회)", remainingAttempts));
         }
 
         // 사용자 상태 확인
         if (user.getStatus() == UserStatus.SUSPENDED) {
+            loginAttemptService.recordAttempt(request.getEmail(), ipAddress, false, "ACCOUNT_SUSPENDED", user);
             throw new BusinessException(ErrorCode.ACCESS_DENIED, "정지된 계정입니다");
         }
 
@@ -145,7 +170,7 @@ public class AuthService {
         }
 
         // 2FA가 비활성화된 경우, 일반 로그인 진행
-        return completeLogin(user);
+        return completeLogin(user, ipAddress);
     }
 
     /**
@@ -188,6 +213,17 @@ public class AuthService {
      * 로그인 완료 처리 (공통 로직)
      */
     private LoginResponse completeLogin(User user) {
+        return completeLogin(user, "unknown");
+    }
+
+    /**
+     * 로그인 완료 처리 (IP 주소 포함)
+     */
+    private LoginResponse completeLogin(User user, String ipAddress) {
+        // 성공한 로그인 시도 기록
+        loginAttemptService.recordAttempt(user.getEmail(), ipAddress, true, null, user);
+        loginAttemptService.clearFailedAttempts(user.getEmail());
+
         // 역할 조회
         List<UserRole> userRoles = userRoleRepository.findByUser(user);
         List<SimpleGrantedAuthority> authorities = userRoles.stream()

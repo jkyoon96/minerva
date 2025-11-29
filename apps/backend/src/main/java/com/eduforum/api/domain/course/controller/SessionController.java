@@ -4,6 +4,7 @@ import com.eduforum.api.common.dto.ApiResponse;
 import com.eduforum.api.domain.course.dto.SessionCreateRequest;
 import com.eduforum.api.domain.course.dto.SessionResponse;
 import com.eduforum.api.domain.course.dto.SessionUpdateRequest;
+import com.eduforum.api.domain.course.service.ICalService;
 import com.eduforum.api.domain.course.service.SessionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -12,6 +13,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +29,7 @@ import java.util.List;
 public class SessionController {
 
     private final SessionService sessionService;
+    private final ICalService iCalService;
 
     @Operation(summary = "세션 생성", description = "코스에 새로운 세션을 생성합니다 (교수 전용)")
     @ApiResponses({
@@ -109,5 +113,69 @@ public class SessionController {
     ) {
         sessionService.deleteSession(sessionId);
         return ResponseEntity.ok(ApiResponse.success("세션이 삭제되었습니다"));
+    }
+
+    @Operation(summary = "코스 일정 iCal 내보내기", description = "코스의 모든 세션을 iCal 형식으로 내보냅니다")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "내보내기 성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 실패"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "코스를 찾을 수 없음")
+    })
+    @GetMapping("/courses/{courseId}/sessions/ical")
+    @SecurityRequirement(name = "bearer-jwt")
+    public ResponseEntity<String> exportCourseCalendar(
+        @PathVariable Long courseId
+    ) {
+        String iCalContent = iCalService.generateICalForCourse(courseId);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("text/calendar"));
+        headers.setContentDispositionFormData("attachment", "course-" + courseId + "-calendar.ics");
+
+        return ResponseEntity.ok()
+            .headers(headers)
+            .body(iCalContent);
+    }
+
+    @Operation(summary = "학생 전체 일정 iCal 내보내기",
+               description = "학생이 수강 중인 모든 코스의 세션을 iCal 형식으로 내보냅니다")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "내보내기 성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 실패")
+    })
+    @GetMapping("/student/calendar/ical")
+    @SecurityRequirement(name = "bearer-jwt")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ResponseEntity<String> exportStudentCalendar() {
+        String iCalContent = iCalService.generateICalForStudent();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("text/calendar"));
+        headers.setContentDispositionFormData("attachment", "my-courses-calendar.ics");
+
+        return ResponseEntity.ok()
+            .headers(headers)
+            .body(iCalContent);
+    }
+
+    @Operation(summary = "교수 전체 일정 iCal 내보내기",
+               description = "교수가 강의하는 모든 코스의 세션을 iCal 형식으로 내보냅니다")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "내보내기 성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 실패")
+    })
+    @GetMapping("/professor/calendar/ical")
+    @SecurityRequirement(name = "bearer-jwt")
+    @PreAuthorize("hasRole('PROFESSOR')")
+    public ResponseEntity<String> exportProfessorCalendar() {
+        String iCalContent = iCalService.generateICalForProfessor();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("text/calendar"));
+        headers.setContentDispositionFormData("attachment", "my-courses-calendar.ics");
+
+        return ResponseEntity.ok()
+            .headers(headers)
+            .body(iCalContent);
     }
 }
