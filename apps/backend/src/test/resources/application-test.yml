@@ -1,27 +1,72 @@
+# Test Configuration for EduForum Backend
+# Uses H2 in-memory database and optimized settings for faster test execution
+
 spring:
+  # Data Source Configuration - H2 In-Memory Database
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
     username: sa
     password:
 
+  # JPA/Hibernate Configuration
   jpa:
     hibernate:
-      ddl-auto: create-drop
-    show-sql: true
+      ddl-auto: create-drop  # Automatically create/drop schema for each test
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
         format_sql: true
+        show_sql: false  # Set to true for debugging
+    show-sql: false
 
+  # H2 Console (for debugging)
   h2:
     console:
-      enabled: true
+      enabled: false
 
+  # Security Configuration
+  security:
+    enabled: false  # Disable security for most tests
+
+  # Email Configuration (Mock for tests)
+  mail:
+    host: localhost
+    port: 3025
+    username: test
+    password: test
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+# JWT Configuration for tests
 jwt:
-  secret: test-jwt-secret-key-for-signing-tokens-must-be-at-least-256-bits-long-for-hs512
-  access-token-validity-in-seconds: 3600
-  refresh-token-validity-in-seconds: 86400
+  secret: test-secret-key-for-jwt-token-generation-must-be-at-least-256-bits
+  access-token-validity: 3600000  # 1 hour
+  refresh-token-validity: 86400000  # 24 hours
 
+# Application Configuration
+app:
+  frontend:
+    url: http://localhost:3000
+  backend:
+    url: http://localhost:8080
+
+# Logging Configuration
 logging:
   level:
+    root: INFO
     com.eduforum.api: DEBUG
+    org.springframework.web: WARN
+    org.springframework.security: WARN
+    org.hibernate: WARN
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

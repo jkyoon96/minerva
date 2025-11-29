@@ -1,0 +1,115 @@
+name: CodeQL Security Analysis
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  schedule:
+    # Run at 00:00 UTC every Monday
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+
+# Cancel in-progress runs for the same workflow and branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: java-kotlin
+            build-mode: manual
+            path: apps/backend
+          - language: javascript-typescript
+            build-mode: none
+            path: apps/frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+          queries: +security-extended,security-and-quality
+
+      # Build steps for Java (manual build mode)
+      - name: Set up Java 17
+        if: matrix.language == 'java-kotlin'
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        if: matrix.language == 'java-kotlin'
+        uses: gradle/gradle-build-action@v3
+        with:
+          gradle-version: wrapper
+
+      - name: Cache Gradle packages
+        if: matrix.language == 'java-kotlin'
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build backend with Gradle
+        if: matrix.language == 'java-kotlin'
+        working-directory: ./apps/backend
+        run: ./gradlew clean build -x test --no-daemon
+
+      # JavaScript/TypeScript build (none mode - no build needed)
+      # CodeQL will automatically detect and analyze JavaScript/TypeScript files
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{matrix.language}}"
+          output: sarif-results
+          upload: true
+
+      - name: Upload CodeQL results as artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: codeql-results-${{ matrix.language }}
+          path: sarif-results
+          retention-days: 14
+
+  # Summary job
+  codeql-success:
+    runs-on: ubuntu-latest
+    needs: analyze
+    if: always()
+    steps:
+      - name: Check analysis results
+        run: |
+          if [ "${{ needs.analyze.result }}" = "failure" ]; then
+            echo "CodeQL analysis failed"
+            exit 1
+          fi
+          echo "CodeQL analysis completed successfully"
