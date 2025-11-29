@@ -124,7 +124,30 @@ public enum ErrorCode {
     PEER_REVIEW_NOT_ASSIGNED(HttpStatus.FORBIDDEN, "PR002", "평가 권한이 없습니다"),
     PEER_REVIEW_DEADLINE_PASSED(HttpStatus.BAD_REQUEST, "PR003", "동료 평가 기한이 지났습니다"),
     PEER_REVIEW_ALREADY_SUBMITTED(HttpStatus.CONFLICT, "PR004", "이미 제출한 평가입니다"),
-    PEER_REVIEW_NOT_SETUP(HttpStatus.BAD_REQUEST, "PR005", "동료 평가가 설정되지 않았습니다");
+    PEER_REVIEW_NOT_SETUP(HttpStatus.BAD_REQUEST, "PR005", "동료 평가가 설정되지 않았습니다"),
+
+    // Analytics - Snapshots & Metrics
+    ANALYTICS_SNAPSHOT_NOT_FOUND(HttpStatus.NOT_FOUND, "AN001", "분석 스냅샷을 찾을 수 없습니다"),
+    LEARNING_METRIC_NOT_FOUND(HttpStatus.NOT_FOUND, "AN002", "학습 지표를 찾을 수 없습니다"),
+    INVALID_METRIC_TYPE(HttpStatus.BAD_REQUEST, "AN003", "유효하지 않은 지표 타입입니다"),
+
+    // Analytics - Reports
+    STUDENT_REPORT_NOT_FOUND(HttpStatus.NOT_FOUND, "AN004", "학생 리포트를 찾을 수 없습니다"),
+    COURSE_REPORT_NOT_FOUND(HttpStatus.NOT_FOUND, "AN005", "코스 리포트를 찾을 수 없습니다"),
+    REPORT_GENERATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "AN006", "리포트 생성에 실패했습니다"),
+    EXPORT_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "AN007", "데이터 내보내기에 실패했습니다"),
+
+    // Analytics - Risk & Alerts
+    RISK_INDICATOR_NOT_FOUND(HttpStatus.NOT_FOUND, "AN008", "위험 지표를 찾을 수 없습니다"),
+    RISK_ALERT_NOT_FOUND(HttpStatus.NOT_FOUND, "AN009", "위험 알림을 찾을 수 없습니다"),
+    ALERT_ALREADY_ACKNOWLEDGED(HttpStatus.CONFLICT, "AN010", "이미 확인된 알림입니다"),
+    ALERT_ALREADY_RESOLVED(HttpStatus.CONFLICT, "AN011", "이미 해결된 알림입니다"),
+
+    // Analytics - Network
+    INTERACTION_LOG_NOT_FOUND(HttpStatus.NOT_FOUND, "AN012", "상호작용 로그를 찾을 수 없습니다"),
+    NETWORK_NODE_NOT_FOUND(HttpStatus.NOT_FOUND, "AN013", "네트워크 노드를 찾을 수 없습니다"),
+    NETWORK_ANALYSIS_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "AN014", "네트워크 분석에 실패했습니다"),
+    CLUSTER_NOT_FOUND(HttpStatus.NOT_FOUND, "AN015", "학생 클러스터를 찾을 수 없습니다");
 
     private final HttpStatus httpStatus;
     private final String code;
