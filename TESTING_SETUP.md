@@ -1,27 +1,27 @@
-# Testing Setup Guide
+# 테스트 설정 가이드
 
-Quick start guide for setting up and running tests in the Minerva/EduForum project.
+Minerva/EduForum 프로젝트에서 테스트를 설정하고 실행하기 위한 빠른 시작 가이드입니다.
 
-## Backend Setup (Spring Boot)
+## 백엔드 설정 (Spring Boot)
 
-The backend tests are ready to run immediately. No additional setup required.
+백엔드 테스트는 바로 실행할 수 있습니다. 추가 설정이 필요하지 않습니다.
 
-### Run Backend Tests
+### 백엔드 테스트 실행
 
 ```bash
 cd /mnt/d/Development/git/minerva/apps/backend
 
-# Run all tests
+# 모든 테스트 실행
 ./gradlew test
 
-# Run with output
+# 출력과 함께 실행
 ./gradlew test --info
 
-# Run specific test
+# 특정 테스트 실행
 ./gradlew test --tests AuthServiceTest
 ```
 
-### Expected Output
+### 예상 출력
 ```
 > Task :test
 AuthServiceTest > register_Success_WithValidData() PASSED
@@ -31,20 +31,20 @@ AuthServiceTest > login_Success_WithValidCredentials() PASSED
 BUILD SUCCESSFUL
 ```
 
-## Frontend Setup (Next.js)
+## 프론트엔드 설정 (Next.js)
 
-The frontend requires installing test dependencies first.
+프론트엔드는 먼저 테스트 의존성을 설치해야 합니다.
 
-### Step 1: Install Dependencies
+### 1단계: 의존성 설치
 
 ```bash
 cd /mnt/d/Development/git/minerva/apps/frontend
 
-# Install all dependencies including test libraries
+# 테스트 라이브러리 포함 모든 의존성 설치
 npm install
 ```
 
-This will install:
+설치되는 패키지:
 - jest
 - @testing-library/react
 - @testing-library/jest-dom
@@ -53,20 +53,20 @@ This will install:
 - identity-obj-proxy
 - @types/jest
 
-### Step 2: Run Frontend Tests
+### 2단계: 프론트엔드 테스트 실행
 
 ```bash
-# Run all tests
+# 모든 테스트 실행
 npm test
 
-# Run in watch mode (recommended for development)
+# 감시 모드로 실행 (개발 시 권장)
 npm run test:watch
 
-# Run with coverage report
+# 커버리지 리포트와 함께 실행
 npm run test:coverage
 ```
 
-### Expected Output
+### 예상 출력
 ```
 PASS  src/__tests__/components/ui/button.test.tsx
 PASS  src/__tests__/hooks/use-auth.test.ts
@@ -78,45 +78,45 @@ Snapshots:   0 total
 Time:        2.5s
 ```
 
-## Troubleshooting
+## 문제 해결
 
-### Backend
+### 백엔드
 
-#### Issue: Tests fail with H2 database errors
+#### 문제: H2 데이터베이스 오류로 테스트 실패
 ```
-Solution: Check that application-test.yml is in src/test/resources/
-```
-
-#### Issue: Tests fail with "Bean not found"
-```
-Solution: Make sure @MockBean is used for dependencies in @WebMvcTest
+해결: src/test/resources/에 application-test.yml이 있는지 확인
 ```
 
-### Frontend
+#### 문제: "Bean not found" 오류로 테스트 실패
+```
+해결: @WebMvcTest에서 의존성에 @MockBean 사용 확인
+```
 
-#### Issue: "Cannot find module '@testing-library/react'"
+### 프론트엔드
+
+#### 문제: "Cannot find module '@testing-library/react'"
 ```bash
-Solution: Run npm install in the frontend directory
+해결: 프론트엔드 디렉토리에서 npm install 실행
 cd apps/frontend && npm install
 ```
 
-#### Issue: "SyntaxError: Unexpected token 'export'"
+#### 문제: "SyntaxError: Unexpected token 'export'"
 ```
-Solution: This is usually a module import issue. Check jest.config.js
-transformIgnorePatterns should include '/node_modules/'
+해결: 일반적으로 모듈 import 문제입니다. jest.config.js 확인
+transformIgnorePatterns에 '/node_modules/' 포함되어야 함
 ```
 
-#### Issue: Tests fail with "TextEncoder is not defined"
+#### 문제: "TextEncoder is not defined" 오류로 테스트 실패
 ```javascript
-Solution: Add to jest.setup.js:
+해결: jest.setup.js에 추가:
 import { TextEncoder, TextDecoder } from 'util';
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 ```
 
-## Quick Test Examples
+## 빠른 테스트 예제
 
-### Backend: Add a New Service Test
+### 백엔드: 새 서비스 테스트 추가
 
 ```java
 // src/test/java/com/eduforum/api/domain/example/service/ExampleServiceTest.java
@@ -129,43 +129,43 @@ class ExampleServiceTest {
     private ExampleService service;
 
     @Test
-    @DisplayName("Should do something successfully")
+    @DisplayName("성공적으로 작업을 수행해야 함")
     void testMethod_Success() {
-        // Given
+        // Given (준비)
         when(repository.findById(1L)).thenReturn(Optional.of(entity));
 
-        // When
+        // When (실행)
         Result result = service.doSomething(1L);
 
-        // Then
+        // Then (검증)
         assertThat(result).isNotNull();
     }
 }
 ```
 
-### Frontend: Add a New Component Test
+### 프론트엔드: 새 컴포넌트 테스트 추가
 
 ```tsx
 // src/__tests__/components/example.test.tsx
 import { render, screen } from '@testing-library/react';
 import { Example } from '@/components/example';
 
-describe('Example Component', () => {
-  it('renders correctly', () => {
+describe('Example 컴포넌트', () => {
+  it('올바르게 렌더링됨', () => {
     render(<Example />);
     expect(screen.getByText('Hello')).toBeInTheDocument();
   });
 });
 ```
 
-## Running Tests in CI/CD
+## CI/CD에서 테스트 실행
 
 ### GitHub Actions
 
-Create `.github/workflows/test.yml`:
+`.github/workflows/test.yml` 생성:
 
 ```yaml
-name: Run Tests
+name: 테스트 실행
 
 on:
   push:
@@ -182,7 +182,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Test Backend
+      - name: 백엔드 테스트
         run: |
           cd apps/backend
           chmod +x gradlew
@@ -195,69 +195,69 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
-      - name: Install & Test Frontend
+      - name: 프론트엔드 설치 및 테스트
         run: |
           cd apps/frontend
           npm ci
           npm test
 ```
 
-## Test Coverage Reports
+## 테스트 커버리지 리포트
 
-### Backend Coverage (JaCoCo)
+### 백엔드 커버리지 (JaCoCo)
 
 ```bash
 cd apps/backend
 ./gradlew test jacocoTestReport
 
-# View report at:
+# 리포트 위치:
 # apps/backend/build/reports/jacoco/test/html/index.html
 ```
 
-### Frontend Coverage (Jest)
+### 프론트엔드 커버리지 (Jest)
 
 ```bash
 cd apps/frontend
 npm run test:coverage
 
-# View report at:
+# 리포트 위치:
 # apps/frontend/coverage/lcov-report/index.html
 ```
 
-## Next Steps
+## 다음 단계
 
-1. **Run initial tests** to verify setup
-2. **Add tests** for new features as you develop
-3. **Maintain coverage** above 80%
-4. **Review test reports** regularly
-5. **Update tests** when refactoring code
+1. **초기 테스트 실행**하여 설정 확인
+2. 새 기능 개발 시 **테스트 추가**
+3. **커버리지 80% 이상** 유지
+4. **테스트 리포트** 정기적 검토
+5. 코드 리팩토링 시 **테스트 업데이트**
 
-## Test File Locations
+## 테스트 파일 위치
 
-### Backend
-- Application test: `/mnt/d/Development/git/minerva/apps/backend/src/test/java/com/eduforum/api/EduForumApplicationTests.java`
-- Auth service tests: `/mnt/d/Development/git/minerva/apps/backend/src/test/java/com/eduforum/api/domain/auth/service/AuthServiceTest.java`
-- Auth controller tests: `/mnt/d/Development/git/minerva/apps/backend/src/test/java/com/eduforum/api/domain/auth/controller/AuthControllerTest.java`
-- Course service tests: `/mnt/d/Development/git/minerva/apps/backend/src/test/java/com/eduforum/api/domain/course/service/CourseServiceTest.java`
-- Test config: `/mnt/d/Development/git/minerva/apps/backend/src/test/resources/application-test.yml`
+### 백엔드
+- 애플리케이션 테스트: `/apps/backend/src/test/java/com/eduforum/api/EduForumApplicationTests.java`
+- 인증 서비스 테스트: `/apps/backend/src/test/java/com/eduforum/api/domain/auth/service/AuthServiceTest.java`
+- 인증 컨트롤러 테스트: `/apps/backend/src/test/java/com/eduforum/api/domain/auth/controller/AuthControllerTest.java`
+- 코스 서비스 테스트: `/apps/backend/src/test/java/com/eduforum/api/domain/course/service/CourseServiceTest.java`
+- 테스트 설정: `/apps/backend/src/test/resources/application-test.yml`
 
-### Frontend
-- Jest config: `/mnt/d/Development/git/minerva/apps/frontend/jest.config.js`
-- Jest setup: `/mnt/d/Development/git/minerva/apps/frontend/jest.setup.js`
-- Button tests: `/mnt/d/Development/git/minerva/apps/frontend/src/__tests__/components/ui/button.test.tsx`
-- Auth hook tests: `/mnt/d/Development/git/minerva/apps/frontend/src/__tests__/hooks/use-auth.test.ts`
-- Utils tests: `/mnt/d/Development/git/minerva/apps/frontend/src/__tests__/lib/utils.test.ts`
+### 프론트엔드
+- Jest 설정: `/apps/frontend/jest.config.js`
+- Jest 셋업: `/apps/frontend/jest.setup.js`
+- 버튼 테스트: `/apps/frontend/src/__tests__/components/ui/button.test.tsx`
+- 인증 훅 테스트: `/apps/frontend/src/__tests__/hooks/use-auth.test.ts`
+- 유틸 테스트: `/apps/frontend/src/__tests__/lib/utils.test.ts`
 
-## Resources
+## 참고 자료
 
-- Backend README: `/mnt/d/Development/git/minerva/apps/backend/src/test/README.md`
-- Frontend README: `/mnt/d/Development/git/minerva/apps/frontend/src/__tests__/README.md`
-- Full Documentation: `/mnt/d/Development/git/minerva/TEST_INFRASTRUCTURE.md`
+- 백엔드 README: `/apps/backend/src/test/README.md`
+- 프론트엔드 README: `/apps/frontend/src/__tests__/README.md`
+- 전체 문서: `/TEST_INFRASTRUCTURE.md`
 
-## Support
+## 지원
 
-For issues or questions:
-1. Check the README files in test directories
-2. Review the test examples provided
-3. Consult the troubleshooting section above
-4. Check Jest/JUnit documentation for specific errors
+문제 또는 질문:
+1. 테스트 디렉토리의 README 파일 확인
+2. 제공된 테스트 예제 검토
+3. 위의 문제 해결 섹션 참조
+4. 특정 오류는 Jest/JUnit 문서 참조

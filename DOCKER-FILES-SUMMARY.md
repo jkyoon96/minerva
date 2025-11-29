@@ -1,108 +1,108 @@
-# Docker Configuration Files Summary
+# Docker 설정 파일 요약
 
-This document provides an overview of all Docker-related files created for the EduForum/Minerva project.
+이 문서는 EduForum/Minerva 프로젝트의 Docker 관련 파일들에 대한 개요를 제공합니다.
 
-## Created Files
+## 생성된 파일
 
-### Root Level Configuration
+### 루트 레벨 설정
 
 1. **docker-compose.yml** (3.5 KB)
-   - Production Docker Compose configuration
-   - Defines 3 services: postgres, backend, frontend
-   - Includes health checks and proper networking
-   - Production-ready with security best practices
+   - 프로덕션용 Docker Compose 설정
+   - 3개 서비스 정의: postgres, backend, frontend
+   - 헬스체크 및 네트워크 설정 포함
+   - 보안 모범 사례를 적용한 프로덕션 준비 상태
 
 2. **docker-compose.dev.yml** (3.5 KB)
-   - Development overrides for docker-compose.yml
-   - Enables hot reload with volume mounts
-   - Exposes debug ports (Backend: 5005, Frontend: 9229)
-   - Uses development Dockerfile for frontend
+   - docker-compose.yml의 개발용 오버라이드
+   - 볼륨 마운트로 핫 리로드 지원
+   - 디버그 포트 노출 (Backend: 5005, Frontend: 9229)
+   - 프론트엔드용 개발 Dockerfile 사용
 
 3. **.env.example** (893 bytes)
-   - Environment variable template
-   - Includes all required configuration
-   - Security-focused with placeholder values
+   - 환경 변수 템플릿
+   - 모든 필수 설정 포함
+   - 플레이스홀더 값으로 보안 중심 설계
 
 4. **.dockerignore** (245 bytes)
-   - Root-level Docker ignore file
-   - Excludes documentation, git files, etc.
+   - 루트 레벨 Docker 제외 파일
+   - 문서, git 파일 등 제외
 
 5. **Makefile** (2.5 KB)
-   - Convenient shortcuts for Docker commands
-   - Includes database backup/restore utilities
-   - Easy-to-use targets (make up, make dev, etc.)
+   - Docker 명령어 단축키
+   - 데이터베이스 백업/복원 유틸리티 포함
+   - 사용하기 쉬운 타겟 (make up, make dev 등)
 
-### Backend Configuration
+### 백엔드 설정
 
 6. **apps/backend/Dockerfile** (1.4 KB)
-   - Multi-stage build (builder + runtime)
-   - Uses eclipse-temurin:17-jdk-alpine for build
-   - Uses eclipse-temurin:17-jre-alpine for runtime
-   - Non-root user for security
-   - Optimized JVM settings for containers
-   - Health check using Spring Actuator
+   - 멀티스테이지 빌드 (builder + runtime)
+   - 빌드에 eclipse-temurin:17-jdk-alpine 사용
+   - 런타임에 eclipse-temurin:17-jre-alpine 사용
+   - 보안을 위한 non-root 사용자
+   - 컨테이너 최적화 JVM 설정
+   - Spring Actuator를 이용한 헬스체크
 
 7. **apps/backend/.dockerignore** (266 bytes)
-   - Excludes build artifacts, IDE files
-   - Already existed, kept as-is
+   - 빌드 결과물, IDE 파일 제외
+   - 기존 파일 유지
 
-### Frontend Configuration
+### 프론트엔드 설정
 
 8. **apps/frontend/Dockerfile** (1.7 KB)
-   - Multi-stage build (deps, builder, runner)
-   - Uses node:20-alpine
-   - Standalone Next.js build
-   - Non-root user (nextjs)
-   - Optimized for production
+   - 멀티스테이지 빌드 (deps, builder, runner)
+   - node:20-alpine 사용
+   - Next.js standalone 빌드
+   - non-root 사용자 (nextjs)
+   - 프로덕션 최적화
 
 9. **apps/frontend/Dockerfile.dev** (563 bytes)
-   - Development-specific Dockerfile
-   - Includes dev dependencies
-   - Enables hot reload
+   - 개발 전용 Dockerfile
+   - 개발 의존성 포함
+   - 핫 리로드 지원
 
 10. **apps/frontend/.dockerignore** (523 bytes)
-    - Excludes node_modules, build artifacts
-    - Environment files and IDE configs
+    - node_modules, 빌드 결과물 제외
+    - 환경 파일 및 IDE 설정 제외
 
-11. **apps/frontend/next.config.js** (Updated)
-    - Added `output: 'standalone'` for Docker
-    - Updated API URL default to port 8080
+11. **apps/frontend/next.config.js** (업데이트됨)
+    - Docker용 `output: 'standalone'` 추가
+    - API URL 기본값을 8080 포트로 업데이트
 
-### Supporting Files
+### 지원 파일
 
 12. **scripts/init-db.sql** (614 bytes)
-    - PostgreSQL initialization script
-    - Enables UUID and pgcrypto extensions
-    - Runs on first database creation
+    - PostgreSQL 초기화 스크립트
+    - UUID 및 pgcrypto 확장 활성화
+    - 첫 데이터베이스 생성 시 실행
 
 13. **scripts/dev-seed.sql** (878 bytes)
-    - Development seed data template
-    - Only loaded in development mode
+    - 개발용 시드 데이터 템플릿
+    - 개발 모드에서만 로드
 
 14. **apps/frontend/src/app/api/health/route.ts** (351 bytes)
-    - Health check endpoint for frontend
-    - Returns JSON status response
-    - Used by Docker health checks
+    - 프론트엔드용 헬스체크 엔드포인트
+    - JSON 상태 응답 반환
+    - Docker 헬스체크에서 사용
 
-### Documentation
+### 문서
 
 15. **DOCKER.md** (8.8 KB)
-    - Comprehensive Docker deployment guide
-    - Includes troubleshooting, best practices
-    - Production checklist
-    - CI/CD integration examples
+    - 종합 Docker 배포 가이드
+    - 문제 해결, 모범 사례 포함
+    - 프로덕션 체크리스트
+    - CI/CD 통합 예시
 
 16. **QUICKSTART-DOCKER.md** (3.0 KB)
-    - Quick start guide (5 minutes to run)
-    - Step-by-step instructions
-    - Common commands reference
+    - 빠른 시작 가이드 (5분 내 실행)
+    - 단계별 지침
+    - 자주 사용하는 명령어 참조
 
-## Architecture Overview
+## 아키텍처 개요
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     Docker Network (bridge)                  │
-│                      eduforum-network                        │
+│                Docker 네트워크 (bridge)                       │
+│                   eduforum-network                           │
 │                                                              │
 │  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐  │
 │  │  PostgreSQL  │◄───│   Backend    │◄───│   Frontend   │  │
@@ -114,132 +114,132 @@ This document provides an overview of all Docker-related files created for the E
 │        │                                                     │
 │        ▼                                                     │
 │  ┌──────────────┐                                           │
-│  │   Volume     │                                           │
+│  │   볼륨        │                                           │
 │  │postgres_data │                                           │
 │  └──────────────┘                                           │
 └─────────────────────────────────────────────────────────────┘
 
-External Access:
-- localhost:3000 → Frontend
-- localhost:8080 → Backend API
-- localhost:5432 → PostgreSQL (production)
-- localhost:5433 → PostgreSQL (development)
+외부 접근:
+- localhost:3000 → 프론트엔드
+- localhost:8080 → 백엔드 API
+- localhost:5432 → PostgreSQL (프로덕션)
+- localhost:5433 → PostgreSQL (개발)
 ```
 
-## Key Features
+## 주요 기능
 
-### Security
-- Non-root users in all containers
-- Separate build and runtime stages
-- Environment variables for secrets
-- Health checks on all services
-- No hardcoded credentials
+### 보안
+- 모든 컨테이너에서 non-root 사용자 사용
+- 빌드와 런타임 단계 분리
+- 시크릿을 위한 환경 변수 사용
+- 모든 서비스에 헬스체크 적용
+- 하드코딩된 자격 증명 없음
 
-### Performance
-- Multi-stage builds (smaller images)
-- Layer caching for dependencies
-- Optimized JVM settings
-- Next.js standalone output
-- Volume persistence for database
+### 성능
+- 멀티스테이지 빌드 (더 작은 이미지)
+- 의존성 레이어 캐싱
+- JVM 설정 최적화
+- Next.js standalone 출력
+- 데이터베이스 볼륨 영속성
 
-### Development Experience
-- Hot reload for both apps
-- Debug port exposure
-- Development seed data
-- Verbose logging in dev mode
-- Source code volume mounts
+### 개발 경험
+- 두 앱 모두 핫 리로드 지원
+- 디버그 포트 노출
+- 개발용 시드 데이터
+- 개발 모드에서 상세 로깅
+- 소스 코드 볼륨 마운트
 
-### Production Ready
-- Health checks
-- Resource limits capability
-- Proper logging configuration
-- Graceful shutdown
-- Zero-downtime deployment ready
+### 프로덕션 준비
+- 헬스체크
+- 리소스 제한 기능
+- 적절한 로깅 설정
+- 그레이스풀 셧다운
+- 무중단 배포 준비 완료
 
-## Usage Quick Reference
+## 빠른 사용법 참조
 
-### Production
+### 프로덕션
 ```bash
-# Start all services
+# 모든 서비스 시작
 docker-compose up -d
 
-# Or using Make
+# Make 사용
 make up
 
-# View logs
+# 로그 보기
 make logs
 
-# Stop services
+# 서비스 중지
 make down
 ```
 
-### Development
+### 개발
 ```bash
-# Start with hot reload
+# 핫 리로드로 시작
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 
-# Or using Make
+# Make 사용
 make dev
 ```
 
-### Database Management
+### 데이터베이스 관리
 ```bash
-# Backup
+# 백업
 make db-backup
 
-# Restore
+# 복원
 make db-restore FILE=backups/backup_20240101_120000.sql
 ```
 
-## Environment Variables
+## 환경 변수
 
-All environment variables are documented in `.env.example`:
+모든 환경 변수는 `.env.example`에 문서화되어 있습니다:
 
-### Required
-- `POSTGRES_PASSWORD` - Database password
-- `JWT_SECRET` - JWT signing key (32+ chars)
-- `NEXTAUTH_SECRET` - NextAuth encryption key (32+ chars)
+### 필수
+- `POSTGRES_PASSWORD` - 데이터베이스 비밀번호
+- `JWT_SECRET` - JWT 서명 키 (32자 이상)
+- `NEXTAUTH_SECRET` - NextAuth 암호화 키 (32자 이상)
 
-### Optional
-- `CORS_ALLOWED_ORIGINS` - Allowed CORS origins
-- `NEXT_PUBLIC_API_URL` - Public API URL
-- `API_URL` - Internal API URL
+### 선택
+- `CORS_ALLOWED_ORIGINS` - 허용된 CORS 출처
+- `NEXT_PUBLIC_API_URL` - 공개 API URL
+- `API_URL` - 내부 API URL
 
-## Port Mapping
+## 포트 매핑
 
-| Service | Internal | External (Prod) | External (Dev) |
-|---------|----------|-----------------|----------------|
+| 서비스 | 내부 | 외부 (프로덕션) | 외부 (개발) |
+|--------|------|-----------------|-------------|
 | Frontend | 3000 | 3000 | 3000 |
 | Backend | 8080 | 8080 | 8080 |
 | Backend Debug | - | - | 5005 |
 | Frontend Debug | - | - | 9229 |
 | PostgreSQL | 5432 | 5432 | 5433 |
 
-## File Sizes
+## 파일 크기
 
-Total configuration: ~30 KB
-- Docker configs: ~12 KB
-- Documentation: ~12 KB
-- Supporting files: ~6 KB
+총 설정: ~30 KB
+- Docker 설정: ~12 KB
+- 문서: ~12 KB
+- 지원 파일: ~6 KB
 
-## Next Steps
+## 다음 단계
 
-1. Copy `.env.example` to `.env` and configure
-2. Run `make up` or `docker-compose up -d`
-3. Access http://localhost:3000
-4. Read DOCKER.md for advanced usage
+1. `.env.example`을 `.env`로 복사하고 설정
+2. `make up` 또는 `docker-compose up -d` 실행
+3. http://localhost:3000 접속
+4. 고급 사용법은 DOCKER.md 참조
 
-## Maintenance
+## 유지 관리
 
-All files follow these principles:
-- **Security First**: Non-root users, no hardcoded secrets
-- **Production Ready**: Health checks, proper error handling
-- **Developer Friendly**: Hot reload, debug ports, clear logging
-- **Well Documented**: Inline comments, comprehensive guides
-- **Industry Standard**: Best practices from official docs
+모든 파일은 다음 원칙을 따릅니다:
+- **보안 우선**: non-root 사용자, 하드코딩된 시크릿 없음
+- **프로덕션 준비**: 헬스체크, 적절한 오류 처리
+- **개발자 친화적**: 핫 리로드, 디버그 포트, 명확한 로깅
+- **잘 문서화됨**: 인라인 주석, 종합 가이드
+- **업계 표준**: 공식 문서의 모범 사례
 
-## Support
+## 지원
 
-- QUICKSTART-DOCKER.md - Quick 5-minute guide
-- DOCKER.md - Comprehensive documentation
-- Makefile - Command reference (`make help`)
+- QUICKSTART-DOCKER.md - 빠른 5분 가이드
+- DOCKER.md - 종합 문서
+- Makefile - 명령어 참조 (`make help`)

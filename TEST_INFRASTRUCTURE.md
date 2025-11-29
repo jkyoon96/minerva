@@ -1,147 +1,147 @@
-# EduForum Test Infrastructure
+# EduForum 테스트 인프라
 
-This document provides an overview of the testing infrastructure for the Minerva/EduForum project.
+이 문서는 Minerva/EduForum 프로젝트의 테스트 인프라에 대한 개요를 제공합니다.
 
-## Overview
+## 개요
 
-The project includes comprehensive test infrastructure for both backend (Spring Boot) and frontend (Next.js) applications.
+이 프로젝트는 백엔드(Spring Boot)와 프론트엔드(Next.js) 애플리케이션 모두에 대한 종합적인 테스트 인프라를 포함합니다.
 
-## Backend Testing (Java/Spring Boot)
+## 백엔드 테스트 (Java/Spring Boot)
 
-### Location
+### 위치
 `/mnt/d/Development/git/minerva/apps/backend/src/test/`
 
-### Test Files Created
+### 생성된 테스트 파일
 
-1. **EduForumApplicationTests.java** - Basic context load test
-   - Ensures Spring Boot application context loads successfully
-   - Smoke test for bean configuration
+1. **EduForumApplicationTests.java** - 기본 컨텍스트 로드 테스트
+   - Spring Boot 애플리케이션 컨텍스트가 성공적으로 로드되는지 확인
+   - 빈 설정에 대한 스모크 테스트
 
-2. **AuthServiceTest.java** - Auth service unit tests
-   - User registration (success, duplicate email, password mismatch, terms not agreed)
-   - User login (success, invalid credentials, account locked, suspended account)
-   - Logout functionality
-   - Uses Mockito for mocking dependencies
+2. **AuthServiceTest.java** - 인증 서비스 단위 테스트
+   - 사용자 등록 (성공, 중복 이메일, 비밀번호 불일치, 약관 미동의)
+   - 사용자 로그인 (성공, 잘못된 자격 증명, 계정 잠금, 정지된 계정)
+   - 로그아웃 기능
+   - 의존성 모킹에 Mockito 사용
 
-3. **AuthControllerTest.java** - Auth controller tests
-   - REST API endpoint testing with @WebMvcTest
-   - Tests for register, login, 2FA, token refresh, email verification, password reset
-   - Validates request/response formats and HTTP status codes
+3. **AuthControllerTest.java** - 인증 컨트롤러 테스트
+   - @WebMvcTest를 사용한 REST API 엔드포인트 테스트
+   - 회원가입, 로그인, 2FA, 토큰 갱신, 이메일 인증, 비밀번호 재설정 테스트
+   - 요청/응답 형식 및 HTTP 상태 코드 검증
 
-4. **CourseServiceTest.java** - Course service unit tests
-   - Course creation (success, duplicate code)
-   - Course retrieval
-   - Course listing for professors
-   - Uses Mockito for repository mocking
+4. **CourseServiceTest.java** - 코스 서비스 단위 테스트
+   - 코스 생성 (성공, 중복 코드)
+   - 코스 조회
+   - 교수용 코스 목록
+   - 리포지토리 모킹에 Mockito 사용
 
-5. **application-test.yml** - Test configuration
-   - H2 in-memory database (PostgreSQL compatibility mode)
-   - Disabled security for tests
-   - JWT configuration
-   - Optimized logging levels
+5. **application-test.yml** - 테스트 설정
+   - H2 인메모리 데이터베이스 (PostgreSQL 호환 모드)
+   - 테스트용 보안 비활성화
+   - JWT 설정
+   - 최적화된 로깅 레벨
 
-### Technology Stack
+### 기술 스택
 
-- **Framework**: Spring Boot 3.2.1
-- **Java Version**: 17
-- **Build Tool**: Gradle
-- **Test Framework**: JUnit 5 (Jupiter)
-- **Mocking**: Mockito
-- **Assertions**: AssertJ
-- **Database**: H2 (in-memory, PostgreSQL mode)
-- **Security**: Spring Security Test
+- **프레임워크**: Spring Boot 3.2.1
+- **Java 버전**: 17
+- **빌드 도구**: Gradle
+- **테스트 프레임워크**: JUnit 5 (Jupiter)
+- **모킹**: Mockito
+- **어서션**: AssertJ
+- **데이터베이스**: H2 (인메모리, PostgreSQL 모드)
+- **보안**: Spring Security Test
 
-### Running Backend Tests
+### 백엔드 테스트 실행
 
 ```bash
 cd /mnt/d/Development/git/minerva/apps/backend
 
-# Run all tests
+# 모든 테스트 실행
 ./gradlew test
 
-# Run specific test class
+# 특정 테스트 클래스 실행
 ./gradlew test --tests AuthServiceTest
 
-# Run with coverage
+# 커버리지와 함께 실행
 ./gradlew test jacocoTestReport
 
-# Run in continuous mode
+# 지속 모드로 실행
 ./gradlew test --continuous
 ```
 
-## Frontend Testing (Next.js/React)
+## 프론트엔드 테스트 (Next.js/React)
 
-### Location
+### 위치
 `/mnt/d/Development/git/minerva/apps/frontend/src/__tests__/`
 
-### Test Files Created
+### 생성된 테스트 파일
 
-1. **jest.config.js** - Jest configuration for Next.js
-   - Module path mapping (@/ alias)
-   - CSS and asset mocking
-   - Coverage configuration
-   - Test environment setup
+1. **jest.config.js** - Next.js용 Jest 설정
+   - 모듈 경로 매핑 (@/ 별칭)
+   - CSS 및 에셋 모킹
+   - 커버리지 설정
+   - 테스트 환경 설정
 
-2. **jest.setup.js** - Jest global setup
-   - Testing Library DOM matchers
-   - Window.matchMedia mock
-   - IntersectionObserver mock
-   - ResizeObserver mock
+2. **jest.setup.js** - Jest 글로벌 설정
+   - Testing Library DOM 매처
+   - Window.matchMedia 모킹
+   - IntersectionObserver 모킹
+   - ResizeObserver 모킹
 
-3. **button.test.tsx** - Button component tests
-   - Renders with different variants (default, outline, ghost, destructive)
-   - Renders with different sizes (sm, default, lg)
-   - Handles click events
-   - Disabled state
-   - Ref forwarding
-   - Custom className application
+3. **button.test.tsx** - Button 컴포넌트 테스트
+   - 다양한 variant로 렌더링 (default, outline, ghost, destructive)
+   - 다양한 크기로 렌더링 (sm, default, lg)
+   - 클릭 이벤트 처리
+   - 비활성화 상태
+   - Ref 전달
+   - 커스텀 className 적용
 
-4. **use-auth.test.ts** - Auth store (Zustand) tests
-   - Initial state verification
-   - User login (success, 2FA, errors)
-   - User logout
-   - User state updates
-   - Error handling
+4. **use-auth.test.ts** - 인증 스토어 (Zustand) 테스트
+   - 초기 상태 확인
+   - 사용자 로그인 (성공, 2FA, 오류)
+   - 사용자 로그아웃
+   - 사용자 상태 업데이트
+   - 오류 처리
 
-5. **utils.test.ts** - Utility function tests
-   - cn() className merger
-   - formatDate() Korean date formatting
-   - formatDateTime() date and time formatting
+5. **utils.test.ts** - 유틸리티 함수 테스트
+   - cn() 클래스명 병합
+   - formatDate() 한국어 날짜 포맷팅
+   - formatDateTime() 날짜 및 시간 포맷팅
 
-### Technology Stack
+### 기술 스택
 
-- **Framework**: Next.js 14, React 18
-- **Language**: TypeScript
-- **Test Runner**: Jest 29
-- **Testing Library**: React Testing Library
-- **User Interactions**: @testing-library/user-event
-- **State Management**: Zustand (tested)
-- **Mocking**: Jest mocks, identity-obj-proxy for CSS
+- **프레임워크**: Next.js 14, React 18
+- **언어**: TypeScript
+- **테스트 러너**: Jest 29
+- **테스팅 라이브러리**: React Testing Library
+- **사용자 인터랙션**: @testing-library/user-event
+- **상태 관리**: Zustand (테스트됨)
+- **모킹**: Jest mocks, CSS용 identity-obj-proxy
 
-### Running Frontend Tests
+### 프론트엔드 테스트 실행
 
 ```bash
 cd /mnt/d/Development/git/minerva/apps/frontend
 
-# Install dependencies (if not already installed)
+# 의존성 설치 (아직 설치하지 않은 경우)
 npm install
 
-# Run all tests
+# 모든 테스트 실행
 npm test
 
-# Run tests in watch mode
+# 감시 모드로 테스트 실행
 npm run test:watch
 
-# Run tests with coverage
+# 커버리지와 함께 테스트 실행
 npm run test:coverage
 
-# Run specific test file
+# 특정 테스트 파일 실행
 npm test button.test
 ```
 
-### Installing Frontend Dependencies
+### 프론트엔드 의존성 설치
 
-The following dependencies have been added to `package.json`:
+다음 의존성이 `package.json`에 추가되었습니다:
 
 ```json
 {
@@ -157,66 +157,66 @@ The following dependencies have been added to `package.json`:
 }
 ```
 
-Run `npm install` to install these dependencies.
+`npm install`을 실행하여 이러한 의존성을 설치합니다.
 
-## Test Coverage Goals
+## 테스트 커버리지 목표
 
-### Backend
-- **Line Coverage**: Minimum 80%
-- **Branch Coverage**: Minimum 70%
-- **Critical Paths**: 100% (auth, authorization, payments)
+### 백엔드
+- **라인 커버리지**: 최소 80%
+- **브랜치 커버리지**: 최소 70%
+- **중요 경로**: 100% (인증, 권한 부여, 결제)
 
-### Frontend
-- **Statements**: Minimum 80%
-- **Branches**: Minimum 75%
-- **Functions**: Minimum 80%
-- **Lines**: Minimum 80%
+### 프론트엔드
+- **구문**: 최소 80%
+- **브랜치**: 최소 75%
+- **함수**: 최소 80%
+- **라인**: 최소 80%
 
-## Best Practices
+## 모범 사례
 
-### Backend
-1. Use descriptive test method names: `methodName_Scenario_ExpectedResult`
-2. Structure tests with Given-When-Then (Arrange-Act-Assert)
-3. Mock external dependencies (repositories, APIs)
-4. Use `@DisplayName` for readable test reports
-5. Keep tests isolated and independent
+### 백엔드
+1. 설명적인 테스트 메서드명 사용: `methodName_Scenario_ExpectedResult`
+2. Given-When-Then (Arrange-Act-Assert) 구조로 테스트 작성
+3. 외부 의존성 모킹 (리포지토리, API)
+4. 읽기 쉬운 테스트 리포트를 위해 `@DisplayName` 사용
+5. 테스트를 격리되고 독립적으로 유지
 
-### Frontend
-1. Query by role/label when possible (accessibility-focused)
-2. Use `userEvent` for realistic user interactions
-3. Test user-visible behavior, not implementation details
-4. Mock API calls and external modules
-5. Use `waitFor` for async operations
-6. Clear mocks between tests
+### 프론트엔드
+1. 가능하면 role/label로 쿼리 (접근성 중심)
+2. 실제적인 사용자 인터랙션을 위해 `userEvent` 사용
+3. 구현 세부 사항이 아닌 사용자 가시적 동작 테스트
+4. API 호출 및 외부 모듈 모킹
+5. 비동기 작업에 `waitFor` 사용
+6. 테스트 간 모킹 초기화
 
-## Documentation
+## 문서
 
-Detailed documentation is available in:
-- Backend: `/mnt/d/Development/git/minerva/apps/backend/src/test/README.md`
-- Frontend: `/mnt/d/Development/git/minerva/apps/frontend/src/__tests__/README.md`
+상세 문서는 다음에서 확인할 수 있습니다:
+- 백엔드: `/mnt/d/Development/git/minerva/apps/backend/src/test/README.md`
+- 프론트엔드: `/mnt/d/Development/git/minerva/apps/frontend/src/__tests__/README.md`
 
-## Next Steps
+## 다음 단계
 
-1. **Backend**:
-   - Run `./gradlew test` to verify all tests pass
-   - Add integration tests for critical flows
-   - Set up test coverage reporting (JaCoCo)
-   - Add tests for remaining domains (seminar, active, assessment, analytics)
+1. **백엔드**:
+   - `./gradlew test`를 실행하여 모든 테스트 통과 확인
+   - 중요 흐름에 대한 통합 테스트 추가
+   - 테스트 커버리지 리포팅 설정 (JaCoCo)
+   - 나머지 도메인에 테스트 추가 (seminar, active, assessment, analytics)
 
-2. **Frontend**:
-   - Run `npm install` to install test dependencies
-   - Run `npm test` to verify all tests pass
-   - Add tests for page components
-   - Add tests for remaining hooks and utilities
-   - Set up CI/CD pipeline with test automation
+2. **프론트엔드**:
+   - `npm install`을 실행하여 테스트 의존성 설치
+   - `npm test`를 실행하여 모든 테스트 통과 확인
+   - 페이지 컴포넌트에 테스트 추가
+   - 나머지 훅 및 유틸리티에 테스트 추가
+   - 테스트 자동화로 CI/CD 파이프라인 설정
 
-## CI/CD Integration
+## CI/CD 통합
 
-### GitHub Actions Example
+### GitHub Actions 예시
 
 ```yaml
 # .github/workflows/test.yml
-name: Tests
+name: 테스트
 
 on: [push, pull_request]
 
@@ -228,7 +228,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           java-version: '17'
-      - name: Run Backend Tests
+      - name: 백엔드 테스트 실행
         run: |
           cd apps/backend
           ./gradlew test
@@ -240,35 +240,35 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
-      - name: Install Dependencies
+      - name: 의존성 설치
         run: |
           cd apps/frontend
           npm install
-      - name: Run Frontend Tests
+      - name: 프론트엔드 테스트 실행
         run: |
           cd apps/frontend
           npm test
 ```
 
-## Troubleshooting
+## 문제 해결
 
-### Backend
-- **H2 Database Issues**: Check `application-test.yml` for correct JDBC URL
-- **Mock Issues**: Verify `@MockBean` vs `@Mock` usage
-- **Security Issues**: Use `@WithMockUser` or disable security in tests
+### 백엔드
+- **H2 데이터베이스 문제**: `application-test.yml`에서 올바른 JDBC URL 확인
+- **모킹 문제**: `@MockBean` vs `@Mock` 사용 확인
+- **보안 문제**: 테스트에서 `@WithMockUser` 사용 또는 보안 비활성화
 
-### Frontend
-- **"Not wrapped in act(...)"**: Use `act()` for state updates or `waitFor` for async
-- **"Unable to find element"**: Use `screen.debug()` to inspect DOM
-- **Mock Not Working**: Ensure mock is defined before import, clear mocks between tests
+### 프론트엔드
+- **"Not wrapped in act(...)"**: 상태 업데이트에 `act()` 사용 또는 비동기에 `waitFor` 사용
+- **"Unable to find element"**: `screen.debug()`로 DOM 검사
+- **모킹이 작동하지 않음**: import 전에 모킹 정의 확인, 테스트 간 모킹 초기화
 
-## Summary
+## 요약
 
-The test infrastructure is now fully set up for both backend and frontend. You can:
+테스트 인프라가 백엔드와 프론트엔드 모두에 완전히 설정되었습니다. 다음을 수행할 수 있습니다:
 
-- Run backend tests with Gradle
-- Run frontend tests with Jest
-- Write new tests following the established patterns
-- Achieve comprehensive test coverage across the application
+- Gradle로 백엔드 테스트 실행
+- Jest로 프론트엔드 테스트 실행
+- 확립된 패턴에 따라 새 테스트 작성
+- 애플리케이션 전반에 걸쳐 종합적인 테스트 커버리지 달성
 
-For more details, refer to the README files in each test directory.
+자세한 내용은 각 테스트 디렉토리의 README 파일을 참조하세요.
