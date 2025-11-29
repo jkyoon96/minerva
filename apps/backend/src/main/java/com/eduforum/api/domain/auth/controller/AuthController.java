@@ -33,6 +33,7 @@ public class AuthController {
     private final AuthService authService;
     private final UserService userService;
     private final PasswordResetService passwordResetService;
+    private final TwoFactorService twoFactorService;
 
     @Operation(
         summary = "로그인",
@@ -86,6 +87,65 @@ public class AuthController {
         @Valid @RequestBody LoginRequest request
     ) {
         LoginResponse response = authService.login(request);
+        if (response.getTwoFactorRequired()) {
+            return ResponseEntity.ok(ApiResponse.success("2FA 인증이 필요합니다", response));
+        }
+        return ResponseEntity.ok(ApiResponse.success("로그인 성공", response));
+    }
+
+    @Operation(
+        summary = "2FA 로그인 완료",
+        description = "2FA 코드 또는 백업 코드를 검증하여 로그인을 완료합니다."
+    )
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = "로그인 성공",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = LoginResponse.class),
+                examples = @ExampleObject(
+                    value = """
+                        {
+                          "status": 200,
+                          "message": "로그인 성공",
+                          "data": {
+                            "accessToken": "eyJhbGciOiJIUzUxMiJ9...",
+                            "refreshToken": "eyJhbGciOiJIUzUxMiJ9...",
+                            "tokenType": "Bearer",
+                            "expiresIn": 3600,
+                            "twoFactorRequired": false,
+                            "user": {
+                              "id": 1,
+                              "email": "student@minerva.edu",
+                              "name": "홍길동",
+                              "username": "student123",
+                              "role": "STUDENT",
+                              "profileImageUrl": "https://cdn.eduforum.com/profiles/1.jpg"
+                            }
+                          },
+                          "timestamp": "2025-11-29T10:30:00"
+                        }
+                        """
+                )
+            )
+        ),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "400",
+            description = "잘못된 인증 코드 또는 만료된 임시 토큰",
+            content = @Content(schema = @Schema(ref = "#/components/schemas/ValidationErrorResponse"))
+        ),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = "인증 실패",
+            content = @Content(schema = @Schema(ref = "#/components/schemas/ApiErrorResponse"))
+        )
+    })
+    @PostMapping("/login/2fa")
+    public ResponseEntity<ApiResponse<LoginResponse>> completeTwoFactorLogin(
+        @Valid @RequestBody TwoFactorLoginRequest request
+    ) {
+        LoginResponse response = authService.completeTwoFactorLogin(request, twoFactorService);
         return ResponseEntity.ok(ApiResponse.success("로그인 성공", response));
     }
 

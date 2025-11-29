@@ -59,6 +59,13 @@ export function LoginForm({ redirectTo = '/dashboard' }: LoginFormProps) {
         rememberMe: formData.rememberMe,
       });
 
+      // 2FA가 필요한 경우 2FA 페이지로 리다이렉트
+      const { twoFactorRequired } = useAuthStore.getState();
+      if (twoFactorRequired) {
+        router.push('/login/2fa');
+        return;
+      }
+
       // 로그인 성공 시 리다이렉트
       router.push(redirectTo);
     } catch (err) {

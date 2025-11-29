@@ -34,6 +34,7 @@ public class AuthService {
     private final UserRoleRepository userRoleRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final EmailVerificationTokenRepository emailVerificationTokenRepository;
+    private final TwoFactorSecretRepository twoFactorSecretRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -122,6 +123,71 @@ public class AuthService {
             throw new BusinessException(ErrorCode.ACCESS_DENIED, "정지된 계정입니다");
         }
 
+        // 2FA 활성화 확인
+        TwoFactorSecret twoFactorSecret = twoFactorSecretRepository.findByUser(user).orElse(null);
+        if (twoFactorSecret != null && twoFactorSecret.isEnabled()) {
+            // 2FA가 활성화된 경우, 임시 토큰 발급
+            String temporaryToken = generateTemporaryToken(user);
+
+            log.info("2FA required for user: {} (ID: {})", user.getEmail(), user.getId());
+
+            return LoginResponse.builder()
+                .twoFactorRequired(true)
+                .temporaryToken(temporaryToken)
+                .tokenType("Bearer")
+                .user(LoginResponse.UserInfo.builder()
+                    .id(user.getId())
+                    .email(user.getEmail())
+                    .name(user.getFullName())
+                    .username(user.getEmail().split("@")[0])
+                    .build())
+                .build();
+        }
+
+        // 2FA가 비활성화된 경우, 일반 로그인 진행
+        return completeLogin(user);
+    }
+
+    /**
+     * 2FA 검증 후 로그인 완료
+     */
+    @Transactional
+    public LoginResponse completeTwoFactorLogin(TwoFactorLoginRequest request, TwoFactorService twoFactorService) {
+        log.info("Completing 2FA login with temporary token");
+
+        // 임시 토큰 검증 및 사용자 조회
+        User user = validateTemporaryTokenAndGetUser(request.getTemporaryToken());
+
+        // 2FA 시크릿 조회
+        TwoFactorSecret twoFactorSecret = twoFactorSecretRepository.findByUser(user)
+            .orElseThrow(() -> new BusinessException(ErrorCode.AUTHENTICATION_FAILED, "2FA가 설정되지 않았습니다"));
+
+        if (!twoFactorSecret.isEnabled()) {
+            throw new BusinessException(ErrorCode.AUTHENTICATION_FAILED, "2FA가 활성화되어 있지 않습니다");
+        }
+
+        // TOTP 코드 또는 백업 코드 검증
+        boolean verified = false;
+        if (request.getCode() != null && !request.getCode().isEmpty()) {
+            verified = twoFactorService.verifyCode(twoFactorSecret.getSecret(), request.getCode());
+        } else if (request.getBackupCode() != null && !request.getBackupCode().isEmpty()) {
+            verified = twoFactorService.verifyAndUseBackupCode(user.getId(), request.getBackupCode());
+        }
+
+        if (!verified) {
+            throw new BusinessException(ErrorCode.AUTHENTICATION_FAILED, "잘못된 인증 코드입니다");
+        }
+
+        log.info("2FA verification successful for user: {} (ID: {})", user.getEmail(), user.getId());
+
+        // 로그인 완료
+        return completeLogin(user);
+    }
+
+    /**
+     * 로그인 완료 처리 (공통 로직)
+     */
+    private LoginResponse completeLogin(User user) {
         // 역할 조회
         List<UserRole> userRoles = userRoleRepository.findByUser(user);
         List<SimpleGrantedAuthority> authorities = userRoles.stream()
@@ -159,6 +225,7 @@ public class AuthService {
             .refreshToken(refreshToken)
             .tokenType("Bearer")
             .expiresIn(3600L)
+            .twoFactorRequired(false)
             .user(LoginResponse.UserInfo.builder()
                 .id(user.getId())
                 .email(user.getEmail())
@@ -168,6 +235,42 @@ public class AuthService {
                 .profileImageUrl(user.getProfileImageUrl())
                 .build())
             .build();
+    }
+
+    /**
+     * 임시 토큰 생성 (2FA용)
+     */
+    private String generateTemporaryToken(User user) {
+        // 임시 토큰: "2FA:" + userId + ":" + timestamp + ":" + random
+        String data = "2FA:" + user.getId() + ":" + System.currentTimeMillis() + ":" + UUID.randomUUID();
+        return Base64.getEncoder().encodeToString(data.getBytes(StandardCharsets.UTF_8));
+    }
+
+    /**
+     * 임시 토큰 검증 및 사용자 조회
+     */
+    private User validateTemporaryTokenAndGetUser(String temporaryToken) {
+        try {
+            String decoded = new String(Base64.getDecoder().decode(temporaryToken), StandardCharsets.UTF_8);
+            String[] parts = decoded.split(":");
+
+            if (parts.length != 4 || !"2FA".equals(parts[0])) {
+                throw new BusinessException(ErrorCode.INVALID_TOKEN, "유효하지 않은 임시 토큰입니다");
+            }
+
+            Long userId = Long.parseLong(parts[1]);
+            long timestamp = Long.parseLong(parts[2]);
+
+            // 토큰 유효 시간 확인 (5분)
+            if (System.currentTimeMillis() - timestamp > 5 * 60 * 1000) {
+                throw new BusinessException(ErrorCode.EXPIRED_TOKEN, "임시 토큰이 만료되었습니다");
+            }
+
+            return userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND, "사용자를 찾을 수 없습니다"));
+        } catch (IllegalArgumentException e) {
+            throw new BusinessException(ErrorCode.INVALID_TOKEN, "유효하지 않은 임시 토큰입니다");
+        }
     }
 
     /**

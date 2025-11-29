@@ -14,6 +14,15 @@ export const API_ENDPOINTS = {
     CHANGE_PASSWORD: '/auth/change-password',
     FORGOT_PASSWORD: '/auth/forgot-password',
     RESET_PASSWORD: '/auth/reset-password',
+
+    // 2FA 관련
+    TWO_FACTOR_SETUP: '/auth/2fa/setup',
+    TWO_FACTOR_VERIFY: '/auth/2fa/verify',
+    TWO_FACTOR_DISABLE: '/auth/2fa/disable',
+    TWO_FACTOR_STATUS: '/auth/2fa/status',
+    TWO_FACTOR_BACKUP_CODES: '/auth/2fa/backup-codes',
+    TWO_FACTOR_VERIFY_BACKUP: '/auth/2fa/verify-backup',
+    TWO_FACTOR_LOGIN: '/auth/login/2fa',
   },
 
   // 코스 관련

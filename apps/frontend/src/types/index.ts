@@ -79,6 +79,15 @@ export interface ApiError {
   }>;
 }
 
+/**
+ * 인증 토큰 응답
+ */
+export interface AuthTokenResponse {
+  accessToken: string;
+  refreshToken: string;
+  expiresIn: number; // 초 단위
+}
+
 // Re-export 타입들
 export * from './auth';
 export * from './course';
@@ -86,3 +95,4 @@ export * from './dashboard';
 export * from './assignment';
 export * from './session';
 export * from './seminar';
+export * from './two-factor';

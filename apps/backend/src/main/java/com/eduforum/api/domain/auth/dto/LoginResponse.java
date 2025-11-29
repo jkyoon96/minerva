@@ -32,6 +32,13 @@ public class LoginResponse {
     @Schema(description = "사용자 정보")
     private UserInfo user;
 
+    @Schema(description = "2FA 필수 여부 (true인 경우 2FA 코드 입력 필요)", example = "false")
+    @Builder.Default
+    private Boolean twoFactorRequired = false;
+
+    @Schema(description = "임시 토큰 (2FA 인증용, twoFactorRequired가 true일 때만 제공)", example = "temp_token_abc123")
+    private String temporaryToken;
+
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor

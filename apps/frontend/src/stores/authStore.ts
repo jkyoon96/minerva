@@ -9,6 +9,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { User } from '@/types';
 import * as authApi from '@/lib/api/auth';
+import * as twoFactorApi from '@/lib/api/two-factor';
 import { LoginRequest, RegisterRequest } from '@/lib/api/types';
 
 interface AuthState {
@@ -17,6 +18,10 @@ interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
+
+  // 2FA 상태
+  twoFactorRequired: boolean;
+  temporaryToken: string | null;
 
   // 액션
   setUser: (user: User | null) => void;
@@ -27,6 +32,11 @@ interface AuthState {
   logout: () => Promise<void>;
   fetchProfile: () => Promise<void>;
   clearError: () => void;
+
+  // 2FA 액션
+  setTwoFactorRequired: (required: boolean) => void;
+  setTemporaryToken: (token: string | null) => void;
+  completeTwoFactorLogin: (code: string, useBackupCode?: boolean) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -37,6 +47,10 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       isLoading: false,
       error: null,
+
+      // 2FA 초기 상태
+      twoFactorRequired: false,
+      temporaryToken: null,
 
       // 사용자 설정
       setUser: (user) => {
@@ -65,7 +79,20 @@ export const useAuthStore = create<AuthState>()(
       login: async (credentials) => {
         set({ isLoading: true, error: null });
         try {
-          const { user, tokens } = await authApi.login(credentials);
+          const response = await authApi.login(credentials);
+
+          // 2FA가 필요한 경우
+          if ((response as any).requiresTwoFactor) {
+            set({
+              twoFactorRequired: true,
+              temporaryToken: (response as any).temporaryToken,
+              isLoading: false,
+            });
+            return;
+          }
+
+          // 일반 로그인 성공
+          const { user, tokens } = response;
 
           // 토큰 저장
           localStorage.setItem('accessToken', tokens.accessToken);
@@ -75,6 +102,8 @@ export const useAuthStore = create<AuthState>()(
             user,
             isAuthenticated: true,
             isLoading: false,
+            twoFactorRequired: false,
+            temporaryToken: null,
           });
         } catch (error: any) {
           set({
@@ -126,6 +155,8 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: false,
             isLoading: false,
             error: null,
+            twoFactorRequired: false,
+            temporaryToken: null,
           });
         }
       },
@@ -150,6 +181,51 @@ export const useAuthStore = create<AuthState>()(
           // 토큰 제거
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
+        }
+      },
+
+      // 2FA 필요 여부 설정
+      setTwoFactorRequired: (required) => {
+        set({ twoFactorRequired: required });
+      },
+
+      // 임시 토큰 설정
+      setTemporaryToken: (token) => {
+        set({ temporaryToken: token });
+      },
+
+      // 2FA 로그인 완료
+      completeTwoFactorLogin: async (code, useBackupCode = false) => {
+        set({ isLoading: true, error: null });
+        try {
+          const { temporaryToken } = get();
+          if (!temporaryToken) {
+            throw new Error('임시 토큰이 없습니다.');
+          }
+
+          const { user, tokens } = await twoFactorApi.loginWithTwoFactor({
+            temporaryToken,
+            code,
+            useBackupCode,
+          });
+
+          // 토큰 저장
+          localStorage.setItem('accessToken', tokens.accessToken);
+          localStorage.setItem('refreshToken', tokens.refreshToken);
+
+          set({
+            user,
+            isAuthenticated: true,
+            isLoading: false,
+            twoFactorRequired: false,
+            temporaryToken: null,
+          });
+        } catch (error: any) {
+          set({
+            error: error.message || '2FA 인증에 실패했습니다.',
+            isLoading: false,
+          });
+          throw error;
         }
       },
     }),
