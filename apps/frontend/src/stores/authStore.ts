@@ -25,6 +25,7 @@ interface AuthState {
 
   // 액션
   setUser: (user: User | null) => void;
+  updateUser: (userData: Partial<User>) => void;
   setLoading: (isLoading: boolean) => void;
   setError: (error: string | null) => void;
   login: (credentials: LoginRequest) => Promise<void>;
@@ -58,6 +59,16 @@ export const useAuthStore = create<AuthState>()(
           user,
           isAuthenticated: !!user,
         });
+      },
+
+      // 사용자 정보 업데이트 (부분 업데이트)
+      updateUser: (userData) => {
+        const { user } = get();
+        if (user) {
+          set({
+            user: { ...user, ...userData },
+          });
+        }
       },
 
       // 로딩 상태 설정

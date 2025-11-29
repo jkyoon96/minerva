@@ -76,4 +76,15 @@ export const API_ENDPOINTS = {
     SESSION: (sessionId: string) => `/analytics/sessions/${sessionId}`,
     DASHBOARD: '/analytics/dashboard',
   },
+
+  // 프로필 관련
+  PROFILE: {
+    GET: '/v1/users/profile',
+    UPDATE: '/v1/users/profile',
+    UPLOAD_AVATAR: '/v1/users/profile/avatar',
+    DELETE_AVATAR: '/v1/users/profile/avatar',
+    CHANGE_EMAIL: '/v1/users/email/change',
+    VERIFY_EMAIL: '/v1/users/email/verify',
+    CHANGE_PASSWORD: '/v1/users/password',
+  },
 } as const;

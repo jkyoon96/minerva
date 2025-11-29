@@ -39,6 +39,12 @@ public class User extends BaseEntity {
     @Column(name = "profile_image_url", length = 500)
     private String profileImageUrl;
 
+    @Column(name = "avatar_url", length = 500)
+    private String avatarUrl;
+
+    @Column(columnDefinition = "TEXT")
+    private String bio;
+
     @Column(length = 20)
     private String phone;
 

@@ -96,3 +96,4 @@ export * from './assignment';
 export * from './session';
 export * from './seminar';
 export * from './two-factor';
+export * from './profile';
